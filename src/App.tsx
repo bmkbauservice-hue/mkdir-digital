@@ -109,7 +109,6 @@ export default function Home() {
           <article className="aureus-feature">
             <div className="aureus-image">
               <img src={aureusImage} alt="MKDIR Aureus Luxury Edition aus Gold mit graviertem Kudamm-Immobilien-Wappen und digitaler NFC-VCard" />
-              <div className="aureus-image-badge"><small>MKDIR AUREUS</small><strong>18K</strong><span>SOLID GOLD</span></div>
             </div>
             <div className="aureus-copy">
               <div className="aureus-label">ULTIMATE LUXURY EDITION · INDIVIDUELLE EINZELANFERTIGUNG</div>
