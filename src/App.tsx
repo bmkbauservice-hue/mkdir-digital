@@ -19,15 +19,10 @@ const designPrices = [
 ];
 
 const metalNfcProducts = [
-  { type: "METALLKARTE", name: "Mirror Gold & Roségold", text: "Spiegelnde Premiumkarte aus Metall mit Gold- oder Roségold-Finish – ideal für besonders repräsentative Auftritte.", specs: ["85,5 × 54 mm oder Sonderformat", "Gravur, UV-Druck & Codierung", "ab 100 Stück"], tone: "mirror" },
-  { type: "SIGNATURE EDITION", name: "24K Gold Signature", text: "Edle Metallkarte mit 24K-Gold-Finish, geätztem Wappen, Logo oder Namenszug und frei wählbarer Oberfläche.", specs: ["Matt, gebürstet oder spiegelnd", "0,15–0,8 mm", "Menge auf Anfrage"], tone: "signature" },
-  { type: "FULL COLOR", name: "Color Metal Card", text: "Vollfarbig personalisierte Metallkarte für Marken, Motive und Designs, die mehr als Gold und Schwarz zeigen sollen.", specs: ["CMYK- & Digitaldruck", "Prägung oder Ausschnitt möglich", "Menge auf Anfrage"], tone: "color" },
-  { type: "METALL + DRUCK", name: "Hybrid Metal Premium", text: "Metallbasis und hochwertiger Druck kombiniert – für feine Farbflächen, klare Kontaktdaten und besondere Veredelungen.", specs: ["85,5 × 54 mm", "Siebdruck, Offset & Sonderfarben", "Menge auf Anfrage"], tone: "hybrid" },
-  { type: "NTAG213", name: "Color Logo Edition", text: "Farbstarke NFC-Metallkarte mit individuellem Logo, Digitaldruck und Smartphone-kompatiblem NFC-Chip.", specs: ["0,8–1,5 mm oder Sonderstärke", "Laser, Ätzung & Farbdruck", "Menge auf Anfrage"], tone: "logo" },
-  { type: "NTAG213 · 215 · 216", name: "Custom Chip Series", text: "Flexible Serie mit passender Speicherkapazität für VCard-Link, Website oder individuelle digitale Anwendung.", specs: ["Matt oder spiegelnd", "Farben & Oberfläche frei wählbar", "ab 500 Stück"], tone: "custom" },
-  { type: "SOCIAL MEDIA", name: "Matte Social Card", text: "Robuste, matte Metallkarte für Social Media, Online-VCard und Kontaktdaten – modern, wetterfest und markant.", specs: ["Eloxiertes Aluminium", "0,5–1 mm", "Menge auf Anfrage"], tone: "matte" },
-  { type: "NFC KEYTAG", name: "24K Gold Keytag", text: "Kompakter Metallanhänger mit NFC-Funktion für Schlüsselbund, Tasche, Zugang oder mobile Kontaktdaten.", specs: ["25, 30 oder 35 mm", "Logo, Nummerierung & Codierung", "ab 500 Stück"], tone: "keytag" },
-  { type: "PREMIUM ZUBEHÖR", name: "Luxury Gift Box", text: "Schwarze Präsentbox für eine Metallkarte – mit Logo in Gold oder Silber für Übergabe, Geschenk und Verkauf.", specs: ["147 × 88 × 8 mm", "Leder- oder Papieroptik", "Menge auf Anfrage"], tone: "box" },
+  { type: "NTAG213 · METALL/PVC", name: "MKDIR Metal Black", text: "Die elegante schwarze NFC-Karte für digitale Kontaktdaten, Website, Social Media und deine persönliche Online‑VCard.", specs: ["85,6 × 54 mm · 1,2 mm", "Beidseitig im eigenen Design", "NFC‑Programmierung & Funktionstest"], price: "169 €", note: "einmalig · 1 Karte", tone: "matte" },
+  { type: "NTAG216 · METALL/PVC", name: "MKDIR Metal Pro", text: "Unsere leistungsstärkere Metallkarte mit größerem Speicher – ideal für erweiterte Inhalte und besondere Business-Auftritte.", specs: ["868 Byte nutzbarer Speicher", "Beidseitig personalisiert", "Wasserfest · IP67"], price: "179 €", note: "einmalig · 1 Karte", tone: "custom" },
+  { type: "NTAG213 · MIT LANGLOCH", name: "MKDIR Metal Badge", text: "Die hochwertige NFC-Metallkarte für Mitarbeitende, Veranstaltungen, Messen und den professionellen Firmenauftritt.", specs: ["Hochformat mit Langloch", "Beidseitig personalisiert", "NFC‑Link frei konfigurierbar"], price: "179 €", note: "einmalig · 1 Karte", tone: "hybrid" },
+  { type: "NTAG213 · REINES METALL", name: "MKDIR Rose Edition", text: "Roségoldenes Metall im Scheckkartenformat für einen besonders edlen Eindruck – individuell veredelt und digital verbunden.", specs: ["85,6 × 54 mm · 0,84 mm", "Logo-Veredelung nach Freigabe", "NFC‑Programmierung inklusive"], price: "ab 199 €", note: "nach Veredelungsaufwand", tone: "mirror" },
 ];
 
 const eniliveImage = `${import.meta.env.BASE_URL}images/enilive-vcard-background.webp`;
@@ -43,6 +38,32 @@ export default function Home() {
 
       <section className="hero" id="start">
         <div className="hero-glow" aria-hidden="true" />
+        <div className="section digital-bundle-banner">
+          <div className="bundle-copy">
+            <div className="bundle-label">MKDIR BUSINESS CONNECT · WEBSITE + VCARD + NFC</div>
+            <p className="eyebrow"><span /> Eine Karte. Ein Kontakt. Immer aktuell.</p>
+            <h2>Sie brauchen nie wieder<br /><em>eine neue Visitenkarte.</em></h2>
+            <p>Ihre NFC‑Karte öffnet beim Antippen Ihre persönliche digitale Visitenkarte. Telefonnummer, E‑Mail, Leistungen, Fotos oder Angebote werden online aktualisiert – die Karte bleibt dieselbe und funktioniert dauerhaft weiter.</p>
+            <div className="bundle-features">
+              <span><b>01</b> Professionelle Firmenwebsite</span>
+              <span><b>02</b> Installierbare MKDIR Web‑App</span>
+              <span><b>03</b> NFC‑Karte im eigenen Design</span>
+              <span><b>04</b> Änderungen ohne Neudruck</span>
+            </div>
+            <div className="bundle-actions">
+              <a className="button button-primary" href="mailto:IT-mkdir@proton.me?subject=Anfrage%20MKDIR%20Business%20Connect%20Paket">Komplettpaket anfragen <span>↗</span></a>
+              <a className="button button-ghost" href="#online-vcard">So funktioniert es</a>
+            </div>
+            <small className="bundle-note">Als Web‑App auf dem Smartphone installierbar – ohne App‑Store-Zwang. QR‑Code bleibt als zusätzliche Öffnungsmöglichkeit erhalten.</small>
+          </div>
+          <div className="bundle-visual" aria-label="Website, NFC-Metallkarte und digitale MKDIR Web-App als Komplettpaket">
+            <div className="bundle-browser"><span /><span /><span /><small>mkdir-digital.de</small><strong>DEIN UNTERNEHMEN</strong><i>Website</i></div>
+            <div className="bundle-metal-card"><small>MKDIR‑DIGITAL</small><b>BUSINESS CONNECT</b><strong>MAX MUSTERMANN</strong><i>)))</i></div>
+            <div className="bundle-phone"><div><span className="brand-mark">M</span><small>DEINE WEB‑APP</small><strong>Max Mustermann</strong><p>Kontakt · Leistungen · Angebote</p><b>Kontakt öffnen</b></div></div>
+            <div className="bundle-waves"><i /><i /><i /></div>
+            <div className="bundle-update"><b>✓</b><span><strong>Online aktualisiert</strong>kein Neudruck nötig</span></div>
+          </div>
+        </div>
         <div className="hero-grid">
           <div className="hero-copy">
             <p className="eyebrow"><span /> Digital. Persönlich. Einzigartig.</p>
@@ -152,17 +173,17 @@ export default function Home() {
                   <h3>{product.name}</h3>
                   <p>{product.text}</p>
                   <ul>{product.specs.map(spec => <li key={spec}><b>✓</b>{spec}</li>)}</ul>
-                  <div><strong>Preis auf Anfrage</strong><a href={`mailto:IT-mkdir@proton.me?subject=${encodeURIComponent(`Anfrage NFC Metallprodukt: ${product.name}`)}`}>Produkt anfragen <span>↗</span></a></div>
+                  <div className="metal-product-price"><span><strong>{product.price}</strong><small>{product.note}</small></span><a href={`mailto:IT-mkdir@proton.me?subject=${encodeURIComponent(`Anfrage NFC Metallprodukt: ${product.name}`)}`}>Produkt anfragen <span>↗</span></a></div>
                 </div>
               </article>
             ))}
           </div>
 
           <div className="metal-service-box">
-            <div><small>MKDIR‑KOMPLETTSERVICE</small><h3>Mehr als nur eine Karte.</h3><p>Auf Wunsch übernehmen wir Gestaltung, digitale VCard, NFC‑Programmierung, Funktionstest und spätere Link‑Änderungen.</p></div>
+            <div><small>MKDIR‑KOMPLETTSERVICE</small><h3>Mehr als nur eine Karte.</h3><p>Im Preis enthalten sind Kartenlayout, beidseitige Personalisierung – soweit beim Modell möglich –, NFC‑Programmierung und Funktionstest. Das digitale Online‑VCard-Profil wird separat gebucht.</p></div>
             <a className="button button-primary" href="mailto:IT-mkdir@proton.me?subject=Beratung%20zur%20NFC-Metallkollektion">Kollektion anfragen <span>↗</span></a>
           </div>
-          <p className="metal-legal">Alle Metallprodukte werden individuell nach Freigabe gefertigt. Mindestmenge, Lieferzeit und Endpreis hängen von Material, Chip, Veredelung und Stückzahl ab. Die NFC‑Erweiterung für 79 € gilt nicht automatisch für diese Metall‑Sonderanfertigungen.</p>
+          <p className="metal-legal">Preise für jeweils eine Karte inklusive Gestaltung, Personalisierung, NFC‑Einrichtung und Funktionstest. Die Rose Edition ist wegen der individuellen Veredelung ein Ab‑Preis. Lieferzeit und endgültiger Preis können je nach Motiv, Verfügbarkeit und Sonderwunsch abweichen. Das Online‑VCard-Profil sowie dessen Hosting werden separat berechnet.</p>
         </div>
       </section>
 
