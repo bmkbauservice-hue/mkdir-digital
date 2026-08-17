@@ -31,6 +31,7 @@ const metalNfcProducts = [
 ];
 
 const eniliveImage = `${import.meta.env.BASE_URL}images/enilive-vcard-background.webp`;
+const aureusImage = `${import.meta.env.BASE_URL}images/aureus-luxury-nfc.webp`;
 
 export default function Home() {
   return (
@@ -104,6 +105,36 @@ export default function Home() {
               <div><span>Design</span><i>→</i><span>Freigabe</span><i>→</i><span>Fertigung</span><i>→</i><span>NFC‑Setup</span></div>
             </div>
           </div>
+
+          <article className="aureus-feature">
+            <div className="aureus-image">
+              <img src={aureusImage} alt="MKDIR Aureus Luxury Edition aus Gold mit graviertem Kudamm-Immobilien-Wappen und digitaler NFC-VCard" />
+              <div className="aureus-image-badge"><small>MKDIR AUREUS</small><strong>18K</strong><span>SOLID GOLD</span></div>
+            </div>
+            <div className="aureus-copy">
+              <div className="aureus-label">ULTIMATE LUXURY EDITION · INDIVIDUELLE EINZELANFERTIGUNG</div>
+              <p className="eyebrow"><span /> Die außergewöhnlichste Art, sich vorzustellen</p>
+              <h3>Ein Kontakt.<br /><em>Ein echtes Statement.</em></h3>
+              <p className="aureus-lead">Die <strong>MKDIR AUREUS Luxury Edition</strong> wird aus 18‑karätigem Massivgold gefertigt und mit einer edlen 24K‑Goldoberfläche vollendet. Das spürbare Gewicht, der charakteristische Metallklang und die präzise Tiefengravur machen bereits die Übergabe zu einem besonderen Erlebnis.</p>
+              <div className="aureus-specs">
+                <div><b>18K</b><span><strong>Massivgold</strong>750er Goldkörper</span></div>
+                <div><b>24K</b><span><strong>Goldfinish</strong>edle Oberfläche</span></div>
+                <div><b>NFC</b><span><strong>Digital verbunden</strong>VCard per Berührung</span></div>
+                <div><b>1/1</b><span><strong>Einzelanfertigung</strong>Wappen, Logo & Name</span></div>
+              </div>
+              <ul>
+                <li><b>✓</b> Persönliches Wappen, Firmenlogo oder Name als Tiefengravur</li>
+                <li><b>✓</b> Programmierte NFC‑Funktion und optionaler QR‑Code</li>
+                <li><b>✓</b> Individuelle MKDIR Online‑VCard im passenden Luxusdesign</li>
+                <li><b>✓</b> Herstellerzertifikat mit Material und bestätigtem Endgewicht</li>
+                <li><b>✓</b> Auf Wunsch nummerierte Edition und Präsentbox</li>
+              </ul>
+              <div className="aureus-price">
+                <div><small>EXKLUSIVE AUFTRAGSFERTIGUNG</small><strong>ab 11.999 €</strong><span>Endpreis abhängig von Goldkurs, Gewicht und Ausstattung</span></div>
+                <a className="aureus-button" href="mailto:IT-mkdir@proton.me?subject=Private%20Anfrage%20zur%20MKDIR%20Aureus%20Luxury%20Edition">Private Beratung anfragen <span>↗</span></a>
+              </div>
+            </div>
+          </article>
 
           <div className="metal-product-grid">
             {metalNfcProducts.map((product, index) => (
