@@ -44,6 +44,39 @@ export default function Home() {
             <div className="floating-badge badge-bottom"><span className="pulse" /><span><strong>Mobil optimiert</strong>für jedes Gerät</span></div>
           </div>
         </div>
+        <div className="section nfc-showcase">
+          <div className="nfc-demo" aria-hidden="true">
+            <div className="nfc-glow" />
+            <div className="nfc-card-demo">
+              <div className="nfc-card-head"><span>MKDIR‑DIGITAL</span><b>NFC</b></div>
+              <div className="nfc-chip"><i /><i /><i /><i /></div>
+              <div className="nfc-card-name"><small>DIGITALE VISITENKARTE</small><strong>Antippen.<br />Direkt verbinden.</strong></div>
+              <div className="nfc-card-footer"><span>● ONLINE</span><b>)))</b></div>
+            </div>
+            <div className="nfc-phone-demo">
+              <div className="nfc-phone-speaker" />
+              <div className="nfc-phone-screen"><span className="brand-mark">M</span><small>ONLINE‑VCARD</small><strong>Kontakt wird geöffnet</strong><i>✓</i></div>
+            </div>
+            <div className="nfc-waves"><i /><i /><i /></div>
+          </div>
+
+          <div className="nfc-offer-copy">
+            <div className="nfc-label">NEU · NFC‑ERWEITERUNG</div>
+            <p className="eyebrow"><span /> Einfach kurz ans Smartphone halten</p>
+            <h3>Deine VCard öffnet sich<br /><em>mit einer Berührung.</em></h3>
+            <p>Die programmierte NFC‑Karte öffnet deine digitale Visitenkarte direkt auf modernen iPhones und Android‑Geräten – ohne App und ohne QR‑Scanner.</p>
+            <ul>
+              <li><b>✓</b> Zwei programmierte NFC‑Karten im eigenen Design</li>
+              <li><b>✓</b> Direkte Verknüpfung mit deiner Online‑VCard</li>
+              <li><b>✓</b> Funktioniert ohne Batterie oder Aufladen</li>
+              <li><b>✓</b> Weitere Karten jederzeit nachbestellbar</li>
+            </ul>
+            <div className="nfc-offer-bottom">
+              <div><small>ZUSATZ ZUR ONLINE‑VCARD</small><strong>+79 €</strong><span>einmalig · inklusive 2 Karten</span></div>
+              <a className="button button-primary" href="mailto:IT-mkdir@proton.me?subject=NFC-Erweiterung%20zur%20Online-VCard">NFC‑Paket anfragen <span>↗</span></a>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="section intro" id="leistungen">
