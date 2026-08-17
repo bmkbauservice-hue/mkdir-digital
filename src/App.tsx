@@ -18,6 +18,18 @@ const designPrices = [
   ["Visitenkarte · eine Seite", "120–180 €"], ["Visitenkarte · Vorder- & Rückseite", "180–250 €"], ["Flyer · Vorder- & Rückseite", "250–350 €"], ["Einfaches Logo", "250–400 €"], ["Individuelles Logo + Varianten", "450–750 €"], ["Kleines Corporate Design", "600–900 €"],
 ];
 
+const metalNfcProducts = [
+  { type: "METALLKARTE", name: "Mirror Gold & Roségold", text: "Spiegelnde Premiumkarte aus Metall mit Gold- oder Roségold-Finish – ideal für besonders repräsentative Auftritte.", specs: ["85,5 × 54 mm oder Sonderformat", "Gravur, UV-Druck & Codierung", "ab 100 Stück"], tone: "mirror" },
+  { type: "SIGNATURE EDITION", name: "24K Gold Signature", text: "Edle Metallkarte mit 24K-Gold-Finish, geätztem Wappen, Logo oder Namenszug und frei wählbarer Oberfläche.", specs: ["Matt, gebürstet oder spiegelnd", "0,15–0,8 mm", "Menge auf Anfrage"], tone: "signature" },
+  { type: "FULL COLOR", name: "Color Metal Card", text: "Vollfarbig personalisierte Metallkarte für Marken, Motive und Designs, die mehr als Gold und Schwarz zeigen sollen.", specs: ["CMYK- & Digitaldruck", "Prägung oder Ausschnitt möglich", "Menge auf Anfrage"], tone: "color" },
+  { type: "METALL + DRUCK", name: "Hybrid Metal Premium", text: "Metallbasis und hochwertiger Druck kombiniert – für feine Farbflächen, klare Kontaktdaten und besondere Veredelungen.", specs: ["85,5 × 54 mm", "Siebdruck, Offset & Sonderfarben", "Menge auf Anfrage"], tone: "hybrid" },
+  { type: "NTAG213", name: "Color Logo Edition", text: "Farbstarke NFC-Metallkarte mit individuellem Logo, Digitaldruck und Smartphone-kompatiblem NFC-Chip.", specs: ["0,8–1,5 mm oder Sonderstärke", "Laser, Ätzung & Farbdruck", "Menge auf Anfrage"], tone: "logo" },
+  { type: "NTAG213 · 215 · 216", name: "Custom Chip Series", text: "Flexible Serie mit passender Speicherkapazität für VCard-Link, Website oder individuelle digitale Anwendung.", specs: ["Matt oder spiegelnd", "Farben & Oberfläche frei wählbar", "ab 500 Stück"], tone: "custom" },
+  { type: "SOCIAL MEDIA", name: "Matte Social Card", text: "Robuste, matte Metallkarte für Social Media, Online-VCard und Kontaktdaten – modern, wetterfest und markant.", specs: ["Eloxiertes Aluminium", "0,5–1 mm", "Menge auf Anfrage"], tone: "matte" },
+  { type: "NFC KEYTAG", name: "24K Gold Keytag", text: "Kompakter Metallanhänger mit NFC-Funktion für Schlüsselbund, Tasche, Zugang oder mobile Kontaktdaten.", specs: ["25, 30 oder 35 mm", "Logo, Nummerierung & Codierung", "ab 500 Stück"], tone: "keytag" },
+  { type: "PREMIUM ZUBEHÖR", name: "Luxury Gift Box", text: "Schwarze Präsentbox für eine Metallkarte – mit Logo in Gold oder Silber für Übergabe, Geschenk und Verkauf.", specs: ["147 × 88 × 8 mm", "Leder- oder Papieroptik", "Menge auf Anfrage"], tone: "box" },
+];
+
 const eniliveImage = `${import.meta.env.BASE_URL}images/enilive-vcard-background.webp`;
 
 export default function Home() {
@@ -25,7 +37,7 @@ export default function Home() {
     <main>
       <header className="nav-shell">
         <a className="brand" href="#start" aria-label="MKDIR-Digital Startseite"><span className="brand-mark">M</span><span>MKDIR‑<strong>DIGITAL</strong></span></a>
-        <nav aria-label="Hauptnavigation"><a href="#leistungen">Leistungen</a><a href="#online-vcard">Online‑VCard</a><a href="#preise">Preise</a><a href="#referenzen">Referenzen</a><a href="#kontakt" className="nav-cta">Projekt anfragen</a></nav>
+        <nav aria-label="Hauptnavigation"><a href="#leistungen">Leistungen</a><a href="#online-vcard">Online‑VCard</a><a href="#nfc-metall">NFC‑Metall</a><a href="#preise">Preise</a><a href="#referenzen">Referenzen</a><a href="#kontakt" className="nav-cta">Projekt anfragen</a></nav>
       </header>
 
       <section className="hero" id="start">
@@ -76,6 +88,51 @@ export default function Home() {
               <a className="button button-primary" href="mailto:IT-mkdir@proton.me?subject=NFC-Erweiterung%20zur%20Online-VCard">NFC‑Paket anfragen <span>↗</span></a>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="metal-products" id="nfc-metall">
+        <div className="section">
+          <div className="metal-products-head">
+            <div>
+              <div className="metal-kicker">NEU · INDIVIDUELLE AUFTRAGSFERTIGUNG</div>
+              <p className="eyebrow"><span /> NFC Metallkollektion</p>
+              <h2>Kontakt, der sich<br /><em>wertvoll anfühlt.</em></h2>
+            </div>
+            <div className="metal-products-intro">
+              <p>Wir gestalten, personalisieren und programmieren deine NFC‑Metallprodukte. Nach deiner Freigabe lassen wir sie beim spezialisierten Produktionspartner fertigen und prüfen die Funktion vor der Übergabe.</p>
+              <div><span>Design</span><i>→</i><span>Freigabe</span><i>→</i><span>Fertigung</span><i>→</i><span>NFC‑Setup</span></div>
+            </div>
+          </div>
+
+          <div className="metal-product-grid">
+            {metalNfcProducts.map((product, index) => (
+              <article className={`metal-product-card metal-${product.tone}`} key={product.name}>
+                <div className="metal-product-visual" aria-hidden="true">
+                  <span className="metal-number">0{index + 1}</span>
+                  <div className="metal-mini-card">
+                    <small>MKDIR‑DIGITAL</small>
+                    <b>{product.type}</b>
+                    <strong>{product.name}</strong>
+                    <i>)))</i>
+                  </div>
+                </div>
+                <div className="metal-product-copy">
+                  <small>{product.type}</small>
+                  <h3>{product.name}</h3>
+                  <p>{product.text}</p>
+                  <ul>{product.specs.map(spec => <li key={spec}><b>✓</b>{spec}</li>)}</ul>
+                  <div><strong>Preis auf Anfrage</strong><a href={`mailto:IT-mkdir@proton.me?subject=${encodeURIComponent(`Anfrage NFC Metallprodukt: ${product.name}`)}`}>Produkt anfragen <span>↗</span></a></div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="metal-service-box">
+            <div><small>MKDIR‑KOMPLETTSERVICE</small><h3>Mehr als nur eine Karte.</h3><p>Auf Wunsch übernehmen wir Gestaltung, digitale VCard, NFC‑Programmierung, Funktionstest und spätere Link‑Änderungen.</p></div>
+            <a className="button button-primary" href="mailto:IT-mkdir@proton.me?subject=Beratung%20zur%20NFC-Metallkollektion">Kollektion anfragen <span>↗</span></a>
+          </div>
+          <p className="metal-legal">Alle Metallprodukte werden individuell nach Freigabe gefertigt. Mindestmenge, Lieferzeit und Endpreis hängen von Material, Chip, Veredelung und Stückzahl ab. Die NFC‑Erweiterung für 79 € gilt nicht automatisch für diese Metall‑Sonderanfertigungen.</p>
         </div>
       </section>
 
