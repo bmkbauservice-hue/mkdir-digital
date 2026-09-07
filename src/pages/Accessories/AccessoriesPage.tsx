@@ -1,15 +1,13 @@
+import { Check, Droplets, ShieldCheck, UsersRound } from "lucide-react";
+import { Link } from "react-router";
+import { products } from "../../features/products/data/products";
+
 export function AccessoriesPage() {
-  return (
-    <main className="mx-auto min-h-[60vh] w-full max-w-[1440px] px-5 py-20 lg:px-8">
-      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-mkdir-neon-blue">
-        MKDIR-DESIGN
-      </p>
-      <h1 className="mt-4 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
-        MKDIR Zubehör
-      </h1>
-      <p className="mt-5 max-w-2xl text-sm leading-7 text-zinc-500">
-        Schlüsselanhänger, Armbänder, Tags und weitere NFC-Produkte.
-      </p>
-    </main>
-  );
+  const accessories = products.filter((product) => product.category === "accessory");
+  return <main className="mx-auto min-h-[70vh] w-full max-w-[1440px] px-5 py-16 lg:px-8">
+    <div className="grid gap-8 border-b border-white/8 pb-10 lg:grid-cols-[1fr_0.7fr] lg:items-end"><div><p className="text-sm font-bold uppercase tracking-[0.14em] text-mkdir-neon-blue">Mehr als eine Visitenkarte</p><h1 className="mt-4 text-5xl font-bold tracking-[-0.04em]">NFC Tags &<br /><span className="font-serif text-mkdir-gold-light">Armbänder.</span></h1></div><p className="text-base leading-8 text-zinc-500">Für Events, Service, Teams, Fahrzeuge, Empfang und überall dort, wo eine Karte nicht der beste Formfaktor ist.</p></div>
+    <div className="mt-10 grid gap-5 lg:grid-cols-3">{accessories.map((product) => <article key={product.id} className="border border-white/10 bg-white/[0.02] p-7"><div className="mini-product-card mb-8"><span>M</span><small>NFC</small></div><p className="text-xs font-bold uppercase tracking-[0.12em] text-mkdir-neon-blue">{product.eyebrow}</p><h2 className="mt-3 text-2xl font-bold">{product.name}</h2><p className="mt-4 text-base leading-7 text-zinc-500">{product.description}</p><strong className="mt-7 block font-serif text-3xl text-mkdir-gold-light">{product.priceLabel}</strong><Link to={`/konfigurator?produkt=${product.slug}`} className="mt-7 inline-flex min-h-11 items-center bg-mkdir-gold px-5 text-sm font-black text-black">Jetzt gestalten</Link></article>)}</div>
+    <div className="mt-10 grid gap-4 sm:grid-cols-3">{[[Droplets,"Alltagstauglich","Material und Einsatz werden vor Produktion passend ausgewählt."],[UsersRound,"Für Teams","Einheitliche Profile, unterschiedliche Personen und zentrale Verwaltung als Ausbaustufe."],[ShieldCheck,"Kontrollierter Link","Verlorene oder ersetzte Produkte lassen sich später sperren und neu zuweisen."]].map(([Icon,title,text])=>{const ItemIcon=Icon as typeof Droplets;return <article key={title as string} className="border border-white/8 p-6"><ItemIcon className="size-6 text-mkdir-gold"/><h3 className="mt-5 text-lg font-bold">{title as string}</h3><p className="mt-3 text-sm leading-6 text-zinc-500">{text as string}</p></article>})}</div>
+    <div className="mt-10 border border-mkdir-gold/20 bg-mkdir-gold/[0.04] p-6"><h2 className="text-xl font-bold">B2B- und Eventmengen</h2><p className="mt-3 text-base leading-7 text-zinc-500">Ab 25 Stück prüfen wir Material, Codierung, Verpackung und Liefertermin individuell. Muster werden vor der Serienfreigabe getestet.</p><a href="mailto:IT-mkdir@proton.me?subject=Anfrage%20NFC%20Armb%C3%A4nder%20oder%20Tags" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-mkdir-gold"><Check className="size-4"/>Mengenangebot anfragen</a></div>
+  </main>;
 }

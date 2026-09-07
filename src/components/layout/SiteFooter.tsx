@@ -9,7 +9,7 @@ export function SiteFooter() {
         <div>
           <BrandLogo />
           <p className="mt-5 max-w-sm text-sm leading-7 text-zinc-500">
-            Premium NFC-Produkte, digitale VCards und individuelle digitale Identitäten.
+            Individuelle NFC-Karten, Tags und Armbänder – verbunden mit einer digitalen Identität, die mit dir wächst.
           </p>
         </div>
 
@@ -35,8 +35,11 @@ export function SiteFooter() {
           >
             {siteConfig.email}
           </a>
+          <a href={`tel:${siteConfig.phoneHref}`} className="mt-2 block text-sm text-zinc-300 hover:text-mkdir-gold">{siteConfig.phone}</a>
+          <p className="mt-8 text-xs leading-5 text-zinc-600">Produktion, Qualitätsprüfung, Verpackung und Direktversand erfolgen je nach Produkt über geprüfte Fertigungspartner.</p>
         </div>
       </div>
+      <div className="border-t border-white/8 px-5 py-5 text-center text-xs text-zinc-600">© 2026 MKDIR Design · Impressum und Datenschutz vor Verkaufsstart ergänzen</div>
     </footer>
   );
 }

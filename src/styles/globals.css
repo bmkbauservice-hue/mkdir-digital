@@ -45,6 +45,17 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  button,
+  select,
+  input {
+    font: inherit;
+  }
+
+  button:not(:disabled),
+  select {
+    cursor: pointer;
+  }
+
   ::selection {
     background: rgb(214 170 77 / 35%);
     color: white;
@@ -80,6 +91,50 @@
       linear-gradient(120deg, transparent 25%, rgb(255 255 255 / 4%) 38%, transparent 52%),
       repeating-linear-gradient(0deg, rgb(255 255 255 / 1.5%) 0 1px, transparent 1px 4px),
       linear-gradient(145deg, #181b20, #07090c);
+  }
+
+  .config-card {
+    background:
+      linear-gradient(120deg, transparent 20%, rgb(255 255 255 / 5%) 40%, transparent 58%),
+      linear-gradient(145deg, #171a1f, #05070a);
+    box-shadow: 0 24px 70px rgb(0 0 0 / 55%);
+  }
+
+  .hex-card-pattern {
+    opacity: 0.22;
+    background-image:
+      linear-gradient(30deg, rgb(214 170 77 / 28%) 12%, transparent 12.5%, transparent 87%, rgb(214 170 77 / 28%) 87.5%),
+      linear-gradient(150deg, rgb(24 214 255 / 20%) 12%, transparent 12.5%, transparent 87%, rgb(24 214 255 / 20%) 87.5%);
+    background-size: 64px 112px;
+    mask-image: radial-gradient(circle at 50% 45%, black, transparent 78%);
+  }
+
+  .mini-product-card {
+    position: relative;
+    display: flex;
+    width: 9rem;
+    aspect-ratio: 1.586 / 1;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-5deg);
+    border: 1px solid rgb(214 170 77 / 45%);
+    border-radius: 0.55rem;
+    background: linear-gradient(145deg, #191c21, #06080b);
+    box-shadow: 0 18px 35px rgb(0 0 0 / 45%);
+  }
+
+  .mini-product-card span {
+    font-family: var(--font-brand);
+    font-size: 2.4rem;
+    color: var(--color-mkdir-gold-light);
+  }
+
+  .mini-product-card small {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.6rem;
+    color: var(--color-mkdir-neon-blue);
+    font-size: 0.7rem;
   }
 
   .neon-orb {
@@ -136,7 +191,7 @@ body {
     linear-gradient(110deg, #030405 0%, #07090b 48%, #050607 100%) !important;
 }
 
-/* Geometrische Hintergrundmuster komplett deaktivieren */
+/* Großflächige Hintergrundmuster bleiben aus; die Produktkarten tragen die Waben als Signatur. */
 .hex-pattern,
 [class*="hex-pattern"],
 [class*="honeycomb"],
@@ -145,6 +200,10 @@ body {
   display: none !important;
   background: none !important;
   background-image: none !important;
+}
+
+.hex-card-pattern {
+  display: block !important;
 }
 
 .mkdir-clean-hero::before,
@@ -157,4 +216,3 @@ body {
   opacity: 0.06 !important;
   filter: blur(120px) !important;
 }
-

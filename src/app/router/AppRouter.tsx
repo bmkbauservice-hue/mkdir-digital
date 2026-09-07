@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { HashRouter, Route, Routes } from "react-router";
 import { SiteLayout } from "../../components/layout/SiteLayout";
 import { HomePage } from "../../pages/Home/HomePage";
 import { ProductsPage } from "../../pages/Products/ProductsPage";
@@ -14,7 +14,7 @@ import { NotFoundPage } from "../../pages/NotFound/NotFoundPage";
 
 export function AppRouter() {
   return (
-    <BrowserRouter basename="/mkdir-digital">
+    <HashRouter>
       <Routes>
         <Route element={<SiteLayout />}>
           <Route index element={<HomePage />} />
@@ -30,6 +30,6 @@ export function AppRouter() {
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }

@@ -1,15 +1,8 @@
+import { Check, Gem, ShieldCheck } from "lucide-react";
+
 export function ExclusivePage() {
-  return (
-    <main className="mx-auto min-h-[60vh] w-full max-w-[1440px] px-5 py-20 lg:px-8">
-      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-mkdir-neon-blue">
-        MKDIR-DESIGN
-      </p>
-      <h1 className="mt-4 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
-        MKDIR Exclusive
-      </h1>
-      <p className="mt-5 max-w-2xl text-sm leading-7 text-zinc-500">
-        Gold, Sondermaterialien, limitierte Editionen und Luxusverpackung.
-      </p>
-    </main>
-  );
+  return <main>
+    <section className="relative overflow-hidden border-b border-white/8 bg-[#050506]"><div className="neon-orb neon-orb-red right-[8%] top-[25%]"/><div className="mx-auto grid min-h-[650px] max-w-[1440px] items-center gap-10 px-5 py-20 lg:grid-cols-2 lg:px-8"><div><p className="text-sm font-bold uppercase tracking-[0.14em] text-mkdir-gold">MKDIR Exclusive Division</p><h1 className="mt-5 text-5xl font-bold tracking-[-0.05em] sm:text-6xl">Für Auftritte,<br /><span className="font-serif text-mkdir-gold-light">die nicht kopierbar wirken.</span></h1><p className="mt-7 max-w-xl text-lg leading-8 text-zinc-400">Sondermaterialien, nummerierte Editionen, individuelle Gravuren und hochwertige Präsentverpackungen – nur nach technischer Machbarkeits- und Kostenprüfung.</p><a href="mailto:IT-mkdir@proton.me?subject=Private%20Anfrage%20MKDIR%20Exclusive" className="mt-9 inline-flex min-h-12 items-center bg-mkdir-gold px-7 text-sm font-black text-black">Private Beratung anfragen</a></div><div className="config-card relative mx-auto aspect-[1.586/1] w-[82%] max-w-xl overflow-hidden rounded-xl border border-mkdir-gold/60 p-9 shadow-2xl"><div className="hex-card-pattern absolute inset-0"/><Gem className="relative size-12 text-mkdir-gold-light"/><div className="absolute bottom-9 left-9"><p className="text-xs tracking-[0.15em] text-mkdir-gold">LIMITED INDIVIDUAL EDITION</p><strong className="mt-2 block font-serif text-3xl">MKDIR EXCLUSIVE</strong></div></div></div></section>
+    <section className="mx-auto max-w-[1200px] px-5 py-20 lg:px-8"><div className="grid gap-5 md:grid-cols-3">{["Sondermetalle und individuelle Oberflächen","Tiefengravur, Prägung und nummerierte Edition","Präsentbox und Zertifikat nach Produkttyp"].map((item)=><article key={item} className="border border-white/10 p-6"><Check className="size-5 text-mkdir-gold"/><p className="mt-5 text-base leading-7 text-zinc-300">{item}</p></article>)}</div><div className="mt-10 flex gap-4 border border-mkdir-neon-blue/20 bg-mkdir-neon-blue/[0.03] p-6"><ShieldCheck className="mt-1 size-6 shrink-0 text-mkdir-neon-blue"/><p className="text-base leading-7 text-zinc-500"><strong className="text-white">Keine Fantasiepreise:</strong> Materialwert, Gewicht, Verfahren, Muster und Lieferzeit werden vor dem Angebot vom Fertigungspartner bestätigt.</p></div></section>
+  </main>;
 }
