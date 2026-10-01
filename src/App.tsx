@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { Logo } from "./components/Logo";
 import { CardVisual } from "./components/CardVisual";
 import { HeroDeck } from "./components/HeroDeck";
+import { DesignLightbox } from "./components/DesignLightbox";
 import {
   accessories,
   benefits,
@@ -137,10 +138,10 @@ function CardLines() {
 
 type Design = (typeof designs)[number];
 
-function DesignTile({ d, feature = false }: { d: Design; feature?: boolean }) {
+function DesignTile({ d, feature = false, onOpen }: { d: Design; feature?: boolean; onOpen: () => void }) {
   return (
     <figure className={feature ? "gallery__item gallery__item--feature" : "gallery__item"}>
-      <div className="gallery__frame">
+      <button type="button" className="gallery__frame" onClick={onOpen} aria-label={`${d.name} groß ansehen`}>
         <img
           src={`${import.meta.env.BASE_URL}designs/${d.file}`}
           alt={`Kartenentwurf ${d.name} mit Platzhalter-Kontaktdaten`}
@@ -149,10 +150,11 @@ function DesignTile({ d, feature = false }: { d: Design; feature?: boolean }) {
           loading="lazy"
           decoding="async"
         />
-        <span className="gallery__tag">Entwurf</span>
-      </div>
+      </button>
       <figcaption>
-        <strong>{d.name}</strong>
+        <strong>
+          {d.name} <span className="gallery__tag">Entwurf</span>
+        </strong>
         <span>{d.technique}</span>
       </figcaption>
     </figure>
@@ -161,6 +163,7 @@ function DesignTile({ d, feature = false }: { d: Design; feature?: boolean }) {
 
 function Designs() {
   const [showAll, setShowAll] = useState(false);
+  const [open, setOpen] = useState<number | null>(null);
   const first = designs.slice(0, designsVisible);
   const rest = designs.slice(designsVisible);
   return (
@@ -171,18 +174,18 @@ function Designs() {
           <h2>Ihre Karte kann alles sein. Nur nicht langweilig.</h2>
           <p>
             Vom Tuschebild bis zur Goldveredelung: Jedes Motiv wird für Ihre Karte gestaltet. Hier ein paar Entwürfe als
-            Anregung – mit Platzhalter-Daten.
+            Anregung – mit Platzhalter-Daten. Zum Vergrößern einfach anklicken.
           </p>
         </div>
         <div className="gallery gallery--main">
           {first.map((d, i) => (
-            <DesignTile key={d.file} d={d} feature={i === 0} />
+            <DesignTile key={d.file} d={d} feature={i === 0} onOpen={() => setOpen(i)} />
           ))}
         </div>
         {showAll && (
           <div className="gallery gallery--more" id="weitere-designs">
-            {rest.map((d) => (
-              <DesignTile key={d.file} d={d} />
+            {rest.map((d, i) => (
+              <DesignTile key={d.file} d={d} onOpen={() => setOpen(designsVisible + i)} />
             ))}
             <a
               className="gallery__own"
@@ -219,6 +222,7 @@ function Designs() {
           leicht abweichen.
         </p>
       </div>
+      <DesignLightbox index={open} onClose={() => setOpen(null)} onGo={setOpen} />
     </section>
   );
 }
