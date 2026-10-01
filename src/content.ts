@@ -357,6 +357,31 @@ export const bandDesigns = [
   { file: "swirl.webp", name: "Swirl", technique: "Zweifarb-Silikon marmoriert, NFC-Symbol gedruckt", width: 1200, height: 900 },
 ];
 
+// Kennenlern-Karten: Karte hinlegen, die andere Person tippt an und antwortet.
+// Bilder in public/kennenlernen/ (KI-Visualisierungen, ChatGPT).
+export const meetCards = {
+  him: [
+    { file: "fingerabdruck.webp", name: "Fingerabdruck", technique: "Mattschwarz, Roségoldfolie", width: 1200, height: 733 },
+    { file: "sternbild.webp", name: "Sternbild", technique: "Nachtblau, Goldfolie", width: 1200, height: 750 },
+    { file: "schwarz-gold.webp", name: "Schwarz-Gold", technique: "Schwarzes Metall, Goldveredelung", width: 1200, height: 749 },
+    { file: "bar-schild.webp", name: "Bar-Schild", technique: "Dunkelgrün, Goldfolie, Art-déco-Rahmen", width: 1200, height: 736 },
+    { file: "origami.webp", name: "Origami", technique: "Strukturkarton, Roségoldfolie mit Prägung", width: 1200, height: 753 },
+    { file: "eintrittskarte.webp", name: "Eintrittskarte", technique: "Vintage-Ticket, gestanzter Abriss", width: 1200, height: 632 },
+    { file: "puzzle.webp", name: "Puzzleteil", technique: "Creme, Goldfolie mit Prägung", width: 712, height: 448 },
+    { file: "wachssiegel.webp", name: "Wachssiegel", technique: "Weinrot mit Leinenstruktur, Goldfolie", width: 716, height: 462 },
+    { file: "pop-art.webp", name: "Pop-Art", technique: "Vollfarbdruck in Neongelb und Pink, matt", width: 1200, height: 743 },
+  ],
+  her: [] as { file: string; name: string; technique: string; width: number; height: number }[],
+};
+
+export const meetAnswers = ["Kaffee? Gern!", "Lass uns essen gehen", "Vielleicht", "Nein, danke"];
+
+export const meetRules = [
+  "Die andere Person antwortet anonym – ihre Nummer gibt sie nur freiwillig an.",
+  "Ein Nein ist ein Nein: kein Nachschreiben über die Karte.",
+  "Keine Ortung, kein Profil, nur ab 18.",
+];
+
 export const gpsNote =
   "GPS-Kinderarmband mit Ortung ist in Vorbereitung – erst wenn Datenschutz und Zulassung sauber geklärt sind.";
 
