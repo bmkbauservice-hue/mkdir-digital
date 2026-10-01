@@ -1729,13 +1729,262 @@ html:has(.lightbox[open]) {
   max-width: 62em;
 }
 
+/* ---------- NFC-Armbänder ---------- */
+.section--bands {
+  border-top: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse 50% 50% at 70% 45%, color-mix(in srgb, var(--band-glow, #d6b062) 8%, transparent), transparent 70%),
+    var(--black);
+}
+
+.bands {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+}
+
+.bands__tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bands__tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 18px 16px 44px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--graphite);
+  color: var(--ivory);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.bands__tab::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 21px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--dot);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+.bands__tab strong {
+  font-size: 16px;
+}
+
+.bands__tab span {
+  font-size: 13px;
+  color: var(--stone);
+}
+
+.bands__tab:hover {
+  border-color: var(--line-strong);
+}
+
+.bands__tab[aria-selected="true"] {
+  border-color: var(--gold);
+  background: linear-gradient(90deg, rgba(214, 176, 98, 0.1), var(--graphite) 70%);
+}
+
+.bands__tab[aria-selected="true"] strong {
+  color: var(--gold-hi);
+}
+
+.bands__stage {
+  display: grid;
+  gap: 22px;
+}
+
+.bands__visual {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background:
+    radial-gradient(60% 70% at 40% 55%, color-mix(in srgb, var(--band) 22%, transparent), transparent 70%),
+    var(--graphite);
+  padding: clamp(16px, 3vw, 32px);
+  padding-right: clamp(16px, 30%, 260px);
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  transition: background-color 0.5s;
+}
+
+/* Armband-Grafik */
+.band {
+  width: 100%;
+  max-width: 460px;
+  overflow: visible;
+  filter: drop-shadow(0 24px 30px rgba(0, 0, 0, 0.55));
+  transform: rotate(-8deg);
+}
+
+.band path {
+  fill: none;
+  transition: stroke 0.5s ease;
+}
+
+.band__back {
+  stroke: color-mix(in srgb, var(--band) 55%, #000);
+  stroke-width: 40;
+}
+
+.band__back-edge {
+  stroke: color-mix(in srgb, var(--band) 35%, #000);
+  stroke-width: 3;
+  transform: translateY(19px);
+}
+
+.band__front {
+  stroke: var(--band);
+  stroke-width: 46;
+}
+
+.band__shine {
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.band__label {
+  fill: var(--ink);
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  transition: fill 0.5s ease;
+}
+
+.band__chip rect {
+  fill: #0d0d0f;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+}
+
+.band__chip path {
+  fill: none;
+  stroke: var(--gold-hi);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  transform: translateX(-4px);
+}
+
+/* Was beim Antippen erscheint – wie eine kleine Benachrichtigung */
+.bands__tap {
+  position: absolute;
+  right: clamp(12px, 3vw, 28px);
+  top: 50%;
+  width: min(240px, 44%);
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(8, 8, 10, 0.86);
+  border: 1px solid color-mix(in srgb, var(--band) 60%, transparent);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.5),
+    0 0 26px color-mix(in srgb, var(--band) 35%, transparent);
+  backdrop-filter: blur(6px);
+  animation: tap-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both 0.15s;
+}
+
+.bands__tap-kicker {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+.bands__tap strong {
+  font-size: 17px;
+  color: #fff;
+}
+
+.bands__tap ul {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.bands__tap li {
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--band) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--band) 30%, transparent);
+  color: var(--ivory);
+}
+
+@keyframes tap-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-50% + 12px)) scale(0.96);
+  }
+}
+
+.bands__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  animation: app-fade 0.4s ease both;
+}
+
+.bands__copy p {
+  color: var(--stone);
+  max-width: 44em;
+}
+
+.bands__copy .bands__note {
+  font-size: 14px;
+  padding-left: 12px;
+  border-left: 2px solid var(--gold);
+  color: var(--ivory);
+}
+
+.bands__gps {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--stone);
+}
+
+.bands__gps span {
+  flex: none;
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--gold-hi);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 /* ---------- Zubehör ---------- */
 .acc {
   list-style: none;
   padding: 0;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -1918,11 +2167,20 @@ html:has(.lightbox[open]) {
   }
 
   .acc {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bands {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bands__tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 1120px) {
+@media (max-width: 1260px) {
   .menu-toggle {
     display: grid;
   }
@@ -1986,6 +2244,27 @@ html:has(.lightbox[open]) {
 }
 
 @media (max-width: 760px) {
+  .bands__visual {
+    flex-direction: column;
+    padding: 24px 16px;
+    gap: 8px;
+  }
+
+  .bands__tap {
+    position: relative;
+    right: auto;
+    top: auto;
+    width: 100%;
+    transform: none;
+  }
+
+  @keyframes tap-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
   .gallery {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -2099,6 +2378,8 @@ html:has(.lightbox[open]) {
     animation: none;
   }
 
+  .bands__tap,
+  .bands__copy,
   .gallery__frame img,
   .lightbox[open],
   .lightbox__stage img {

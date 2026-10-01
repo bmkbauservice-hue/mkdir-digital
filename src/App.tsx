@@ -3,6 +3,7 @@ import { Logo } from "./components/Logo";
 import { CardVisual } from "./components/CardVisual";
 import { HeroDeck } from "./components/HeroDeck";
 import { DesignLightbox } from "./components/DesignLightbox";
+import { Wristbands } from "./components/Wristbands";
 import {
   accessories,
   benefits,
@@ -25,6 +26,7 @@ const navItems = [
   { href: "#designs", label: "Designs" },
   { href: "#unternehmen", label: "Für Unternehmen" },
   { href: "#kartensysteme", label: "Kartensysteme" },
+  { href: "#armbaender", label: "Armbänder" },
   { href: "#zubehoer", label: "Zubehör" },
   { href: "#webdesign", label: "Webdesign" },
   { href: "#kontakt", label: "Kontakt" },
@@ -356,7 +358,7 @@ function Accessories() {
     <section className="section section--band" id="zubehoer">
       <div className="wrap">
         <div className="section-head">
-          <h2>NFC gibt es nicht nur als Karte</h2>
+          <h2>Noch mehr zum Antippen</h2>
           <p>Alles lässt sich mit Ihrer digitalen Visitenkarte oder einem eigenen Link verbinden. Preise auf Anfrage.</p>
         </div>
         <ul className="acc">
@@ -461,6 +463,7 @@ export default function App() {
         <Steps />
         <Business />
         <CardSystems />
+        <Wristbands />
         <Accessories />
         <WebDesign />
         <Contact />
