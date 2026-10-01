@@ -19,8 +19,8 @@ export function MeetCards() {
           <p className="kicker">Kennenlern-Karten</p>
           <h2>Ich bin ein Unikat.</h2>
           <p>
-            Mich gibt's in keiner Single-Börse. Statt Swipen: Karte hinlegen, die andere Person tippt an und antwortet
-            mit einem Klick. Ausgang offen.
+            {tab === "him" ? "Mich gibt's in keiner Single-Börse." : "Diesmal frag ich."} Statt Swipen: Karte hinlegen,
+            die andere Person tippt an und antwortet mit einem Klick. Ausgang offen.
           </p>
         </div>
 

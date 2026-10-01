@@ -371,7 +371,17 @@ export const meetCards = {
     { file: "wachssiegel.webp", name: "Wachssiegel", technique: "Weinrot mit Leinenstruktur, Goldfolie", width: 716, height: 462 },
     { file: "pop-art.webp", name: "Pop-Art", technique: "Vollfarbdruck in Neongelb und Pink, matt", width: 1200, height: 743 },
   ],
-  her: [] as { file: string; name: string; technique: string; width: number; height: number }[],
+  her: [
+    { file: "sie-lippenstift.webp", name: "Lippenstift", technique: "Mattschwarz, roter Spot-UV-Lack", width: 1200, height: 734 },
+    { file: "sie-schachdame.webp", name: "Schachdame", technique: "Creme, Goldfolie mit Prägung", width: 1200, height: 718 },
+    { file: "sie-mondphasen.webp", name: "Mondphasen", technique: "Mitternachtsblau, Silberfolie", width: 1200, height: 720 },
+    { file: "sie-champagner.webp", name: "Champagner", technique: "Mattschwarz, Goldfolie", width: 1200, height: 728 },
+    { file: "sie-pfingstrose.webp", name: "Pfingstrose", technique: "Salbeigrün, Roségoldfolie", width: 1200, height: 738 },
+    { file: "sie-erster-schritt.webp", name: "Erster Schritt", technique: "Puderbeige, Blindprägung", width: 1200, height: 643 },
+    { file: "sie-kristall-acryl.webp", name: "Kristall", technique: "Mattiertes Acryl, Silberdruck", width: 1200, height: 702 },
+    { file: "sie-terrazzo.webp", name: "Terrazzo", technique: "Naturkarton, Vierfarbdruck", width: 1200, height: 731 },
+    { file: "sie-comic.webp", name: "Comic-Heldin", technique: "Vollfarbdruck im Retro-Comic-Stil", width: 1200, height: 740 },
+  ],
 };
 
 export const meetAnswers = ["Kaffee? Gern!", "Lass uns essen gehen", "Vielleicht", "Nein, danke"];
