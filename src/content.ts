@@ -74,12 +74,30 @@ export const benefits = [
 // Designbeispiele: KI-Visualisierungen (ChatGPT), bis echte Muster fotografiert sind.
 // Bilder liegen in public/designs/. "technique" ehrlich halten: nur, was sich wirklich herstellen lässt.
 export const designs = [
-  { file: "tusche-burg.webp", name: "Tusche-Burg", technique: "Vollfarbdruck auf schwarzem PVC, Linien in Goldfolie", width: 1200, height: 750 },
+  { file: "tusche-burg.webp", name: "Tusche-Burg", technique: "Vollfarbdruck auf schwarzem PVC, Linien in Goldfolie", width: 1200, height: 751 },
+  { file: "art-deco.webp", name: "Art déco", technique: "Goldfolie mit Prägung auf schwarz-cremefarbenem Karton", width: 1200, height: 686 },
   { file: "panther.webp", name: "Panther", technique: "Vollfarbdruck, Schriftzug in Goldfolie", width: 1200, height: 669 },
+  { file: "architektur.webp", name: "Architektur", technique: "Kupferfolie auf nachtblauem Karton", width: 1200, height: 697 },
   { file: "schwarz-gold.webp", name: "Schwarz-Gold", technique: "Schwarzes Metall, Monogramm goldveredelt", width: 1200, height: 669 },
+  { file: "holo-folie.webp", name: "Holo-Folie", technique: "Holografische Folie und Blindprägung auf Schwarz", width: 1200, height: 639 },
+  { file: "kosmos-gold.webp", name: "Kosmos", technique: "Feine Linien in Goldfolie auf mattem Schwarz", width: 1200, height: 646 },
+  { file: "acryl.webp", name: "Acryl", technique: "Mattiertes Acryl mit Silberdruck", width: 1200, height: 727 },
+  { file: "smaragd.webp", name: "Smaragd", technique: "Mehrlagiger Karton, Goldfolie", width: 1200, height: 687 },
+  { file: "letterpress.webp", name: "Letterpress", technique: "Tiefdruck und Blindprägung auf Naturkarton", width: 1200, height: 703 },
+  { file: "kraftpapier.webp", name: "Kraftpapier", technique: "Zweifarbdruck auf Kraftkarton, farbiger Kartenrand", width: 1200, height: 651 },
+  { file: "bauhaus.webp", name: "Bauhaus", technique: "Zweifarbdruck auf Naturkarton", width: 1200, height: 690 },
+  { file: "neon-city.webp", name: "Neon-City", technique: "Vollfarbdruck, Logo in Silberfolie", width: 1200, height: 622 },
   { file: "rot-geometrie.webp", name: "Rot-Geometrie", technique: "Vollfarbdruck auf PVC, matt", width: 1200, height: 648 },
-  { file: "chrom-glas.webp", name: "Chrom-Glas", technique: "Milchglas-PVC, Chrom-Effekt gedruckt", width: 1200, height: 669 },
+  { file: "chrom-glas.webp", name: "Chrom-Glas", technique: "Milchglas-PVC, Chrom-Effekt gedruckt", width: 1200, height: 667 },
+  { file: "portraet-skyline.webp", name: "Skyline-Porträt", technique: "Vollfarbdruck, Akzente in Goldfolie", width: 1200, height: 650 },
+  { file: "galaxie.webp", name: "Galaxie", technique: "Vollfarbdruck, Logo in Roségoldfolie", width: 1200, height: 751 },
+  { file: "portraet-farbe.webp", name: "Farbexplosion", technique: "Vollfarbdruck, Schriftzug in Goldfolie", width: 1200, height: 751 },
+  { file: "holo.webp", name: "Holo-Glitch", technique: "Holografische Folie auf Schwarz", width: 1200, height: 639 },
+  { file: "neon.webp", name: "Neon", technique: "Vollfarbdruck – das Leuchten gibt es nur im Bild", width: 1200, height: 632 },
 ];
+
+// So viele Entwürfe sind sofort sichtbar (der erste groß), der Rest kommt per Button.
+export const designsVisible = 6;
 
 export const steps = [
   { title: "Design abstimmen", text: "Sie schicken Logo und Wünsche, ich schicke Ihnen einen Entwurf zur Freigabe." },

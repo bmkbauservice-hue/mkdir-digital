@@ -1,4 +1,4 @@
-import { useState, type PointerEvent } from "react";
+import { useState, type CSSProperties, type PointerEvent } from "react";
 import { Logo } from "./components/Logo";
 import { CardVisual } from "./components/CardVisual";
 import { PhoneVisual } from "./components/PhoneVisual";
@@ -10,6 +10,7 @@ import {
   cardLines,
   contact,
   designs,
+  designsVisible,
   loyalty,
   mailto,
   priceNote,
@@ -160,8 +161,34 @@ function CardLines() {
   );
 }
 
+type Design = (typeof designs)[number];
+
+function DesignTile({ d, feature = false }: { d: Design; feature?: boolean }) {
+  return (
+    <figure className={feature ? "gallery__item gallery__item--feature" : "gallery__item"}>
+      <div className="gallery__frame">
+        <img
+          src={`${import.meta.env.BASE_URL}designs/${d.file}`}
+          alt={`Kartenentwurf ${d.name} mit Platzhalter-Kontaktdaten`}
+          width={d.width}
+          height={d.height}
+          loading="lazy"
+          decoding="async"
+        />
+        <span className="gallery__tag">Entwurf</span>
+      </div>
+      <figcaption>
+        <strong>{d.name}</strong>
+        <span>{d.technique}</span>
+      </figcaption>
+    </figure>
+  );
+}
+
 function Designs() {
-  const base = import.meta.env.BASE_URL;
+  const [showAll, setShowAll] = useState(false);
+  const first = designs.slice(0, designsVisible);
+  const rest = designs.slice(designsVisible);
   return (
     <section className="section section--gallery" id="designs">
       <div className="wrap">
@@ -173,31 +200,45 @@ function Designs() {
             Anregung – mit Platzhalter-Daten.
           </p>
         </div>
-        <div className="gallery">
-          {designs.map((d, i) => (
-            <figure key={d.file} className={i === 0 ? "gallery__item gallery__item--feature" : "gallery__item"}>
-              <div className="gallery__frame">
-                <img
-                  src={`${base}designs/${d.file}`}
-                  alt={`Kartenentwurf ${d.name} mit Platzhalter-Kontaktdaten`}
-                  width={d.width}
-                  height={d.height}
-                  loading="lazy"
-                  decoding="async"
-                />
-                <span className="gallery__tag">Entwurf</span>
-              </div>
-              <figcaption>
-                <strong>{d.name}</strong>
-                <span>{d.technique}</span>
-              </figcaption>
-            </figure>
+        <div className="gallery gallery--main">
+          {first.map((d, i) => (
+            <DesignTile key={d.file} d={d} feature={i === 0} />
           ))}
-          <a className="gallery__own" href={mailto("Anfrage eigenes Kartendesign")}>
-            <strong>Ihr eigenes Motiv</strong>
-            <span>Logo, Foto oder eine Idee im Kopf – ich mache daraus eine Karte, die sich herstellen lässt.</span>
-            <em>Design anfragen →</em>
-          </a>
+        </div>
+        {showAll && (
+          <div className="gallery gallery--more" id="weitere-designs">
+            {rest.map((d) => (
+              <DesignTile key={d.file} d={d} />
+            ))}
+            <a
+              className="gallery__own"
+              href={mailto("Anfrage eigenes Kartendesign")}
+              // Die Kachel füllt die letzte Reihe auf, egal wie viele Entwürfe es gibt.
+              style={{ "--span3": 3 - (rest.length % 3), "--span2": 2 - (rest.length % 2) } as CSSProperties}
+            >
+              <strong>Ihr eigenes Motiv</strong>
+              <span>Logo, Foto oder eine Idee im Kopf – ich mache daraus eine Karte, die sich herstellen lässt.</span>
+              <em>Design anfragen →</em>
+            </a>
+          </div>
+        )}
+        <div className="gallery__more-bar">
+          {rest.length > 0 && (
+            <button
+              type="button"
+              className="btn btn--line"
+              aria-expanded={showAll}
+              aria-controls="weitere-designs"
+              onClick={() => setShowAll((v) => !v)}
+            >
+              {showAll ? "Weniger anzeigen" : `Alle ${designs.length} Entwürfe zeigen`}
+            </button>
+          )}
+          {!showAll && (
+            <a className="gallery__own-link" href={mailto("Anfrage eigenes Kartendesign")}>
+              Oder Ihr eigenes Motiv anfragen →
+            </a>
+          )}
         </div>
         <p className="fineprint">
           Die Bilder sind KI-Visualisierungen. Fotos der echten Muster folgen. Farben und Effekte können bei der Herstellung

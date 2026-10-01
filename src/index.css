@@ -950,6 +950,38 @@ h1 span {
   margin-top: 6px;
 }
 
+.gallery--more {
+  margin-top: 22px;
+}
+
+.gallery--more .gallery__own {
+  grid-column: span var(--span3, 1);
+}
+
+.gallery__more-bar {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+}
+
+.gallery__more-bar .btn {
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.gallery__own-link {
+  color: var(--gold);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.gallery__own-link:hover {
+  color: var(--gold-hi);
+}
+
 /* ---------- Ablauf ---------- */
 .steps {
   list-style: none;
@@ -1407,8 +1439,16 @@ h1 span {
     grid-row: auto;
   }
 
-  .gallery__own {
+  .gallery--main .gallery__item:nth-child(6) {
     grid-column: span 2;
+  }
+
+  .gallery--main .gallery__item:nth-child(6) .gallery__frame {
+    aspect-ratio: 1.6;
+  }
+
+  .gallery--more .gallery__own {
+    grid-column: span var(--span2, 1);
   }
 
   .gallery__item--feature .gallery__frame {
@@ -1503,7 +1543,8 @@ h1 span {
   }
 
   .gallery__item--feature,
-  .gallery__own {
+  .gallery--main .gallery__item:nth-child(6),
+  .gallery--more .gallery__own {
     grid-column: auto;
     grid-row: auto;
   }
