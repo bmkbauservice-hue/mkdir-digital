@@ -369,6 +369,7 @@ export const meetCards = {
     { file: "eintrittskarte.webp", name: "Eintrittskarte", technique: "Vintage-Ticket, gestanzter Abriss", width: 1200, height: 632 },
     { file: "puzzle.webp", name: "Puzzleteil", technique: "Creme, Goldfolie mit Prägung", width: 712, height: 448 },
     { file: "wachssiegel.webp", name: "Wachssiegel", technique: "Weinrot mit Leinenstruktur, Goldfolie", width: 716, height: 462 },
+    { file: "pop-art.webp", name: "Pop-Art", technique: "Vollfarbdruck in Neongelb und Pink, matt", width: 1200, height: 743 },
   ],
   her: [] as { file: string; name: string; technique: string; width: number; height: number }[],
 };
