@@ -416,11 +416,13 @@ export const games: { id: string; name: string; category: GameCategory; players:
   { id: "muehle", name: "Mühle", category: "klassiker", players: "2", status: "geplant" },
   { id: "dame", name: "Dame", category: "klassiker", players: "2", status: "geplant" },
   { id: "schach", name: "Schach", category: "klassiker", players: "2", status: "geplant" },
+  { id: "backgammon", name: "Backgammon", category: "klassiker", players: "2", status: "geplant" },
   { id: "maumau", name: "Mau Mau", category: "karten", players: "2–6", status: "geplant" },
   { id: "skat", name: "Skat", category: "karten", players: "3", status: "geplant" },
   { id: "elferraus", name: "Elfer raus", category: "karten", players: "2–6", status: "geplant" },
   { id: "schwimmen", name: "Schwimmen (31)", category: "karten", players: "2–8", status: "geplant" },
   { id: "knack", name: "Knack", category: "karten", players: "2–6", status: "geplant" },
+  { id: "romme", name: "Rommé", category: "karten", players: "2–6", status: "geplant" },
   { id: "wuerfelpoker", name: "Würfelpoker", category: "party", players: "1–6", status: "geplant" },
   { id: "rausmitdir", name: "Raus mit dir!", category: "party", players: "2–4", status: "geplant" },
   { id: "stadtland", name: "Stadt, Land, Fluss", category: "party", players: "2–10", status: "geplant" },
@@ -437,14 +439,15 @@ export const gamePackSizes = [
   { size: 3, name: "Start", text: "3 Spiele inklusive" },
   { size: 5, name: "5er-Paket", text: "Fünf Spiele nach Wahl" },
   { size: 10, name: "10er-Paket", text: "Zehn Spiele nach Wahl" },
-  { size: 20, name: "Alle Spiele", text: "Alles, auch alle neuen" },
+  { size: 99, name: "Alle Spiele", text: "Alles, auch alle neuen" },
 ];
 
-// Vier Kartenvarianten – bis die ChatGPT-Bilder da sind, als CSS-Karte gezeichnet.
-export const gameCardVariants = [
-  { id: "spieltisch", name: "Spieltisch", text: "Grüner Filz, Goldprägung – wie im Casino", symbol: "♠" },
-  { id: "arcade", name: "Neon-Arcade", text: "Pixel, Neon und Highscore-Gefühl", symbol: "▶" },
-  { id: "kneipe", name: "Stammtisch", text: "Dunkles Holz und Bierdeckel-Charme", symbol: "♣" },
+// Vier Kartenvarianten. Mit "image" (public/spiele/) wird das ChatGPT-Bild gezeigt,
+// ohne Bild die gezeichnete CSS-Karte als Platzhalter.
+export const gameCardVariants: { id: string; name: string; text: string; symbol: string; image?: string }[] = [
+  { id: "spieltisch", name: "Spieltisch", text: "Grüner Filz, Goldprägung – wie im Casino", symbol: "♠", image: "spieltisch.webp" },
+  { id: "arcade", name: "Neon-Arcade", text: "Pixel, Neon und Highscore-Gefühl", symbol: "▶", image: "arcade.webp" },
+  { id: "kneipe", name: "Stammtisch", text: "Dunkles Holz und Bierdeckel-Charme", symbol: "♣", image: "stammtisch.webp" },
   { id: "familie", name: "Familie", text: "Bunt, rund und kinderleicht", symbol: "★" },
 ];
 

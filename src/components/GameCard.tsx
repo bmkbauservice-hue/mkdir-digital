@@ -10,6 +10,17 @@ import {
 
 type Mode = "paket" | "selbst";
 
+// Gezeichnete Platzhalter-Karte für Varianten ohne Bild.
+function CssCard({ symbol }: { symbol: string }) {
+  return (
+    <span className="game-variant__card" aria-hidden="true">
+      <span className="game-variant__symbol">{symbol}</span>
+      <span className="game-variant__brand">MKDIR</span>
+      <span className="game-variant__label">SPIELEKARTE</span>
+    </span>
+  );
+}
+
 // Spielekarte – IN VORBEREITUNG.
 // Zeigt die vier Kartenvarianten und einen Paket-Konfigurator.
 // Ergebnis ist (noch) keine Bestellung, sondern ein Eintrag auf der Warteliste per E-Mail.
@@ -39,7 +50,8 @@ export function GameCard() {
     setPicked((p) => (s >= games.length ? games.map((g) => g.id) : p.slice(0, s)));
   };
 
-  const variantName = gameCardVariants.find((v) => v.id === variant)!.name;
+  const current = gameCardVariants.find((v) => v.id === variant)!;
+  const variantName = current.name;
   const summary = useMemo(() => {
     const names = games.filter((g) => picked.includes(g.id)).map((g) => g.name);
     const pack = gamePackSizes.find((p) => p.size === size)!.name;
@@ -66,6 +78,23 @@ export function GameCard() {
           </p>
         </div>
 
+        <div className={`games__stage game-variant--${current.id}`}>
+          {current.image ? (
+            <img
+              key={current.id}
+              src={`${import.meta.env.BASE_URL}spiele/${current.image}`}
+              alt={`MKDIR Spielekarte im Design ${current.name} mit Spieleliste`}
+              width={1200}
+              height={740}
+            />
+          ) : (
+            <div key={current.id} className="games__stage-css">
+              <CssCard symbol={current.symbol} />
+              <span>Bild folgt</span>
+            </div>
+          )}
+        </div>
+
         <div className="games__variants" role="radiogroup" aria-label="Kartenvariante wählen">
           {gameCardVariants.map((v) => (
             <button
@@ -76,11 +105,19 @@ export function GameCard() {
               className={`game-variant game-variant--${v.id}`}
               onClick={() => setVariant(v.id)}
             >
-              <span className="game-variant__card" aria-hidden="true">
-                <span className="game-variant__symbol">{v.symbol}</span>
-                <span className="game-variant__brand">MKDIR</span>
-                <span className="game-variant__label">SPIELEKARTE</span>
-              </span>
+              {v.image ? (
+                <img
+                  className="game-variant__img"
+                  src={`${import.meta.env.BASE_URL}spiele/${v.image}`}
+                  alt=""
+                  width={1200}
+                  height={740}
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <CssCard symbol={v.symbol} />
+              )}
               <strong>{v.name}</strong>
               <span>{v.text}</span>
             </button>
