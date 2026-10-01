@@ -1,7 +1,7 @@
-import { useState, type CSSProperties, type PointerEvent } from "react";
+import { useState, type CSSProperties } from "react";
 import { Logo } from "./components/Logo";
 import { CardVisual } from "./components/CardVisual";
-import { PhoneVisual } from "./components/PhoneVisual";
+import { HeroDeck } from "./components/HeroDeck";
 import {
   accessories,
   benefits,
@@ -61,24 +61,8 @@ function Header() {
 }
 
 function Hero() {
-  // Die Karte neigt sich leicht zur Maus – wie ein echtes Stück Metall im Licht.
-  const tilt = (e: PointerEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    e.currentTarget.style.setProperty("--ry", `${x * 14}deg`);
-    e.currentTarget.style.setProperty("--rx", `${-y * 10}deg`);
-    e.currentTarget.style.setProperty("--shine", `${50 + x * 60}%`);
-  };
-  const reset = (e: PointerEvent<HTMLDivElement>) => {
-    e.currentTarget.style.removeProperty("--ry");
-    e.currentTarget.style.removeProperty("--rx");
-    e.currentTarget.style.removeProperty("--shine");
-  };
-
   return (
     <section className="hero" id="start">
-      <div className="hero__honeycomb" aria-hidden="true" />
       <div className="wrap hero__grid">
         <div className="hero__copy">
           <p className="kicker">NFC-Visitenkarten in Ihrem Design</p>
@@ -99,27 +83,7 @@ function Hero() {
             </a>
           </div>
         </div>
-        <div className="hero__stage" onPointerMove={tilt} onPointerLeave={reset}>
-          <div className="hero__card">
-            <div className="hero-card">
-              <img
-                src={`${import.meta.env.BASE_URL}designs/tusche-burg.webp`}
-                alt="NFC-Visitenkarte im Tusche-Design mit Burg und Mond"
-                width={1200}
-                height={751}
-              />
-              <svg className="hero-card__nfc" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M8 7a7 7 0 0 1 0 10M12 4.5a11 11 0 0 1 0 15M16 2a15 15 0 0 1 0 20" />
-              </svg>
-            </div>
-          </div>
-          <div className="hero__waves" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </div>
-          <PhoneVisual />
-        </div>
+        <HeroDeck />
       </div>
       <ul className="wrap benefits">
         {benefits.map((b) => (

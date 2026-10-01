@@ -109,6 +109,122 @@ export const designs = [
 // So viele Entwürfe sind sofort sichtbar (der erste groß), der Rest kommt per Button.
 export const designsVisible = 6;
 
+// Karten-Deck im Hero: Jede Karte bringt ihr eigenes App-Design mit.
+// Die Werte landen als CSS-Variablen auf dem Handy (siehe .phone in index.css).
+export type AppTheme = {
+  bg: string; // Hintergrund der App
+  text: string;
+  muted: string;
+  accent: string; // Rahmen der Buttons
+  accent2: string; // jeder zweite Button
+  save: string; // Hintergrund "Kontakt speichern"
+  saveText: string;
+  font: "ink" | "display";
+  glow: string; // Leuchten hinter der Bühne
+  glow2: string;
+};
+
+export type DeckCard = {
+  id: string;
+  name: string;
+  card: string; // Bild in public/designs
+  cover: string; // Kopfbild der App in public/hero
+  theme: AppTheme;
+};
+
+export const heroDeck: DeckCard[] = [
+  {
+    id: "tusche",
+    name: "Tusche-Burg",
+    card: "tusche-burg.webp",
+    cover: "tusche-app.webp",
+    theme: {
+      bg: "#060607",
+      text: "#ffffff",
+      muted: "rgba(255,255,255,0.6)",
+      accent: "#2ef2ff",
+      accent2: "#ff2fb4",
+      save: "linear-gradient(90deg, #2ef2ff, #ff2fb4)",
+      saveText: "#08080a",
+      font: "ink",
+      glow: "rgba(46,242,255,0.16)",
+      glow2: "rgba(255,47,180,0.14)",
+    },
+  },
+  {
+    id: "artdeco",
+    name: "Art déco",
+    card: "art-deco.webp",
+    cover: "art-deco-app.webp",
+    theme: {
+      bg: "#efe6d2",
+      text: "#1a1408",
+      muted: "#6b5a3a",
+      accent: "#b8893a",
+      accent2: "#1a1408",
+      save: "linear-gradient(120deg, #f6dd97, #c99a45 45%, #8a6424 70%, #e9c878)",
+      saveText: "#1a1206",
+      font: "ink",
+      glow: "rgba(214,176,98,0.2)",
+      glow2: "rgba(214,176,98,0.1)",
+    },
+  },
+  {
+    id: "edelstahl",
+    name: "Edelstahl",
+    card: "edelstahl-m.webp",
+    cover: "edelstahl-app.webp",
+    theme: {
+      bg: "repeating-linear-gradient(90deg, rgba(255,255,255,0.14) 0 1px, transparent 1px 3px), linear-gradient(160deg, #e4e5e8, #a9acb2 55%, #d6d8dc)",
+      text: "#12233f",
+      muted: "#44506a",
+      accent: "#1d3a66",
+      accent2: "#1d3a66",
+      save: "#1d3a66",
+      saveText: "#ffffff",
+      font: "display",
+      glow: "rgba(120,160,220,0.18)",
+      glow2: "rgba(200,205,215,0.1)",
+    },
+  },
+  {
+    id: "holo",
+    name: "Holo-Folie",
+    card: "holo-folie.webp",
+    cover: "holo-app.webp",
+    theme: {
+      bg: "#050505",
+      text: "#ffffff",
+      muted: "rgba(255,255,255,0.6)",
+      accent: "#7af0c8",
+      accent2: "#c89bff",
+      save: "linear-gradient(90deg, #ff8ad8, #ffe27a, #7af0c8, #7ab8ff, #c89bff)",
+      saveText: "#0a0a0a",
+      font: "display",
+      glow: "rgba(122,240,200,0.14)",
+      glow2: "rgba(200,155,255,0.18)",
+    },
+  },
+  {
+    id: "kosmos",
+    name: "Kosmos",
+    card: "kosmos-gold.webp",
+    cover: "kosmos-app.webp",
+    theme: {
+      bg: "#08102a",
+      text: "#f3dc9a",
+      muted: "rgba(243,220,154,0.65)",
+      accent: "#d6b062",
+      accent2: "#d6b062",
+      save: "linear-gradient(120deg, #f6dd97, #c99a45 45%, #8a6424 70%, #e9c878)",
+      saveText: "#1a1206",
+      font: "ink",
+      glow: "rgba(70,100,220,0.2)",
+      glow2: "rgba(214,176,98,0.12)",
+    },
+  },
+];
+
 export const steps = [
   { title: "Design abstimmen", text: "Sie schicken Logo und Wünsche, ich schicke Ihnen einen Entwurf zur Freigabe." },
   { title: "Fertigung", text: "Die Karte wird gefertigt, programmiert und getestet." },
