@@ -93,6 +93,48 @@ export const business = [
   },
 ];
 
+// "Mehr aus der Karte machen": Die Karte ist nur der Schlüssel, dahinter läuft eigene Software.
+// Bewusst NICHT im Angebot: Guthaben, das bei mehreren Geschäften gilt (wäre E-Geld, BaFin-Lizenz nötig).
+export const loyalty = {
+  title: "Treue- und Bonuskarte",
+  text: "Die Stempelkarte aus Papier geht verloren, die NFC-Karte nicht. Ihre Kunden tippen beim Bezahlen an und sammeln Punkte – der zehnte Kaffee oder die zehnte Wäsche geht aufs Haus.",
+  points: [
+    "Für Tankstellen, Bäckereien, Cafés und Friseure",
+    "Punkte und Prämien legen Sie selbst fest",
+    "Sie sehen, wie oft Ihre Stammkunden wiederkommen",
+  ],
+  price: "Karten plus monatliches System-Abo",
+  stamps: { total: 10, filled: 7 },
+};
+
+export const cardIdeas = [
+  {
+    title: "Gutscheinkarte",
+    text: "Geschenkkarte in Ihrem Design. Antippen zeigt das Restguthaben – eingelöst wird in Ihrem Geschäft.",
+    for: "Handel, Gastronomie, Studios",
+  },
+  {
+    title: "Gewinnspiel beim Antippen",
+    text: "Glücksrad oder Rubbellos direkt im Browser. Ein Marketing-Gag, über den Ihre Kunden reden.",
+    for: "Aktionen, Eröffnungen, Messen",
+  },
+  {
+    title: "Sammelkarten",
+    text: "Jede Karte schaltet eigene Inhalte frei: Video, Song, Autogramm oder Rabatt.",
+    for: "Vereine, Events, Musiker",
+  },
+  {
+    title: "NFC-Schnitzeljagd",
+    text: "Stationen mit NFC-Tags verteilen, Teilnehmer sammeln sie per Antippen. Mit Rangliste auf Wunsch.",
+    for: "Firmenfeiern, Kindergeburtstage, Stadtmarketing",
+  },
+];
+
+export const securityNote = {
+  title: "Kopiergeschützt, wo es um Werte geht",
+  text: "Für Punkte, Guthaben, Mitgliedsausweise und Zutritt nutze ich NFC-Chips vom Typ NTAG 424 DNA. Sie erzeugen bei jedem Antippen einen neuen Code, den der Server prüft – eine kopierte Karte ist wertlos.",
+};
+
 export const accessories = [
   { name: "NFC-Armbänder", use: "Events, Fitnessstudios, Vereine" },
   { name: "Schlüsselanhänger", use: "Kontakt immer am Schlüsselbund" },

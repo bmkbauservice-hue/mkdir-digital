@@ -6,7 +6,10 @@ import {
   accessories,
   benefits,
   business,
+  cardIdeas,
   cardLines,
+  loyalty,
+  securityNote,
   contact,
   mailto,
   priceNote,
@@ -17,6 +20,7 @@ import {
 const navItems = [
   { href: "#karten", label: "NFC-Karten" },
   { href: "#unternehmen", label: "Für Unternehmen" },
+  { href: "#kartensysteme", label: "Kartensysteme" },
   { href: "#zubehoer", label: "Zubehör" },
   { href: "#webdesign", label: "Webdesign" },
   { href: "#kontakt", label: "Kontakt" },
@@ -198,6 +202,86 @@ function Business() {
   );
 }
 
+function StampCard() {
+  const { total, filled } = loyalty.stamps;
+  return (
+    <div className="stampcard" role="img" aria-label={`Beispiel-Treuekarte: ${filled} von ${total} Punkten gesammelt`}>
+      <div className="stampcard__top">
+        <span>Bonuskarte</span>
+        <span className="stampcard__count">
+          {filled}/{total}
+        </span>
+      </div>
+      <ol className="stampcard__grid" aria-hidden="true">
+        {Array.from({ length: total }, (_, i) => (
+          <li
+            key={i}
+            className={
+              i < filled ? "is-filled" : i === filled ? "is-next" : i === total - 1 ? "is-reward" : undefined
+            }
+          >
+            {i === total - 1 ? "Gratis" : i + 1}
+          </li>
+        ))}
+      </ol>
+      <p className="stampcard__hint">Noch 3× antippen bis zur Prämie</p>
+    </div>
+  );
+}
+
+function CardSystems() {
+  return (
+    <section className="section section--systems" id="kartensysteme">
+      <div className="wrap">
+        <div className="section-head">
+          <p className="kicker">Mehr aus der Karte machen</p>
+          <h2>Die Karte ist der Schlüssel. Dahinter steckt Ihr System.</h2>
+          <p>
+            Eine NFC-Karte öffnet nicht nur Kontaktdaten. Ich programmiere die Anwendung dahinter – passend zu Ihrem
+            Geschäft und auf meinem Server betrieben.
+          </p>
+        </div>
+        <div className="systems">
+          <article className="systems__feature">
+            <span className="line__badge">Für Geschäfte mit Stammkunden</span>
+            <div className="systems__feature-copy">
+              <h3>{loyalty.title}</h3>
+              <p>{loyalty.text}</p>
+              <ul>
+                {loyalty.points.map((pt) => (
+                  <li key={pt}>{pt}</li>
+                ))}
+              </ul>
+              <p className="systems__price">{loyalty.price}</p>
+              <a className="btn btn--gold btn--small" href={mailto("Anfrage Treuekarten-System")}>
+                Treuekarte anfragen
+              </a>
+            </div>
+            <StampCard />
+          </article>
+          {cardIdeas.map((idea) => (
+            <article key={idea.title} className="systems__idea">
+              <h3>{idea.title}</h3>
+              <p>{idea.text}</p>
+              <span>{idea.for}</span>
+            </article>
+          ))}
+        </div>
+        <aside className="secure">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.5 4.5 5.5v6c0 4.6 3.1 8.4 7.5 10 4.4-1.6 7.5-5.4 7.5-10v-6z" />
+            <path d="m8.5 12 2.4 2.4 4.6-4.8" />
+          </svg>
+          <div>
+            <strong>{securityNote.title}</strong>
+            <p>{securityNote.text}</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
 function Accessories() {
   return (
     <section className="section section--band" id="zubehoer">
@@ -306,6 +390,7 @@ export default function App() {
         <CardLines />
         <Steps />
         <Business />
+        <CardSystems />
         <Accessories />
         <WebDesign />
         <Contact />

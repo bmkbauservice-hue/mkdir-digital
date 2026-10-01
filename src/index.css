@@ -898,6 +898,236 @@ h1 span {
   max-width: 36em;
 }
 
+/* ---------- Kartensysteme ---------- */
+.section--systems {
+  position: relative;
+  border-top: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse 60% 50% at 85% 20%, rgba(214, 176, 98, 0.07), transparent 70%),
+    var(--black);
+}
+
+.systems {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) repeat(2, minmax(0, 0.9fr));
+  grid-template-rows: auto auto;
+  gap: 18px;
+}
+
+.systems__feature {
+  position: relative;
+  grid-column: 1 / span 2;
+  grid-row: 1 / span 2;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 24px;
+  align-items: center;
+  padding: 34px 28px 28px;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-card);
+  background: linear-gradient(160deg, rgba(214, 176, 98, 0.09), var(--graphite) 50%);
+}
+
+.systems__feature-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.systems__feature h3 {
+  font-size: 26px;
+  color: var(--gold-hi);
+}
+
+.systems__feature p {
+  margin: 0;
+  color: var(--stone);
+  font-size: 15px;
+}
+
+.systems__feature-copy ul {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.systems__feature-copy li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.systems__feature-copy li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 1.5px;
+  background: var(--gold);
+}
+
+.systems__feature .systems__price {
+  color: var(--gold);
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.systems__idea {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--graphite);
+}
+
+.systems__idea h3 {
+  font-size: 18px;
+  color: var(--gold-hi);
+}
+
+.systems__idea p {
+  margin: 0;
+  flex: 1;
+  color: var(--stone);
+  font-size: 15px;
+}
+
+.systems__idea span {
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--ivory);
+  opacity: 0.8;
+}
+
+/* Treuekarte im Kartenformat */
+.stampcard {
+  width: 100%;
+  max-width: 400px;
+  justify-self: center;
+  padding: 18px 20px 16px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--gold-hi);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px),
+    linear-gradient(150deg, #1d1d20, #0b0b0c 60%, #16161a);
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: rotate(2deg);
+}
+
+.section-head .kicker {
+  color: var(--gold);
+  margin-bottom: 0;
+}
+
+.stampcard__top {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.stampcard__count {
+  font-variant-numeric: tabular-nums;
+  color: var(--gold);
+}
+
+.stampcard__grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px 10px;
+}
+
+.stampcard__grid li {
+  aspect-ratio: 1 / 1.1547;
+  display: grid;
+  place-items: center;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  background: rgba(214, 176, 98, 0.18);
+  color: var(--stone);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.stampcard__grid li.is-filled {
+  background: var(--gold-gradient);
+  color: #1a1206;
+}
+
+.stampcard__grid li.is-next {
+  background: rgba(214, 176, 98, 0.42);
+  color: var(--ivory);
+  animation: stamp-pulse 1.8s ease-in-out infinite;
+}
+
+.stampcard__grid li.is-reward {
+  background: rgba(214, 176, 98, 0.28);
+  color: var(--gold-hi);
+  font-size: 8px;
+  letter-spacing: 0;
+}
+
+@keyframes stamp-pulse {
+  50% {
+    background: rgba(214, 176, 98, 0.7);
+  }
+}
+
+.stampcard__hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--stone);
+}
+
+.secure {
+  margin-top: 28px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 22px 24px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-card);
+}
+
+.secure svg {
+  flex: none;
+  width: 30px;
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.secure strong {
+  color: var(--gold-hi);
+}
+
+.secure p {
+  margin: 4px 0 0;
+  color: var(--stone);
+  font-size: 15px;
+  max-width: 62em;
+}
+
 /* ---------- Zubehör ---------- */
 .acc {
   list-style: none;
@@ -1050,6 +1280,14 @@ h1 span {
 
 /* ---------- Responsiv ---------- */
 @media (max-width: 1080px) {
+  .systems {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .systems__feature {
+    grid-row: auto;
+  }
+
   .lines {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1059,7 +1297,7 @@ h1 span {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1120px) {
   .menu-toggle {
     display: grid;
   }
@@ -1092,7 +1330,9 @@ h1 span {
   .main-nav .btn {
     margin-top: 16px;
   }
+}
 
+@media (max-width: 900px) {
   .hero__grid,
   .split,
   .contact__inner {
@@ -1119,6 +1359,23 @@ h1 span {
 
   .benefits li:nth-child(n + 3) {
     border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 760px) {
+  .systems,
+  .systems__feature {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .systems__feature {
+    grid-column: auto;
+    padding: 30px 20px 24px;
+  }
+
+  .stampcard {
+    max-width: 360px;
+    transform: rotate(-2deg);
   }
 }
 
@@ -1180,6 +1437,10 @@ h1 span {
     opacity: 0.6;
     width: 60px;
     height: 60px;
+  }
+
+  .stampcard__grid li.is-next {
+    animation: none;
   }
 
   .hero__card,
