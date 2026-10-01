@@ -4,6 +4,7 @@ import { CardVisual } from "./components/CardVisual";
 import { HeroDeck } from "./components/HeroDeck";
 import { DesignLightbox } from "./components/DesignLightbox";
 import { Wristbands } from "./components/Wristbands";
+import { MeetCards } from "./components/MeetCards";
 import {
   accessories,
   benefits,
@@ -27,6 +28,7 @@ const navItems = [
   { href: "#unternehmen", label: "Für Unternehmen" },
   { href: "#kartensysteme", label: "Kartensysteme" },
   { href: "#armbaender", label: "Armbänder" },
+  { href: "#kennenlernen", label: "Kennenlernen" },
   { href: "#zubehoer", label: "Zubehör" },
   { href: "#webdesign", label: "Webdesign" },
   { href: "#kontakt", label: "Kontakt" },
@@ -464,6 +466,7 @@ export default function App() {
         <Business />
         <CardSystems />
         <Wristbands />
+        <MeetCards />
         <Accessories />
         <WebDesign />
         <Contact />

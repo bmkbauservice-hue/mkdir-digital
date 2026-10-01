@@ -2034,6 +2034,226 @@ html:has(.lightbox[open]) {
   font-weight: 700;
 }
 
+/* ---------- Kennenlern-Karten ---------- */
+.section--meet {
+  border-top: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse 45% 50% at 85% 40%, rgba(214, 120, 100, 0.08), transparent 70%),
+    var(--black);
+}
+
+.meet {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 0.8fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+}
+
+.meet__tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 22px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.meet__tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--stone);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.meet__tabs button span {
+  font-size: 12px;
+  padding: 0 7px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+}
+
+.meet__tabs button[aria-selected="true"] {
+  background: var(--gold-gradient);
+  color: #1a1206;
+}
+
+.meet__tabs button[aria-selected="true"] span {
+  border-color: rgba(26, 18, 6, 0.35);
+}
+
+.meet__grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 18px;
+}
+
+.meet__grid li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meet__grid button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  aspect-ratio: 1.6;
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+}
+
+.meet__grid img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s ease;
+}
+
+.meet__grid button:hover img,
+.meet__grid button:focus-visible img {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.meet__grid strong {
+  color: var(--gold-hi);
+}
+
+.meet__grid span {
+  color: var(--stone);
+  font-size: 14px;
+}
+
+.meet__soon {
+  padding: 40px 28px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-card);
+}
+
+.meet__soon strong {
+  font-family: var(--font-ink);
+  font-size: 30px;
+  color: var(--gold-hi);
+}
+
+.meet__soon p {
+  color: var(--stone);
+  margin-top: 6px;
+}
+
+.meet__phone {
+  position: sticky;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.meet__screen {
+  width: 100%;
+  max-width: 300px;
+  padding: 26px 20px 20px;
+  border-radius: 30px;
+  border: 1px solid var(--line-strong);
+  background:
+    radial-gradient(90% 50% at 50% 0%, rgba(214, 176, 98, 0.16), transparent 70%),
+    #0c0c0e;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.meet__kicker {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+.meet__screen > strong {
+  font-family: var(--font-ink);
+  font-size: 30px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.meet__answers {
+  display: grid;
+  gap: 8px;
+}
+
+.meet__answers button {
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ivory);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.meet__answers button:hover {
+  border-color: var(--gold);
+}
+
+.meet__answers button.is-picked {
+  background: var(--gold-gradient);
+  border-color: transparent;
+  color: #1a1206;
+  font-weight: 700;
+}
+
+.meet__result {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--stone);
+}
+
+.meet__rules {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--stone);
+}
+
+.meet__rules li {
+  padding-left: 18px;
+  position: relative;
+}
+
+.meet__rules li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 1.5px;
+  background: var(--gold);
+}
+
 /* ---------- Zubehör ---------- */
 .acc {
   list-style: none;
@@ -2226,8 +2446,13 @@ html:has(.lightbox[open]) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .bands {
+  .bands,
+  .meet {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .meet__phone {
+    position: static;
   }
 
   .bands__gallery {
@@ -2240,7 +2465,7 @@ html:has(.lightbox[open]) {
   }
 }
 
-@media (max-width: 1260px) {
+@media (max-width: 1360px) {
   .menu-toggle {
     display: grid;
   }
@@ -2357,6 +2582,10 @@ html:has(.lightbox[open]) {
 }
 
 @media (max-width: 600px) {
+  .meet__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .bands__gallery {
     grid-template-columns: minmax(0, 1fr);
   }
