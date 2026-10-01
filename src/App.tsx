@@ -8,17 +8,19 @@ import {
   business,
   cardIdeas,
   cardLines,
-  loyalty,
-  securityNote,
   contact,
+  designs,
+  loyalty,
   mailto,
   priceNote,
+  securityNote,
   steps,
   webServices,
 } from "./content";
 
 const navItems = [
   { href: "#karten", label: "NFC-Karten" },
+  { href: "#designs", label: "Designs" },
   { href: "#unternehmen", label: "Für Unternehmen" },
   { href: "#kartensysteme", label: "Kartensysteme" },
   { href: "#zubehoer", label: "Zubehör" },
@@ -153,6 +155,54 @@ function CardLines() {
           ))}
         </div>
         <p className="fineprint">{priceNote}</p>
+      </div>
+    </section>
+  );
+}
+
+function Designs() {
+  const base = import.meta.env.BASE_URL;
+  return (
+    <section className="section section--gallery" id="designs">
+      <div className="wrap">
+        <div className="section-head">
+          <p className="kicker">Designbeispiele</p>
+          <h2>Ihre Karte kann alles sein. Nur nicht langweilig.</h2>
+          <p>
+            Vom Tuschebild bis zur Goldveredelung: Jedes Motiv wird für Ihre Karte gestaltet. Hier ein paar Entwürfe als
+            Anregung – mit Platzhalter-Daten.
+          </p>
+        </div>
+        <div className="gallery">
+          {designs.map((d, i) => (
+            <figure key={d.file} className={i === 0 ? "gallery__item gallery__item--feature" : "gallery__item"}>
+              <div className="gallery__frame">
+                <img
+                  src={`${base}designs/${d.file}`}
+                  alt={`Kartenentwurf ${d.name} mit Platzhalter-Kontaktdaten`}
+                  width={d.width}
+                  height={d.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="gallery__tag">Entwurf</span>
+              </div>
+              <figcaption>
+                <strong>{d.name}</strong>
+                <span>{d.technique}</span>
+              </figcaption>
+            </figure>
+          ))}
+          <a className="gallery__own" href={mailto("Anfrage eigenes Kartendesign")}>
+            <strong>Ihr eigenes Motiv</strong>
+            <span>Logo, Foto oder eine Idee im Kopf – ich mache daraus eine Karte, die sich herstellen lässt.</span>
+            <em>Design anfragen →</em>
+          </a>
+        </div>
+        <p className="fineprint">
+          Die Bilder sind KI-Visualisierungen. Fotos der echten Muster folgen. Farben und Effekte können bei der Herstellung
+          leicht abweichen.
+        </p>
       </div>
     </section>
   );
@@ -388,6 +438,7 @@ export default function App() {
       <main>
         <Hero />
         <CardLines />
+        <Designs />
         <Steps />
         <Business />
         <CardSystems />

@@ -71,6 +71,16 @@ export const benefits = [
   { title: "Ihr eigenes Design", text: "Logo, Farben und Gravur werden für Sie gestaltet, nicht aus einem Baukasten." },
 ];
 
+// Designbeispiele: KI-Visualisierungen (ChatGPT), bis echte Muster fotografiert sind.
+// Bilder liegen in public/designs/. "technique" ehrlich halten: nur, was sich wirklich herstellen lässt.
+export const designs = [
+  { file: "tusche-burg.webp", name: "Tusche-Burg", technique: "Vollfarbdruck auf schwarzem PVC, Linien in Goldfolie", width: 1200, height: 750 },
+  { file: "panther.webp", name: "Panther", technique: "Vollfarbdruck, Schriftzug in Goldfolie", width: 1200, height: 669 },
+  { file: "schwarz-gold.webp", name: "Schwarz-Gold", technique: "Schwarzes Metall, Monogramm goldveredelt", width: 1200, height: 669 },
+  { file: "rot-geometrie.webp", name: "Rot-Geometrie", technique: "Vollfarbdruck auf PVC, matt", width: 1200, height: 648 },
+  { file: "chrom-glas.webp", name: "Chrom-Glas", technique: "Milchglas-PVC, Chrom-Effekt gedruckt", width: 1200, height: 669 },
+];
+
 export const steps = [
   { title: "Design abstimmen", text: "Sie schicken Logo und Wünsche, ich schicke Ihnen einen Entwurf zur Freigabe." },
   { title: "Fertigung", text: "Die Karte wird gefertigt, programmiert und getestet." },
