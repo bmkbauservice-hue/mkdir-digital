@@ -20,12 +20,19 @@ export function LogoMark({ size = 36 }: { size?: number }) {
   );
 }
 
+// Wort-Bild-Marke: das goldene MKDIR-Logo (public/logo-mkdir.webp), daneben klein "Design".
 export function Logo() {
   return (
     <a className="logo" href="#start" aria-label="MKDIR-Design, zur Startseite">
-      <LogoMark />
-      <span className="logo-word">
-        MKDIR<span>Design</span>
+      <img
+        className="logo-img"
+        src={`${import.meta.env.BASE_URL}logo-mkdir.webp`}
+        alt="MKDIR"
+        width={264}
+        height={132}
+      />
+      <span className="logo-word" aria-hidden="true">
+        Design
       </span>
     </a>
   );

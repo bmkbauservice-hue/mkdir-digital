@@ -395,6 +395,62 @@ export const meetRules = [
 export const gpsNote =
   "GPS-Kinderarmband mit Ortung ist in Vorbereitung – erst wenn Datenschutz und Zulassung sauber geklärt sind.";
 
+// ---------- Spielekarte (IN VORBEREITUNG) ----------
+// Die Spiele liegen nicht auf dem Chip, sondern als freigeschaltete Rechte zur Karten-Nummer
+// auf dem Server – so lassen sich später weitere Spiele nachbuchen, ohne neue Karte.
+// TODO Preise festlegen, sobald die ersten Spiele laufen. Bis dahin nur Warteliste.
+
+export type GameCategory = "klassiker" | "karten" | "party" | "familie";
+
+export const gameCategories: { id: GameCategory; name: string; text: string }[] = [
+  { id: "klassiker", name: "Klassiker", text: "Brettspiele für zwei, die jeder kennt" },
+  { id: "karten", name: "Kartenspiele", text: "Für den Stammtisch und lange Abende" },
+  { id: "party", name: "Würfel & Party", text: "Laut, schnell, für die ganze Runde" },
+  { id: "familie", name: "Familie & Kinder", text: "Einfach erklärt, ab 6 Jahren" },
+];
+
+// status: "geplant" = steht auf der To-do-Liste, "in Arbeit", "fertig"
+export const games: { id: string; name: string; category: GameCategory; players: string; status: "geplant" | "in Arbeit" | "fertig" }[] = [
+  { id: "tictactoe", name: "Tic Tac Toe", category: "klassiker", players: "2", status: "geplant" },
+  { id: "vier", name: "Vier in einer Reihe", category: "klassiker", players: "2", status: "geplant" },
+  { id: "muehle", name: "Mühle", category: "klassiker", players: "2", status: "geplant" },
+  { id: "dame", name: "Dame", category: "klassiker", players: "2", status: "geplant" },
+  { id: "schach", name: "Schach", category: "klassiker", players: "2", status: "geplant" },
+  { id: "backgammon", name: "Backgammon", category: "klassiker", players: "2", status: "geplant" },
+  { id: "maumau", name: "Mau Mau", category: "karten", players: "2–6", status: "geplant" },
+  { id: "skat", name: "Skat", category: "karten", players: "3", status: "geplant" },
+  { id: "elferraus", name: "Elfer raus", category: "karten", players: "2–6", status: "geplant" },
+  { id: "schwimmen", name: "Schwimmen (31)", category: "karten", players: "2–8", status: "geplant" },
+  { id: "knack", name: "Knack", category: "karten", players: "2–6", status: "geplant" },
+  { id: "romme", name: "Rommé", category: "karten", players: "2–6", status: "geplant" },
+  { id: "wuerfelpoker", name: "Würfelpoker", category: "party", players: "1–6", status: "geplant" },
+  { id: "rausmitdir", name: "Raus mit dir!", category: "party", players: "2–4", status: "geplant" },
+  { id: "stadtland", name: "Stadt, Land, Fluss", category: "party", players: "2–10", status: "geplant" },
+  { id: "quiz", name: "Kneipenquiz", category: "party", players: "2–10", status: "geplant" },
+  { id: "burgduell", name: "Burgduell", category: "party", players: "2", status: "geplant" },
+  { id: "memory", name: "Memory", category: "familie", players: "1–4", status: "geplant" },
+  { id: "schiffe", name: "Schiffe versenken", category: "familie", players: "2", status: "geplant" },
+  { id: "woerter", name: "Wörter raten", category: "familie", players: "2–6", status: "geplant" },
+  { id: "malen", name: "Malen & Raten", category: "familie", players: "3–8", status: "geplant" },
+  { id: "bingo", name: "Bingo", category: "familie", players: "2–20", status: "geplant" },
+];
+
+export const gamePackSizes = [
+  { size: 3, name: "Start", text: "3 Spiele inklusive" },
+  { size: 5, name: "5er-Paket", text: "Fünf Spiele nach Wahl" },
+  { size: 10, name: "10er-Paket", text: "Zehn Spiele nach Wahl" },
+  { size: 99, name: "Alle Spiele", text: "Alles, auch alle neuen" },
+];
+
+// Vier Kartenvarianten. Mit "image" (public/spiele/) wird das ChatGPT-Bild gezeigt,
+// ohne Bild die gezeichnete CSS-Karte als Platzhalter.
+export const gameCardVariants: { id: string; name: string; text: string; symbol: string; image?: string }[] = [
+  { id: "spieltisch", name: "Spieltisch", text: "Grüner Filz, Goldprägung – wie im Casino", symbol: "♠", image: "spieltisch.webp" },
+  { id: "arcade", name: "Neon-Arcade", text: "Pixel, Neon und Highscore-Gefühl", symbol: "▶", image: "arcade.webp" },
+  { id: "kneipe", name: "Stammtisch", text: "Dunkles Holz und Bierdeckel-Charme", symbol: "♣", image: "stammtisch.webp" },
+  { id: "familie", name: "Familie", text: "Bunt, rund und kinderleicht", symbol: "★" },
+];
+
 export const accessories = [
   { name: "Schlüsselanhänger", use: "Kontakt immer am Schlüsselbund" },
   { name: "Tags und Sticker", use: "Für Handyhülle, Laptop oder Schaufenster" },
