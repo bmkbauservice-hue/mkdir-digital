@@ -2,15 +2,20 @@ import { contact } from "../content";
 
 const actions = ["Anrufen", "WhatsApp", "E-Mail", "Website", "Standort", "Teilen"];
 
-// Das Handy zeigt, was nach dem Antippen der Karte erscheint: die digitale Visitenkarte.
+// Das Handy zeigt, was nach dem Antippen der Karte erscheint: die digitale Visitenkarte –
+// im selben Tusche-Look wie die Karte, mit Neon-Akzenten.
 export function PhoneVisual() {
+  const base = import.meta.env.BASE_URL;
   return (
     <div className="phone" aria-hidden="true">
       <div className="phone__screen">
+        <div className="phone__cover" style={{ backgroundImage: `url(${base}hero/tusche-app.webp)` }} />
         <div className="phone__notch" />
-        <div className="phone__avatar">MK</div>
-        <strong className="phone__name">Mario Kujoth</strong>
-        <span className="phone__role">Inhaber · MKDIR-Design</span>
+        <div className="phone__head">
+          <div className="phone__avatar">M</div>
+          <strong className="phone__name">MKDIR Design</strong>
+          <span className="phone__role">NFC-Visitenkarten · Webdesign</span>
+        </div>
         <div className="phone__actions">
           {actions.map((a) => (
             <span key={a}>{a}</span>

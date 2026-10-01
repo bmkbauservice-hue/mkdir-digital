@@ -81,7 +81,7 @@ function Hero() {
       <div className="hero__honeycomb" aria-hidden="true" />
       <div className="wrap hero__grid">
         <div className="hero__copy">
-          <p className="kicker">NFC-Visitenkarten aus Metall</p>
+          <p className="kicker">NFC-Visitenkarten in Ihrem Design</p>
           <h1>
             Einmal antippen.
             <span>Für immer im Kontakt.</span>
@@ -101,7 +101,17 @@ function Hero() {
         </div>
         <div className="hero__stage" onPointerMove={tilt} onPointerLeave={reset}>
           <div className="hero__card">
-            <CardVisual finish="signature" name="Mario Kujoth" role="MKDIR-Design" large />
+            <div className="hero-card">
+              <img
+                src={`${import.meta.env.BASE_URL}designs/tusche-burg.webp`}
+                alt="NFC-Visitenkarte im Tusche-Design mit Burg und Mond"
+                width={1200}
+                height={751}
+              />
+              <svg className="hero-card__nfc" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 7a7 7 0 0 1 0 10M12 4.5a11 11 0 0 1 0 15M16 2a15 15 0 0 1 0 20" />
+              </svg>
+            </div>
           </div>
           <div className="hero__waves" aria-hidden="true">
             <i />
