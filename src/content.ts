@@ -289,8 +289,78 @@ export const securityNote = {
   text: "Für Punkte, Guthaben, Mitgliedsausweise und Zutritt nutze ich NFC-Chips vom Typ NTAG 424 DNA. Sie erzeugen bei jedem Antippen einen neuen Code, den der Server prüft – eine kopierte Karte ist wertlos.",
 };
 
+// NFC-Armbänder: vier Einsatzzwecke. Farbe und Aufdruck steuern die Armband-Grafik,
+// "tap" ist das, was sich beim Antippen öffnet.
+export type Wristband = {
+  id: string;
+  name: string;
+  for: string;
+  text: string;
+  band: string; // Farbe des Armbands
+  ink: string; // Farbe des Aufdrucks
+  label: string; // Aufdruck auf dem Armband
+  tap: { title: string; lines: string[] };
+  note?: string;
+};
+
+export const wristbands: Wristband[] = [
+  {
+    id: "event",
+    name: "Event & Festival",
+    for: "Festivals, Konzerte, Firmenfeiern",
+    text: "Ticket, Einlass und VIP-Bereich am Handgelenk. Bezahlen am Stand funktioniert innerhalb Ihres Events.",
+    band: "#ff2fb4",
+    ink: "#1a0612",
+    label: "FESTIVAL · VIP · EINLASS",
+    tap: { title: "Ticket gültig", lines: ["Einlass: Haupteingang", "VIP-Bereich freigeschaltet", "Guthaben am Stand: 24,50 €"] },
+  },
+  {
+    id: "fitness",
+    name: "Fitness & Verein",
+    for: "Fitnessstudios, Sportvereine, Schwimmbäder",
+    text: "Mitgliedsausweis und Spindschlüssel in einem. Wasserfest, rutscht nicht und geht nicht verloren.",
+    band: "#2c2c31",
+    ink: "#d6b062",
+    label: "MITGLIED · SPIND 042",
+    tap: { title: "Mitgliedschaft aktiv", lines: ["Spind 042 öffnen", "Nächster Kurs: Spinning 18 Uhr", "Check-in gespeichert"] },
+  },
+  {
+    id: "notfall",
+    name: "Notfall",
+    for: "Ältere Menschen, Sportler, Allergiker",
+    text: "Helfer tippen an und erreichen sofort Ihren Notfallkontakt – auch wenn Sie selbst nicht sprechen können.",
+    band: "#d7263d",
+    ink: "#ffffff",
+    label: "NOTFALL · BITTE ANTIPPEN",
+    tap: { title: "Notfallkontakt", lines: ["Sabine (Tochter) anrufen", "Standort per SMS senden", "Hinweis: bitte Notruf 112 wählen"] },
+    note: "Gesundheitsdaten speichere ich nicht. Sie legen nur fest, wer angerufen wird.",
+  },
+  {
+    id: "kinder",
+    name: "Kinder",
+    for: "Freizeitpark, Strand, Ausflüge",
+    text: "Verloren gegangen? Jeder Erwachsene tippt an und erreicht sofort die Eltern. Ohne Akku, ohne Ortung.",
+    band: "#2ec4ff",
+    ink: "#04202c",
+    label: "HALLO, ICH BIN LEO",
+    tap: { title: "Hallo, ich bin Leo!", lines: ["Bitte ruf meine Mama an", "Anrufen: Mama", "Danke fürs Helfen!"] },
+  },
+];
+
+// Armband-Beispiele (KI-Visualisierungen, ChatGPT). Bilder in public/bands/.
+export const bandDesigns = [
+  { file: "festival.webp", name: "Festival · VIP", technique: "Neon-Silikon, Siebdruck, NFC-Kapsel", width: 1200, height: 800 },
+  { file: "mitglied.webp", name: "Mitglied", technique: "Schwarzes Silikon, Prägung mit Goldfüllung, Metall-Clip", width: 1200, height: 800 },
+  { file: "premium.webp", name: "Premium", technique: "Schwarzes Silikon, Blindprägung, goldener Clip", width: 1200, height: 900 },
+  { file: "kinder.webp", name: "Kinder", technique: "Hellblaues Silikon, Zweifarbdruck, NFC-Kapsel", width: 1200, height: 900 },
+  { file: "night-run.webp", name: "Night Run", technique: "Glow-in-the-dark-Silikon, Siebdruck", width: 1200, height: 900 },
+  { file: "swirl.webp", name: "Swirl", technique: "Zweifarb-Silikon marmoriert, NFC-Symbol gedruckt", width: 1200, height: 900 },
+];
+
+export const gpsNote =
+  "GPS-Kinderarmband mit Ortung ist in Vorbereitung – erst wenn Datenschutz und Zulassung sauber geklärt sind.";
+
 export const accessories = [
-  { name: "NFC-Armbänder", use: "Events, Fitnessstudios, Vereine" },
   { name: "Schlüsselanhänger", use: "Kontakt immer am Schlüsselbund" },
   { name: "Tags und Sticker", use: "Für Handyhülle, Laptop oder Schaufenster" },
   { name: "Tischaufsteller", use: "Speisekarte, WLAN oder Instagram per Antippen" },

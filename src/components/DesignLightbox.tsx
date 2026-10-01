@@ -1,0 +1,103 @@
+import { useEffect, useRef, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
+import { mailto } from "../content";
+
+// Alles, was die Großansicht von einem Bild wissen muss – passt für Karten und Armbänder.
+export type LightboxItem = {
+  file: string;
+  name: string;
+  technique: string;
+  width: number;
+  height: number;
+};
+
+type Props = {
+  items: LightboxItem[];
+  folder: string; // Unterordner in public/, z. B. "designs" oder "bands"
+  kind: string; // "Kartendesign" oder "Armband" – für Texte und Mail-Betreff
+  index: number | null; // null = geschlossen
+  onClose: () => void;
+  onGo: (index: number) => void;
+};
+
+// Großansicht eines Entwurfs. Nutzt das native <dialog>:
+// Esc schließt, der Fokus bleibt im Fenster, der Rest der Seite ist gesperrt.
+export function DesignLightbox({ items, folder, kind, index, onClose, onGo }: Props) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const swipeStart = useRef<number | null>(null);
+  const n = items.length;
+
+  useEffect(() => {
+    const dialog = ref.current;
+    if (!dialog) return;
+    if (index !== null && !dialog.open) dialog.showModal();
+    if (index === null && dialog.open) dialog.close();
+  }, [index]);
+
+  const go = (step: number) => {
+    if (index === null) return;
+    onGo((index + step + n) % n);
+  };
+
+  const onKey = (e: KeyboardEvent<HTMLDialogElement>) => {
+    if (e.key === "ArrowRight") go(1);
+    if (e.key === "ArrowLeft") go(-1);
+  };
+
+  // Klick auf den dunklen Hintergrund (das <dialog> selbst, nicht sein Inhalt) schließt.
+  const onBackdrop = (e: MouseEvent<HTMLDialogElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  const down = (e: PointerEvent<HTMLDivElement>) => {
+    swipeStart.current = e.clientX;
+  };
+  const up = (e: PointerEvent<HTMLDivElement>) => {
+    if (swipeStart.current === null) return;
+    const dx = e.clientX - swipeStart.current;
+    swipeStart.current = null;
+    if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+  };
+
+  const d = index !== null ? items[index] : null;
+
+  return (
+    <dialog ref={ref} className="lightbox" aria-label={`${kind} groß ansehen`} onClose={onClose} onKeyDown={onKey} onClick={onBackdrop}>
+      {d && (
+        <div className="lightbox__inner" onClick={(e) => e.target === e.currentTarget && onClose()}>
+          <button type="button" className="lightbox__close" onClick={onClose} aria-label="Schließen">
+            ×
+          </button>
+          <div className="lightbox__stage" onPointerDown={down} onPointerUp={up}>
+            <button type="button" className="lightbox__nav lightbox__nav--prev" onClick={() => go(-1)} aria-label="Vorheriger Entwurf">
+              ←
+            </button>
+            {/* key: neues Bild = neue Einblend-Animation */}
+            <img
+              key={d.file}
+              src={`${import.meta.env.BASE_URL}${folder}/${d.file}`}
+              alt={`${kind} ${d.name}`}
+              width={d.width}
+              height={d.height}
+              draggable={false}
+            />
+            <button type="button" className="lightbox__nav lightbox__nav--next" onClick={() => go(1)} aria-label="Nächster Entwurf">
+              →
+            </button>
+          </div>
+          <div className="lightbox__bar">
+            <div>
+              <strong>{d.name}</strong>
+              <span>{d.technique}</span>
+            </div>
+            <span className="lightbox__count">
+              {index! + 1} / {n}
+            </span>
+            <a className="btn btn--gold btn--small" href={mailto(`Anfrage ${kind} „${d.name}“`)}>
+              Dieses Design anfragen
+            </a>
+          </div>
+        </div>
+      )}
+    </dialog>
+  );
+}
