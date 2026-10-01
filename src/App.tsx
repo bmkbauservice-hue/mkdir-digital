@@ -6,6 +6,7 @@ import { HeroDeck } from "./components/HeroDeck";
 import { DesignLightbox } from "./components/DesignLightbox";
 import { Wristbands } from "./components/Wristbands";
 import { MeetCards } from "./components/MeetCards";
+import { GameCard } from "./components/GameCard";
 import {
   accessories,
   benefits,
@@ -425,6 +426,7 @@ export default function App() {
         <CardSystems />
         <Wristbands />
         <MeetCards />
+        <GameCard />
         <Accessories />
         <WebDesign />
         <Contact />
