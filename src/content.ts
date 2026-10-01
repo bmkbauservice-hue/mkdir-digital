@@ -347,6 +347,16 @@ export const wristbands: Wristband[] = [
   },
 ];
 
+// Armband-Beispiele (KI-Visualisierungen, ChatGPT). Bilder in public/bands/.
+export const bandDesigns = [
+  { file: "festival.webp", name: "Festival · VIP", technique: "Neon-Silikon, Siebdruck, NFC-Kapsel", width: 1200, height: 800 },
+  { file: "mitglied.webp", name: "Mitglied", technique: "Schwarzes Silikon, Prägung mit Goldfüllung, Metall-Clip", width: 1200, height: 800 },
+  { file: "premium.webp", name: "Premium", technique: "Schwarzes Silikon, Blindprägung, goldener Clip", width: 1200, height: 900 },
+  { file: "kinder.webp", name: "Kinder", technique: "Hellblaues Silikon, Zweifarbdruck, NFC-Kapsel", width: 1200, height: 900 },
+  { file: "night-run.webp", name: "Night Run", technique: "Glow-in-the-dark-Silikon, Siebdruck", width: 1200, height: 900 },
+  { file: "swirl.webp", name: "Swirl", technique: "Zweifarb-Silikon marmoriert, NFC-Symbol gedruckt", width: 1200, height: 900 },
+];
+
 export const gpsNote =
   "GPS-Kinderarmband mit Ortung ist in Vorbereitung – erst wenn Datenschutz und Zulassung sauber geklärt sind.";
 

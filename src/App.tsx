@@ -224,7 +224,7 @@ function Designs() {
           leicht abweichen.
         </p>
       </div>
-      <DesignLightbox index={open} onClose={() => setOpen(null)} onGo={setOpen} />
+      <DesignLightbox items={designs} folder="designs" kind="Kartendesign" index={open} onClose={() => setOpen(null)} onGo={setOpen} />
     </section>
   );
 }

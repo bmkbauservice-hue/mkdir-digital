@@ -1,5 +1,6 @@
 import { useId, useState, type CSSProperties, type KeyboardEvent } from "react";
-import { gpsNote, mailto, wristbands, type Wristband } from "../content";
+import { bandDesigns, gpsNote, mailto, wristbands, type Wristband } from "../content";
+import { DesignLightbox } from "./DesignLightbox";
 
 // Das Armband als SVG: ein Ring in leichter Perspektive.
 // Hintere Hälfte dunkler, vordere Hälfte mit Aufdruck und NFC-Chip.
@@ -30,6 +31,7 @@ function BandVisual({ band }: { band: Wristband }) {
 
 export function Wristbands() {
   const [active, setActive] = useState(0);
+  const [zoom, setZoom] = useState<number | null>(null);
   const band = wristbands[active];
   const tabsId = `bands-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
 
@@ -104,6 +106,36 @@ export function Wristbands() {
             </div>
           </div>
         </div>
+
+        <h3 className="bands__gallery-title">Beispiele zum Anschauen</h3>
+        <ul className="bands__gallery">
+          {bandDesigns.map((d, i) => (
+            <li key={d.file}>
+              <button type="button" onClick={() => setZoom(i)} aria-label={`Armband ${d.name} groß ansehen`}>
+                <img
+                  src={`${import.meta.env.BASE_URL}bands/${d.file}`}
+                  alt={`Armband ${d.name}`}
+                  width={d.width}
+                  height={d.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <strong>{d.name}</strong>
+              <span>{d.technique}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="fineprint">Die Bilder sind KI-Visualisierungen. Fotos echter Muster folgen.</p>
+
+        <DesignLightbox
+          items={bandDesigns}
+          folder="bands"
+          kind="Armband"
+          index={zoom}
+          onClose={() => setZoom(null)}
+          onGo={setZoom}
+        />
 
         <p className="bands__gps">
           <span>Bald</span>

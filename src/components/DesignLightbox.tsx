@@ -1,18 +1,30 @@
 import { useEffect, useRef, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
-import { designs, mailto } from "../content";
+import { mailto } from "../content";
+
+// Alles, was die Großansicht von einem Bild wissen muss – passt für Karten und Armbänder.
+export type LightboxItem = {
+  file: string;
+  name: string;
+  technique: string;
+  width: number;
+  height: number;
+};
 
 type Props = {
+  items: LightboxItem[];
+  folder: string; // Unterordner in public/, z. B. "designs" oder "bands"
+  kind: string; // "Kartendesign" oder "Armband" – für Texte und Mail-Betreff
   index: number | null; // null = geschlossen
   onClose: () => void;
   onGo: (index: number) => void;
 };
 
-// Großansicht eines Kartenentwurfs. Nutzt das native <dialog>:
+// Großansicht eines Entwurfs. Nutzt das native <dialog>:
 // Esc schließt, der Fokus bleibt im Fenster, der Rest der Seite ist gesperrt.
-export function DesignLightbox({ index, onClose, onGo }: Props) {
+export function DesignLightbox({ items, folder, kind, index, onClose, onGo }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const swipeStart = useRef<number | null>(null);
-  const n = designs.length;
+  const n = items.length;
 
   useEffect(() => {
     const dialog = ref.current;
@@ -46,10 +58,10 @@ export function DesignLightbox({ index, onClose, onGo }: Props) {
     if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
   };
 
-  const d = index !== null ? designs[index] : null;
+  const d = index !== null ? items[index] : null;
 
   return (
-    <dialog ref={ref} className="lightbox" aria-label="Kartenentwurf groß ansehen" onClose={onClose} onKeyDown={onKey} onClick={onBackdrop}>
+    <dialog ref={ref} className="lightbox" aria-label={`${kind} groß ansehen`} onClose={onClose} onKeyDown={onKey} onClick={onBackdrop}>
       {d && (
         <div className="lightbox__inner" onClick={(e) => e.target === e.currentTarget && onClose()}>
           <button type="button" className="lightbox__close" onClick={onClose} aria-label="Schließen">
@@ -62,8 +74,8 @@ export function DesignLightbox({ index, onClose, onGo }: Props) {
             {/* key: neues Bild = neue Einblend-Animation */}
             <img
               key={d.file}
-              src={`${import.meta.env.BASE_URL}designs/${d.file}`}
-              alt={`Kartenentwurf ${d.name} mit Platzhalter-Kontaktdaten`}
+              src={`${import.meta.env.BASE_URL}${folder}/${d.file}`}
+              alt={`${kind} ${d.name}`}
               width={d.width}
               height={d.height}
               draggable={false}
@@ -80,7 +92,7 @@ export function DesignLightbox({ index, onClose, onGo }: Props) {
             <span className="lightbox__count">
               {index! + 1} / {n}
             </span>
-            <a className="btn btn--gold btn--small" href={mailto(`Anfrage Kartendesign „${d.name}“`)}>
+            <a className="btn btn--gold btn--small" href={mailto(`Anfrage ${kind} „${d.name}“`)}>
               Dieses Design anfragen
             </a>
           </div>
