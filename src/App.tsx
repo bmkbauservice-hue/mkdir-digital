@@ -1,5 +1,6 @@
 import { useState, type CSSProperties } from "react";
 import { Logo } from "./components/Logo";
+import { SiteHeader } from "./components/SiteHeader";
 import { CardVisual } from "./components/CardVisual";
 import { HeroDeck } from "./components/HeroDeck";
 import { DesignLightbox } from "./components/DesignLightbox";
@@ -21,49 +22,6 @@ import {
   steps,
   webServices,
 } from "./content";
-
-const navItems = [
-  { href: "#karten", label: "NFC-Karten" },
-  { href: "#designs", label: "Designs" },
-  { href: "#unternehmen", label: "Für Unternehmen" },
-  { href: "#kartensysteme", label: "Kartensysteme" },
-  { href: "#armbaender", label: "Armbänder" },
-  { href: "#kennenlernen", label: "Kennenlernen" },
-  { href: "#zubehoer", label: "Zubehör" },
-  { href: "#webdesign", label: "Webdesign" },
-  { href: "#kontakt", label: "Kontakt" },
-];
-
-function Header() {
-  const [open, setOpen] = useState(false);
-  return (
-    <header className="site-header">
-      <div className="wrap site-header__inner">
-        <Logo />
-        <button
-          className="menu-toggle"
-          type="button"
-          aria-expanded={open}
-          aria-controls="hauptnavigation"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className="menu-toggle__bars" aria-hidden="true" />
-          <span className="sr-only">{open ? "Menü schließen" : "Menü öffnen"}</span>
-        </button>
-        <nav id="hauptnavigation" className={`main-nav${open ? " is-open" : ""}`} aria-label="Hauptnavigation">
-          {navItems.map((item) => (
-            <a key={item.href} href={item.href} onClick={() => setOpen(false)}>
-              {item.label}
-            </a>
-          ))}
-          <a className="btn btn--gold btn--small" href={mailto("Anfrage NFC-Karte")}>
-            Karte anfragen
-          </a>
-        </nav>
-      </div>
-    </header>
-  );
-}
 
 function Hero() {
   return (
@@ -457,7 +415,7 @@ export default function App() {
       <a className="skip-link" href="#karten">
         Zum Inhalt springen
       </a>
-      <Header />
+      <SiteHeader />
       <main>
         <Hero />
         <CardLines />
