@@ -1,22 +1,29 @@
-import { useState, type PointerEvent } from "react";
+import { useState, type CSSProperties } from "react";
 import { Logo } from "./components/Logo";
 import { CardVisual } from "./components/CardVisual";
-import { PhoneVisual } from "./components/PhoneVisual";
+import { HeroDeck } from "./components/HeroDeck";
 import {
   accessories,
   benefits,
   business,
+  cardIdeas,
   cardLines,
   contact,
+  designs,
+  designsVisible,
+  loyalty,
   mailto,
   priceNote,
+  securityNote,
   steps,
   webServices,
 } from "./content";
 
 const navItems = [
   { href: "#karten", label: "NFC-Karten" },
+  { href: "#designs", label: "Designs" },
   { href: "#unternehmen", label: "Für Unternehmen" },
+  { href: "#kartensysteme", label: "Kartensysteme" },
   { href: "#zubehoer", label: "Zubehör" },
   { href: "#webdesign", label: "Webdesign" },
   { href: "#kontakt", label: "Kontakt" },
@@ -54,27 +61,11 @@ function Header() {
 }
 
 function Hero() {
-  // Die Karte neigt sich leicht zur Maus – wie ein echtes Stück Metall im Licht.
-  const tilt = (e: PointerEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    e.currentTarget.style.setProperty("--ry", `${x * 14}deg`);
-    e.currentTarget.style.setProperty("--rx", `${-y * 10}deg`);
-    e.currentTarget.style.setProperty("--shine", `${50 + x * 60}%`);
-  };
-  const reset = (e: PointerEvent<HTMLDivElement>) => {
-    e.currentTarget.style.removeProperty("--ry");
-    e.currentTarget.style.removeProperty("--rx");
-    e.currentTarget.style.removeProperty("--shine");
-  };
-
   return (
     <section className="hero" id="start">
-      <div className="hero__honeycomb" aria-hidden="true" />
       <div className="wrap hero__grid">
         <div className="hero__copy">
-          <p className="kicker">NFC-Visitenkarten aus Metall</p>
+          <p className="kicker">NFC-Visitenkarten in Ihrem Design</p>
           <h1>
             Einmal antippen.
             <span>Für immer im Kontakt.</span>
@@ -92,17 +83,7 @@ function Hero() {
             </a>
           </div>
         </div>
-        <div className="hero__stage" onPointerMove={tilt} onPointerLeave={reset}>
-          <div className="hero__card">
-            <CardVisual finish="signature" name="Mario Kujoth" role="MKDIR-Design" large />
-          </div>
-          <div className="hero__waves" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </div>
-          <PhoneVisual />
-        </div>
+        <HeroDeck />
       </div>
       <ul className="wrap benefits">
         {benefits.map((b) => (
@@ -154,6 +135,94 @@ function CardLines() {
   );
 }
 
+type Design = (typeof designs)[number];
+
+function DesignTile({ d, feature = false }: { d: Design; feature?: boolean }) {
+  return (
+    <figure className={feature ? "gallery__item gallery__item--feature" : "gallery__item"}>
+      <div className="gallery__frame">
+        <img
+          src={`${import.meta.env.BASE_URL}designs/${d.file}`}
+          alt={`Kartenentwurf ${d.name} mit Platzhalter-Kontaktdaten`}
+          width={d.width}
+          height={d.height}
+          loading="lazy"
+          decoding="async"
+        />
+        <span className="gallery__tag">Entwurf</span>
+      </div>
+      <figcaption>
+        <strong>{d.name}</strong>
+        <span>{d.technique}</span>
+      </figcaption>
+    </figure>
+  );
+}
+
+function Designs() {
+  const [showAll, setShowAll] = useState(false);
+  const first = designs.slice(0, designsVisible);
+  const rest = designs.slice(designsVisible);
+  return (
+    <section className="section section--gallery" id="designs">
+      <div className="wrap">
+        <div className="section-head">
+          <p className="kicker">Designbeispiele</p>
+          <h2>Ihre Karte kann alles sein. Nur nicht langweilig.</h2>
+          <p>
+            Vom Tuschebild bis zur Goldveredelung: Jedes Motiv wird für Ihre Karte gestaltet. Hier ein paar Entwürfe als
+            Anregung – mit Platzhalter-Daten.
+          </p>
+        </div>
+        <div className="gallery gallery--main">
+          {first.map((d, i) => (
+            <DesignTile key={d.file} d={d} feature={i === 0} />
+          ))}
+        </div>
+        {showAll && (
+          <div className="gallery gallery--more" id="weitere-designs">
+            {rest.map((d) => (
+              <DesignTile key={d.file} d={d} />
+            ))}
+            <a
+              className="gallery__own"
+              href={mailto("Anfrage eigenes Kartendesign")}
+              // Die Kachel füllt die letzte Reihe auf, egal wie viele Entwürfe es gibt.
+              style={{ "--span3": 3 - (rest.length % 3), "--span2": 2 - (rest.length % 2) } as CSSProperties}
+            >
+              <strong>Ihr eigenes Motiv</strong>
+              <span>Logo, Foto oder eine Idee im Kopf – ich mache daraus eine Karte, die sich herstellen lässt.</span>
+              <em>Design anfragen →</em>
+            </a>
+          </div>
+        )}
+        <div className="gallery__more-bar">
+          {rest.length > 0 && (
+            <button
+              type="button"
+              className="btn btn--line"
+              aria-expanded={showAll}
+              aria-controls="weitere-designs"
+              onClick={() => setShowAll((v) => !v)}
+            >
+              {showAll ? "Weniger anzeigen" : `Alle ${designs.length} Entwürfe zeigen`}
+            </button>
+          )}
+          {!showAll && (
+            <a className="gallery__own-link" href={mailto("Anfrage eigenes Kartendesign")}>
+              Oder Ihr eigenes Motiv anfragen →
+            </a>
+          )}
+        </div>
+        <p className="fineprint">
+          Die Bilder sind KI-Visualisierungen. Fotos der echten Muster folgen. Farben und Effekte können bei der Herstellung
+          leicht abweichen.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function Steps() {
   return (
     <section className="section section--band" id="ablauf">
@@ -193,6 +262,86 @@ function Business() {
             </article>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function StampCard() {
+  const { total, filled } = loyalty.stamps;
+  return (
+    <div className="stampcard" role="img" aria-label={`Beispiel-Treuekarte: ${filled} von ${total} Punkten gesammelt`}>
+      <div className="stampcard__top">
+        <span>Bonuskarte</span>
+        <span className="stampcard__count">
+          {filled}/{total}
+        </span>
+      </div>
+      <ol className="stampcard__grid" aria-hidden="true">
+        {Array.from({ length: total }, (_, i) => (
+          <li
+            key={i}
+            className={
+              i < filled ? "is-filled" : i === filled ? "is-next" : i === total - 1 ? "is-reward" : undefined
+            }
+          >
+            {i === total - 1 ? "Gratis" : i + 1}
+          </li>
+        ))}
+      </ol>
+      <p className="stampcard__hint">Noch 3× antippen bis zur Prämie</p>
+    </div>
+  );
+}
+
+function CardSystems() {
+  return (
+    <section className="section section--systems" id="kartensysteme">
+      <div className="wrap">
+        <div className="section-head">
+          <p className="kicker">Mehr aus der Karte machen</p>
+          <h2>Die Karte ist der Schlüssel. Dahinter steckt Ihr System.</h2>
+          <p>
+            Eine NFC-Karte öffnet nicht nur Kontaktdaten. Ich programmiere die Anwendung dahinter – passend zu Ihrem
+            Geschäft und auf meinem Server betrieben.
+          </p>
+        </div>
+        <div className="systems">
+          <article className="systems__feature">
+            <span className="line__badge">Für Geschäfte mit Stammkunden</span>
+            <div className="systems__feature-copy">
+              <h3>{loyalty.title}</h3>
+              <p>{loyalty.text}</p>
+              <ul>
+                {loyalty.points.map((pt) => (
+                  <li key={pt}>{pt}</li>
+                ))}
+              </ul>
+              <p className="systems__price">{loyalty.price}</p>
+              <a className="btn btn--gold btn--small" href={mailto("Anfrage Treuekarten-System")}>
+                Treuekarte anfragen
+              </a>
+            </div>
+            <StampCard />
+          </article>
+          {cardIdeas.map((idea) => (
+            <article key={idea.title} className="systems__idea">
+              <h3>{idea.title}</h3>
+              <p>{idea.text}</p>
+              <span>{idea.for}</span>
+            </article>
+          ))}
+        </div>
+        <aside className="secure">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.5 4.5 5.5v6c0 4.6 3.1 8.4 7.5 10 4.4-1.6 7.5-5.4 7.5-10v-6z" />
+            <path d="m8.5 12 2.4 2.4 4.6-4.8" />
+          </svg>
+          <div>
+            <strong>{securityNote.title}</strong>
+            <p>{securityNote.text}</p>
+          </div>
+        </aside>
       </div>
     </section>
   );
@@ -304,8 +453,10 @@ export default function App() {
       <main>
         <Hero />
         <CardLines />
+        <Designs />
         <Steps />
         <Business />
+        <CardSystems />
         <Accessories />
         <WebDesign />
         <Contact />
