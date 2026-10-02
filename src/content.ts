@@ -365,9 +365,9 @@ export const bandDesigns = [
   { file: "swirl.webp", name: "Swirl", technique: "Zweifarb-Silikon marmoriert, NFC-Symbol gedruckt", width: 1200, height: 900 },
 ];
 
-// Kennenlern-Karten: Karte hinlegen, die andere Person tippt an und antwortet.
-// Bilder in public/kennenlernen/ (KI-Visualisierungen, ChatGPT).
-export const meetCards = {
+// Single-Karten: Karte hinlegen, die andere Person tippt an, sieht das Profil und antwortet.
+// Bilder in public/single/ (KI-Visualisierungen, ChatGPT).
+export const singleCards = {
   him: [
     { file: "fingerabdruck.webp", name: "Fingerabdruck", technique: "Mattschwarz, Roségoldfolie", width: 1200, height: 706 },
     { file: "sternbild.webp", name: "Sternbild", technique: "Nachtblau, Goldfolie", width: 1200, height: 706 },
@@ -392,13 +392,72 @@ export const meetCards = {
   ],
 };
 
-export const meetAnswers = ["Kaffee? Gern!", "Lass uns essen gehen", "Vielleicht", "Nein, danke"];
+export const singleAnswers = ["Kaffee? Gern!", "Lass uns essen gehen", "Vielleicht", "Nein, danke"];
 
-export const meetRules = [
+export const singleRules = [
+  "Ihr Profil mit Fotos gestalten Sie selbst – und nehmen es mit einem Klick offline.",
   "Die andere Person antwortet anonym – ihre Nummer gibt sie nur freiwillig an.",
   "Ein Nein ist ein Nein: kein Nachschreiben über die Karte.",
-  "Keine Ortung, kein Profil, nur ab 18.",
+  "Keine Ortung, keine Suche nach anderen Profilen, nur ab 18.",
 ];
+
+// ---------- Single-App (Demo) ----------
+// Das sieht die Person, die die Single-Karte antippt: Profil mit Fotos, kurzer Text, eine Frage.
+// Die Profile sind ausgedacht. Fotos sind gezeichnete Platzhalter-Motive (scene),
+// bis echte Bilder da sind: dann Datei nach public/single-profil/ legen und `image` setzen,
+// z. B. { scene: "portrait", image: "jonas-1.webp", caption: "…" } – das Bild ersetzt das Motiv.
+// WICHTIG: Sobald es die App wirklich gibt (Server, echte Fotos, Antworten),
+// muss die Datenschutzerklärung erweitert werden.
+export type ProfileScene = "portrait" | "meer" | "berge" | "kaffee" | "konzert" | "stadt";
+
+export type ProfilePhoto = { scene: ProfileScene; caption: string; image?: string };
+
+export type SingleProfile = {
+  name: string;
+  age: number;
+  place: string;
+  look: "him" | "her"; // nur für das gezeichnete Porträt
+  card: string; // Datei aus singleCards, die in der Animation angetippt wird
+  question: string;
+  bio: string;
+  tags: string[];
+  photos: ProfilePhoto[];
+};
+
+export const singleProfiles: Record<"him" | "her", SingleProfile> = {
+  him: {
+    name: "Jonas",
+    age: 34,
+    place: "Potsdam",
+    look: "him",
+    card: "schwarz-gold.webp",
+    question: "Hast du Lust?",
+    bio: "Koche besser, als ich tanze. Suche jemanden für Sonntagsfrühstück und spontane Ostsee-Trips.",
+    tags: ["Kochen", "Ostsee", "Konzerte", "Hunde"],
+    photos: [
+      { scene: "portrait", caption: "Das bin ich" },
+      { scene: "meer", caption: "Warnemünde, 21 Uhr" },
+      { scene: "kaffee", caption: "Mein Sonntag" },
+      { scene: "konzert", caption: "Lieber vorne als hinten" },
+    ],
+  },
+  her: {
+    name: "Lena",
+    age: 31,
+    place: "Berlin",
+    look: "her",
+    card: "sie-lippenstift.webp",
+    question: "Diesmal frag ich: Hast du Lust?",
+    bio: "Bergmensch mit Großstadtadresse. Ich bring den Kaffee mit, du die Geschichten.",
+    tags: ["Wandern", "Fotografie", "Brunch", "Jazz"],
+    photos: [
+      { scene: "portrait", caption: "Das bin ich" },
+      { scene: "berge", caption: "Zugspitze, 5:40 Uhr" },
+      { scene: "stadt", caption: "Mein Kiez bei Nacht" },
+      { scene: "kaffee", caption: "Flat White, sonst nichts" },
+    ],
+  },
+};
 
 export const gpsNote =
   "GPS-Kinderarmband mit Ortung ist in Vorbereitung – erst wenn Datenschutz und Zulassung sauber geklärt sind.";
