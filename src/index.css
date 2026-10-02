@@ -3257,6 +3257,49 @@ html:has(.lightbox[open]) {
     0 0 26px rgba(214, 176, 98, 0.55);
 }
 
+/* ---------- Einheitliche Kartenkacheln ----------
+   Alle Kartenbilder haben dasselbe Format (1200 × 706, 1,7 : 1) und füllen ihre Kachel komplett. */
+.gallery__frame,
+.meet__grid button {
+  aspect-ratio: 1.7;
+  display: block;
+  flex: none; /* nicht in die Höhe ziehen, wenn die Bildunterschrift daneben länger ist */
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.gallery {
+  align-items: start;
+}
+
+.gallery__item--feature {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+.gallery__item--feature .gallery__frame {
+  aspect-ratio: 1.7;
+}
+
+.gallery__frame img,
+.meet__grid img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  border-radius: 4.5% / 7.6%;
+}
+
+.gallery--main .gallery__item:nth-child(6) {
+  grid-column: auto;
+}
+
+.gallery--main .gallery__item:nth-child(6) .gallery__frame {
+  aspect-ratio: 1.7;
+}
+
 @media (max-width: 1080px) {
   .gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3266,21 +3309,11 @@ html:has(.lightbox[open]) {
     grid-row: auto;
   }
 
-  .gallery--main .gallery__item:nth-child(6) {
-    grid-column: span 2;
-  }
-
-  .gallery--main .gallery__item:nth-child(6) .gallery__frame {
-    aspect-ratio: 1.6;
-  }
 
   .gallery--more .gallery__own {
     grid-column: span var(--span2, 1);
   }
 
-  .gallery__item--feature .gallery__frame {
-    aspect-ratio: 1.6;
-  }
 
   .systems {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3460,9 +3493,6 @@ html:has(.lightbox[open]) {
     grid-row: auto;
   }
 
-  .gallery__item--feature .gallery__frame {
-    aspect-ratio: 1.6;
-  }
 
   .systems,
   .systems__feature {

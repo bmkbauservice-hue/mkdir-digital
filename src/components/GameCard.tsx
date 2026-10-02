@@ -85,7 +85,7 @@ export function GameCard() {
               src={`${import.meta.env.BASE_URL}spiele/${current.image}`}
               alt={`MKDIR Spielekarte im Design ${current.name} mit Spieleliste`}
               width={1200}
-              height={740}
+              height={706}
             />
           ) : (
             <div key={current.id} className="games__stage-css">
@@ -111,7 +111,7 @@ export function GameCard() {
                   src={`${import.meta.env.BASE_URL}spiele/${v.image}`}
                   alt=""
                   width={1200}
-                  height={740}
+                  height={706}
                   loading="lazy"
                   decoding="async"
                 />
