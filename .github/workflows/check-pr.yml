@@ -1,0 +1,32 @@
+name: PR prüfen
+
+# Prüft jeden Pull Request, BEVOR er gemergt wird – mit denselben Schritten wie das Deployment.
+# Grüner Haken im PR = Mergen ist sicher, die Live-Seite wird danach aktualisiert.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: Lint prüfen
+        run: npm run lint
+
+      - name: TypeScript und Vite bauen
+        run: npm run build
