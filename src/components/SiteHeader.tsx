@@ -13,7 +13,7 @@ const nav: NavEntry[] = [
     items: [
       { href: "#karten", label: "NFC-Karten", hint: "Vier Kartenlinien von PVC bis Gold" },
       { href: "#designs", label: "Designbeispiele", hint: "30 Entwürfe zum Anschauen" },
-      { href: "#kennenlernen", label: "Kennenlern-Karten", hint: "Ich bin ein Unikat." },
+      { href: "#single-karten", label: "Single-Karten", hint: "Ich bin ein Unikat." },
       { href: "#spielekarte", label: "Spielekarte", hint: "Bald: Spiele zum Antippen" },
     ],
   },

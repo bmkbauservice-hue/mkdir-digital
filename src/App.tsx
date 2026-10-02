@@ -5,7 +5,7 @@ import { CardVisual } from "./components/CardVisual";
 import { HeroDeck } from "./components/HeroDeck";
 import { DesignLightbox } from "./components/DesignLightbox";
 import { Wristbands } from "./components/Wristbands";
-import { MeetCards } from "./components/MeetCards";
+import { SingleCards } from "./components/SingleCards";
 import { GameCard } from "./components/GameCard";
 import { Privacy } from "./components/Privacy";
 import {
@@ -435,7 +435,9 @@ export default function App() {
       return;
     }
     document.title = "MKDIR-Design | NFC-Visitenkarten";
-    const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
+    // Alte Links (#kennenlernen) führen zum umbenannten Abschnitt.
+    const id = hash === "#kennenlernen" ? "single-karten" : hash.slice(1);
+    const target = id ? document.getElementById(id) : null;
     if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: "instant" }));
   }, [page, hash]);
 
@@ -456,7 +458,7 @@ export default function App() {
           <Business />
           <CardSystems />
           <Wristbands />
-          <MeetCards />
+          <SingleCards />
           <GameCard />
           <Accessories />
           <WebDesign />
