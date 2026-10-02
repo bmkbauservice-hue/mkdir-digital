@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { Logo } from "./components/Logo";
 import { SiteHeader } from "./components/SiteHeader";
 import { CardVisual } from "./components/CardVisual";
@@ -7,6 +7,7 @@ import { DesignLightbox } from "./components/DesignLightbox";
 import { Wristbands } from "./components/Wristbands";
 import { MeetCards } from "./components/MeetCards";
 import { GameCard } from "./components/GameCard";
+import { Privacy } from "./components/Privacy";
 import {
   accessories,
   benefits,
@@ -398,39 +399,70 @@ function Footer() {
         <Logo />
         <nav aria-label="Rechtliches">
           <a href="#rechtliches">Impressum</a>
-          <a href="#rechtliches">Datenschutz</a>
+          <a href="#datenschutz">Datenschutz</a>
           <a href="#rechtliches">AGB</a>
           <a href="#rechtliches">Widerruf</a>
         </nav>
       </div>
       <p className="wrap site-footer__note" id="rechtliches">
-        © 2026 MKDIR-Design. Impressum, Datenschutzerklärung, AGB und Widerrufsbelehrung werden vor dem Start ergänzt.
+        © 2026 MKDIR-Design. Impressum, AGB und Widerrufsbelehrung werden vor dem Start ergänzt.
       </p>
     </footer>
   );
 }
 
+// Mini-Router über den Hash: #datenschutz zeigt die Datenschutzseite, alles andere die Startseite.
+// So funktioniert es auch auf GitHub Pages ohne Server-Konfiguration.
+function useHash() {
+  const [hash, setHash] = useState(() => window.location.hash);
+  useEffect(() => {
+    const onChange = () => setHash(window.location.hash);
+    window.addEventListener("hashchange", onChange);
+    return () => window.removeEventListener("hashchange", onChange);
+  }, []);
+  return hash;
+}
+
 export default function App() {
+  const hash = useHash();
+  const page = hash === "#datenschutz" ? "datenschutz" : "start";
+
+  // Beim Seitenwechsel an die richtige Stelle springen: Datenschutz nach oben, sonst zum Abschnitt.
+  useEffect(() => {
+    if (page === "datenschutz") {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      document.title = "Datenschutz | MKDIR-Design";
+      return;
+    }
+    document.title = "MKDIR-Design | NFC-Visitenkarten";
+    const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
+    if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: "instant" }));
+  }, [page, hash]);
+
   return (
     <>
-      <a className="skip-link" href="#karten">
+      <a className="skip-link" href={page === "start" ? "#karten" : "#datenschutz-inhalt"}>
         Zum Inhalt springen
       </a>
       <SiteHeader />
-      <main>
-        <Hero />
-        <CardLines />
-        <Designs />
-        <Steps />
-        <Business />
-        <CardSystems />
-        <Wristbands />
-        <MeetCards />
-        <GameCard />
-        <Accessories />
-        <WebDesign />
-        <Contact />
-      </main>
+      {page === "datenschutz" ? (
+        <Privacy />
+      ) : (
+        <main>
+          <Hero />
+          <CardLines />
+          <Designs />
+          <Steps />
+          <Business />
+          <CardSystems />
+          <Wristbands />
+          <MeetCards />
+          <GameCard />
+          <Accessories />
+          <WebDesign />
+          <Contact />
+        </main>
+      )}
       <Footer />
     </>
   );
