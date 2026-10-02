@@ -29,14 +29,21 @@ export function useDemoTimeline(phases: DemoPhase[], resetKey: unknown, onLoopEn
   const [inView, setInView] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const loopEnd = useRef(onLoopEnd);
-  loopEnd.current = onLoopEnd;
+  // Immer den neuesten Callback merken – im Effekt, nicht beim Rendern (Lint-Regel react-hooks/refs).
+  useEffect(() => {
+    loopEnd.current = onLoopEnd;
+  });
 
   const playing = autoplay && inView && !reduced;
 
-  // Neue Karte / neues Profil → von vorn.
-  useEffect(() => {
+  // Neue Karte / neues Profil → von vorn. Bewusst direkt beim Rendern statt in einem Effekt:
+  // So empfiehlt es React für "State zurücksetzen, wenn sich eine Eingabe ändert"
+  // (setState in useEffect verbietet die Lint-Regel react-hooks/set-state-in-effect).
+  const [prevKey, setPrevKey] = useState(resetKey);
+  if (prevKey !== resetKey) {
+    setPrevKey(resetKey);
     setPos({ phase: start, tick: 0 });
-  }, [resetKey, start]);
+  }
 
   // Nur abspielen, wenn der Bereich wirklich im Bild ist.
   useEffect(() => {
