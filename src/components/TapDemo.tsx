@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
 import type { DemoTheme } from "../content";
 
 // Gemeinsames Gerüst für die animierten Erklärungen (Single-Karte, Spielekarte):
@@ -21,13 +21,19 @@ export function usePrefersReducedMotion() {
 
 // Die Zeitleiste. Plant immer nur den nächsten Teilschritt – ändert sich etwas, wird neu geplant.
 // onLoopEnd wird am Ende einer Runde aufgerufen (z. B. um zur nächsten Karte zu wechseln).
-export function useDemoTimeline(phases: DemoPhase[], resetKey: unknown, onLoopEnd?: () => void) {
+// rootRef legt die Komponente selbst an (useRef) und gibt ihn hier hinein. Der Hook gibt ihn NICHT zurück –
+// sonst behandelt die Lint-Regel react-hooks/refs das ganze Rückgabe-Objekt wie eine Ref.
+export function useDemoTimeline(
+  phases: DemoPhase[],
+  resetKey: unknown,
+  rootRef: RefObject<HTMLElement | null>,
+  onLoopEnd?: () => void,
+) {
   const reduced = usePrefersReducedMotion();
   const start = reduced ? 1 : 0; // ohne Bewegung: gleich die App zeigen
   const [pos, setPos] = useState({ phase: start, tick: 0 });
   const [autoplay, setAutoplay] = useState(!reduced);
   const [inView, setInView] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
   const loopEnd = useRef(onLoopEnd);
   // Immer den neuesten Callback merken – im Effekt, nicht beim Rendern (Lint-Regel react-hooks/refs).
   useEffect(() => {
@@ -52,7 +58,7 @@ export function useDemoTimeline(phases: DemoPhase[], resetKey: unknown, onLoopEn
     const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.35 });
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [rootRef]);
 
   useEffect(() => {
     if (!playing) return;
@@ -85,7 +91,6 @@ export function useDemoTimeline(phases: DemoPhase[], resetKey: unknown, onLoopEn
   };
 
   return {
-    rootRef,
     phase: phases[pos.phase].id,
     phaseIndex: pos.phase,
     tick: pos.tick,

@@ -34,7 +34,8 @@ export function SingleApp() {
 
   // Am Ende einer Runde: eigene Antwort vergessen und ggf. zur nächsten Karte.
   // (Zurücksetzen passiert in Ereignissen wie diesem, nicht in einem Effekt.)
-  const demo = useDemoTimeline(phases, profile.id, () => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const demo = useDemoTimeline(phases, profile.id, rootRef, () => {
     setUserPick(null);
     if (cycle) setIndex((i) => (i + 1) % singleProfiles.length);
   });
@@ -97,7 +98,7 @@ export function SingleApp() {
   const current = steps.findIndex((s) => s.id === phase);
 
   return (
-    <div className="tap-demo" ref={demo.rootRef} data-tap={phase === "tap" || undefined} data-playing={demo.playing || undefined}>
+    <div className="tap-demo" ref={rootRef} data-tap={phase === "tap" || undefined} data-playing={demo.playing || undefined}>
       <DemoSteps
         steps={steps}
         current={current}
