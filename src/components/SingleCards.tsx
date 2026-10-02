@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { mailto, singleCards, singleProfiles, singleRules } from "../content";
+import { mailto, singleCards, singleRules } from "../content";
 import { DesignLightbox } from "./DesignLightbox";
 import { SingleApp } from "./SingleApp";
 
@@ -19,11 +19,25 @@ export function SingleCards() {
           <p className="kicker">Single-Karten</p>
           <h2>Ich bin ein Unikat.</h2>
           <p>
-            {tab === "him" ? "Mich gibt's in keiner Single-Börse." : "Diesmal frag ich."} Statt Swipen: Karte hinlegen.
-            Wer antippt, sieht Ihr Profil mit Fotos – und antwortet mit einem Klick.
+            Mich gibt's in keiner Single-Börse – und diesmal frag ich. Statt Swipen: Karte hinlegen. Wer antippt, sieht
+            Ihr Profil mit Fotos – in einer App, die genauso aussieht wie Ihre Karte.
           </p>
         </div>
 
+        <SingleApp />
+
+        <div className="single__info">
+          <ul className="single__rules">
+            {singleRules.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
+          <a className="btn btn--gold" href={mailto("Anfrage Single-Karte")}>
+            Single-Karte anfragen
+          </a>
+        </div>
+
+        <h3 className="single__gallery-title">Alle Designs</h3>
         <div className="single__tabs" role="tablist" aria-label="Serie wählen">
           {(["him", "her"] as Tab[]).map((t) => (
             <button
@@ -42,20 +56,6 @@ export function SingleCards() {
           ))}
         </div>
 
-        <SingleApp profile={singleProfiles[tab]} />
-
-        <div className="single__info">
-          <ul className="single__rules">
-            {singleRules.map((r) => (
-              <li key={r}>{r}</li>
-            ))}
-          </ul>
-          <a className="btn btn--gold" href={mailto("Anfrage Single-Karte")}>
-            Single-Karte anfragen
-          </a>
-        </div>
-
-        <h3 className="single__gallery-title">{tab === "him" ? "Designs für ihn" : "Designs für sie"}</h3>
         <ul className="single__grid">
           {items.map((d, i) => (
             <li key={d.file}>

@@ -2483,8 +2483,10 @@ html:has(.lightbox[open]) {
   border-bottom: 1px solid var(--line);
 }
 
-/* ---------- Single-App: animierte Vorführung ---------- */
-.single-demo {
+/* ---------- Erklär-Animationen (Single-Karte, Spielekarte) ---------- */
+/* Gemeinsames Gerüst: .tap-demo (Rahmen), .tap-stage (Karte + Handy), .tap-phone, .tap-lock, .tap-app.
+   Die App-Farben kommen als --app-* Variablen aus dem Theme der gewählten Karte. */
+.tap-demo {
   --phone-w: 272px;
   --phone-r: 6%;
   --card-w: 250px;
@@ -2502,7 +2504,7 @@ html:has(.lightbox[open]) {
     var(--glass);
 }
 
-.single-demo__steps {
+.tap-demo__steps {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -2510,7 +2512,7 @@ html:has(.lightbox[open]) {
   gap: 8px;
 }
 
-.single-demo__steps button {
+.tap-demo__steps button {
   width: 100%;
   display: flex;
   align-items: flex-start;
@@ -2526,23 +2528,23 @@ html:has(.lightbox[open]) {
   transition: background-color 0.35s, border-color 0.35s, box-shadow 0.35s;
 }
 
-.single-demo__steps button:hover {
+.tap-demo__steps button:hover {
   border-color: var(--line);
 }
 
-.single-demo__steps strong {
+.tap-demo__steps strong {
   display: block;
   color: var(--ivory);
   font-size: 17px;
 }
 
-.single-demo__steps small {
+.tap-demo__steps small {
   display: block;
   font-size: 14px;
   line-height: 1.45;
 }
 
-.single-demo__num {
+.tap-demo__num {
   flex: none;
   display: grid;
   place-items: center;
@@ -2555,24 +2557,24 @@ html:has(.lightbox[open]) {
   transition: background 0.35s, color 0.35s, box-shadow 0.35s;
 }
 
-.single-demo__steps button.is-done .single-demo__num {
+.tap-demo__steps button.is-done .tap-demo__num {
   border-color: var(--gold);
 }
 
-.single-demo__steps button.is-current {
+.tap-demo__steps button.is-current {
   border-color: var(--line-strong);
   background: rgba(214, 176, 98, 0.07);
   box-shadow: 0 0 28px rgba(61, 255, 194, 0.1);
 }
 
-.single-demo__steps button.is-current .single-demo__num {
+.tap-demo__steps button.is-current .tap-demo__num {
   background: var(--gold-gradient);
   border-color: transparent;
   color: #1a1206;
   box-shadow: 0 0 18px rgba(243, 220, 154, 0.55);
 }
 
-.single-demo__play {
+.tap-demo__play {
   margin-top: 16px;
   padding: 8px 16px;
   border: 1px solid var(--line-strong);
@@ -2585,16 +2587,68 @@ html:has(.lightbox[open]) {
   cursor: pointer;
 }
 
-.single-demo__play:hover {
+.tap-demo__play:hover {
   border-color: var(--gold);
 }
 
-.single-demo__play:disabled {
-  display: none;
+/* Kartenauswahl unter den Schritten */
+.tap-demo__picker {
+  margin-top: 18px;
+}
+
+.tap-demo__picker-label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: var(--stone);
+}
+
+.tap-demo__cards {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tap-demo__cards button {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--stone);
+  font: inherit;
+  font-size: 11px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tap-demo__cards img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1.7;
+  object-fit: cover;
+  border-radius: 6px;
+  outline: 1px solid var(--line);
+  transition: outline-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.tap-demo__cards button:hover img {
+  transform: translateY(-2px);
+}
+
+.tap-demo__cards button[aria-checked="true"] {
+  color: var(--gold-hi);
+  font-weight: 700;
+}
+
+.tap-demo__cards button[aria-checked="true"] img {
+  outline: 2px solid var(--gold-hi);
+  box-shadow: 0 0 18px rgba(243, 220, 154, 0.45);
 }
 
 /* Bühne: Karte links, Handy rechts */
-.single-demo__stage {
+.tap-stage {
   position: relative;
   min-height: calc(var(--phone-w) * 2.07 + 40px);
   display: flex;
@@ -2603,30 +2657,48 @@ html:has(.lightbox[open]) {
   padding-right: var(--phone-r);
 }
 
-.single-demo__card {
+.tap-stage__card {
   position: absolute;
   z-index: 1;
   top: 54%;
   right: calc(var(--phone-r) + var(--phone-w) + 12px);
   width: var(--card-w);
-  height: auto;
-  border-radius: 4.5% / 7.6%;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
   transform: translateY(-50%) rotate(-14deg);
   transition: transform 0.7s cubic-bezier(0.3, 0.7, 0.2, 1);
+  animation: tap-card-in 0.6s cubic-bezier(0.3, 0.7, 0.2, 1);
   user-select: none;
 }
 
+.tap-stage__css {
+  display: block;
+}
+
+.tap-stage__card > img,
+.tap-stage__card .game-variant__card {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4.5% / 7.6%;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes tap-card-in {
+  from {
+    opacity: 0;
+    transform: translate(-30px, -50%) rotate(-20deg);
+  }
+}
+
 /* Karte wandert ans Handy */
-.single-demo[data-phase="tap"] .single-demo__card {
+.tap-demo[data-tap] .tap-stage__card {
   transform: translate(var(--tap-x), -58%) rotate(-5deg);
 }
 
-.single-demo[data-phase="tap"][data-playing] .single-demo__card {
-  animation: single-card-tap 1.1s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+.tap-demo[data-tap][data-playing] .tap-stage__card {
+  animation: tap-card-move 1.1s cubic-bezier(0.3, 0.7, 0.2, 1) both;
 }
 
-@keyframes single-card-tap {
+@keyframes tap-card-move {
   from {
     transform: translateY(-50%) rotate(-14deg);
   }
@@ -2636,7 +2708,7 @@ html:has(.lightbox[open]) {
 }
 
 /* NFC-Funkwellen an der Berührungsstelle */
-.single-demo__waves {
+.tap-stage__waves {
   position: absolute;
   z-index: 3;
   top: 50%;
@@ -2646,7 +2718,7 @@ html:has(.lightbox[open]) {
   pointer-events: none;
 }
 
-.single-demo__waves i {
+.tap-stage__waves i {
   position: absolute;
   inset: 0;
   border: 2px solid var(--neon-cyan);
@@ -2655,19 +2727,19 @@ html:has(.lightbox[open]) {
   box-shadow: 0 0 14px var(--neon-cyan);
 }
 
-.single-demo[data-phase="tap"] .single-demo__waves i {
-  animation: single-wave 1.5s ease-out 0.9s infinite;
+.tap-demo[data-tap] .tap-stage__waves i {
+  animation: tap-wave 1.5s ease-out 0.9s infinite;
 }
 
-.single-demo[data-phase="tap"] .single-demo__waves i:nth-child(2) {
+.tap-demo[data-tap] .tap-stage__waves i:nth-child(2) {
   animation-delay: 1.2s;
 }
 
-.single-demo[data-phase="tap"] .single-demo__waves i:nth-child(3) {
+.tap-demo[data-tap] .tap-stage__waves i:nth-child(3) {
   animation-delay: 1.5s;
 }
 
-@keyframes single-wave {
+@keyframes tap-wave {
   from {
     opacity: 0.9;
     transform: scale(0.3);
@@ -2679,7 +2751,7 @@ html:has(.lightbox[open]) {
 }
 
 /* Das Handy */
-.single-phone {
+.tap-phone {
   position: relative;
   z-index: 2;
   flex: none;
@@ -2689,21 +2761,23 @@ html:has(.lightbox[open]) {
   border-radius: 44px;
   background: linear-gradient(145deg, #1d2c27, #050b09 60%, #18241f);
   box-shadow:
-    0 0 0 1.5px rgba(214, 176, 98, 0.55),
+    0 0 0 1.5px color-mix(in srgb, var(--app-accent) 70%, transparent),
     0 40px 80px rgba(0, 0, 0, 0.6),
-    0 0 70px rgba(61, 255, 194, 0.12);
+    0 0 70px color-mix(in srgb, var(--app-accent) 24%, transparent);
+  transition: box-shadow 0.6s;
+  color: var(--app-text);
 }
 
-.single-phone__screen {
+.tap-phone__screen {
   position: relative;
   height: 100%;
   overflow: hidden;
   border-radius: 34px;
-  background: #04150f;
+  background: var(--app-bg);
 }
 
 /* Kamera-Aussparung oben */
-.single-phone__screen::before {
+.tap-phone__screen::before {
   content: "";
   position: absolute;
   z-index: 5;
@@ -2716,8 +2790,8 @@ html:has(.lightbox[open]) {
   background: #000;
 }
 
-/* Sperrbildschirm */
-.single-lock {
+/* Sperrbildschirm – im Look der Karte, etwas abgedunkelt */
+.tap-lock {
   position: absolute;
   inset: 0;
   z-index: 2;
@@ -2725,52 +2799,52 @@ html:has(.lightbox[open]) {
   flex-direction: column;
   align-items: center;
   padding: 64px 12px 0;
-  background: radial-gradient(130% 70% at 50% 0%, #0f4a37, #03130e 70%);
+  background: var(--app-bg);
   transition: opacity 0.5s, transform 0.5s;
 }
 
-.single-demo:not([data-phase="tap"]) .single-lock {
+.tap-demo:not([data-tap]) .tap-lock {
   opacity: 0;
   transform: scale(1.06);
   pointer-events: none;
 }
 
-.single-lock__time {
+.tap-lock__time {
   font-family: var(--font-display);
   font-size: 56px;
   font-weight: 300;
   line-height: 1;
-  color: var(--ivory);
+  color: var(--app-text);
 }
 
-.single-lock__date {
+.tap-lock__date {
   margin-top: 4px;
   font-size: 13px;
-  color: var(--stone);
+  color: var(--app-muted);
 }
 
-.single-lock__note {
+.tap-lock__note {
   width: 100%;
   margin-top: 30px;
   display: flex;
   gap: 10px;
   align-items: center;
   padding: 10px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid color-mix(in srgb, var(--app-text) 16%, transparent);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.09);
+  background: color-mix(in srgb, var(--app-text) 10%, transparent);
   backdrop-filter: blur(10px);
-  color: var(--ivory);
+  color: var(--app-text);
   font: inherit;
   text-align: left;
   cursor: pointer;
 }
 
-.single-demo[data-phase="tap"][data-playing] .single-lock__note {
-  animation: single-note-in 0.5s cubic-bezier(0.3, 0.7, 0.2, 1) 1.3s both;
+.tap-demo[data-tap][data-playing] .tap-lock__note {
+  animation: tap-note-in 0.5s cubic-bezier(0.3, 0.7, 0.2, 1) 1.3s both;
 }
 
-@keyframes single-note-in {
+@keyframes tap-note-in {
   from {
     opacity: 0;
     transform: translateY(-16px) scale(0.96);
@@ -2781,32 +2855,32 @@ html:has(.lightbox[open]) {
   }
 }
 
-.single-lock__icon {
+.tap-lock__icon {
   flex: none;
   display: grid;
   place-items: center;
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: var(--gold-gradient);
-  color: #1a1206;
+  background: var(--app-accent);
+  color: var(--app-accent-text);
   font-weight: 800;
 }
 
-.single-lock__note strong {
+.tap-lock__note strong {
   display: block;
   font-size: 13px;
 }
 
-.single-lock__note small {
+.tap-lock__note small {
   display: block;
   font-size: 12px;
   line-height: 1.35;
-  color: rgba(239, 233, 220, 0.78);
+  color: var(--app-muted);
 }
 
 /* Die App */
-.single-app {
+.tap-app {
   position: absolute;
   inset: 0;
   display: flex;
@@ -2816,11 +2890,72 @@ html:has(.lightbox[open]) {
   transition: opacity 0.55s, transform 0.55s cubic-bezier(0.3, 0.7, 0.2, 1);
 }
 
-.single-demo:not([data-phase="tap"]) .single-app {
+.tap-demo:not([data-tap]) .tap-app {
   opacity: 1;
   transform: none;
 }
 
+.tap-app__toast {
+  position: absolute;
+  z-index: 3;
+  left: 12px;
+  right: 12px;
+  bottom: 14px;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--app-accent);
+  border-radius: 14px;
+  background: var(--app-bg);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--app-accent) 40%, transparent);
+  color: var(--app-text);
+  font-size: 13px;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s, transform 0.4s;
+  pointer-events: none;
+}
+
+.tap-app__toast.is-shown {
+  opacity: 1;
+  transform: none;
+}
+
+/* Angedeuteter Finger, der etwas antippt */
+.tap-finger {
+  position: absolute;
+  top: 50%;
+  right: 22px;
+  width: 34px;
+  height: 34px;
+  margin-top: -17px;
+  border: 2px solid var(--app-text);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--app-text) 30%, transparent);
+  pointer-events: none;
+  animation: tap-finger 1.7s ease both;
+}
+
+@keyframes tap-finger {
+  0% {
+    opacity: 0;
+    transform: translate(40px, 60px);
+  }
+  55% {
+    opacity: 1;
+    transform: none;
+  }
+  75% {
+    opacity: 1;
+    transform: scale(0.78);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+}
+
+/* ---------- Single-App (Inhalt) ---------- */
 .single-app__bar {
   flex: none;
   display: flex;
@@ -2829,21 +2964,21 @@ html:has(.lightbox[open]) {
   padding: 42px 16px 10px;
   font-size: 13px;
   letter-spacing: 0.04em;
-  color: var(--ivory);
+  color: var(--app-text);
 }
 
 .single-app__bar b {
-  color: var(--gold-hi);
+  color: var(--app-accent);
 }
 
 .single-app__badge {
   padding: 2px 9px;
-  border: 1px solid var(--neon-mint);
+  border: 1px solid var(--app-accent);
   border-radius: 999px;
-  color: var(--neon-mint);
+  color: var(--app-accent);
   font-size: 11px;
   font-weight: 700;
-  box-shadow: 0 0 12px rgba(61, 255, 194, 0.35);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--app-accent) 35%, transparent);
 }
 
 .single-app__scroll {
@@ -2964,7 +3099,7 @@ html:has(.lightbox[open]) {
 }
 
 .single-app__zone:focus-visible {
-  outline: 2px solid var(--gold-hi);
+  outline: 2px solid var(--app-accent);
   outline-offset: -4px;
   border-radius: 20px;
 }
@@ -2982,7 +3117,7 @@ html:has(.lightbox[open]) {
 
 .single-app__name strong {
   display: block;
-  font-family: var(--font-ink);
+  font-family: var(--app-font);
   font-size: 28px;
   line-height: 1.1;
   color: #fff;
@@ -3003,14 +3138,14 @@ html:has(.lightbox[open]) {
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--app-accent);
 }
 
 .single-app__about p {
   margin: 0;
   font-size: 14px;
   line-height: 1.5;
-  color: var(--ivory);
+  color: var(--app-text);
 }
 
 .single-app__about ul {
@@ -3024,28 +3159,29 @@ html:has(.lightbox[open]) {
 
 .single-app__about li {
   padding: 4px 10px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--app-line);
   border-radius: 999px;
+  background: var(--app-surface);
   font-size: 12px;
-  color: var(--gold-hi);
+  color: var(--app-text);
 }
 
 .single-app__ask {
   margin-top: 18px;
   padding: 16px 12px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--app-line);
   border-radius: 18px;
-  background: radial-gradient(90% 60% at 50% 0%, rgba(214, 176, 98, 0.16), transparent 70%);
+  background: var(--app-surface);
   text-align: center;
 }
 
 .single-app__ask strong {
   display: block;
   margin-bottom: 12px;
-  font-family: var(--font-ink);
+  font-family: var(--app-font);
   font-size: 23px;
   line-height: 1.15;
-  color: #fff;
+  color: var(--app-text);
 }
 
 .single-app__answers {
@@ -3056,10 +3192,10 @@ html:has(.lightbox[open]) {
 .single-app__answers button {
   position: relative;
   padding: 10px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--app-line);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--ivory);
+  background: var(--app-surface);
+  color: var(--app-text);
   font: inherit;
   font-size: 14px;
   cursor: pointer;
@@ -3067,15 +3203,15 @@ html:has(.lightbox[open]) {
 }
 
 .single-app__answers button:hover {
-  border-color: var(--gold);
+  border-color: var(--app-accent);
 }
 
 .single-app__answers button.is-picked {
-  background: var(--gold-gradient);
+  background: var(--app-accent);
   border-color: transparent;
-  color: #1a1206;
+  color: var(--app-accent-text);
   font-weight: 700;
-  box-shadow: 0 0 22px rgba(243, 220, 154, 0.5);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--app-accent) 55%, transparent);
   animation: single-pop 0.35s ease;
 }
 
@@ -3085,68 +3221,406 @@ html:has(.lightbox[open]) {
   }
 }
 
-/* Angedeuteter Finger, der die erste Antwort antippt */
-.single-finger {
-  position: absolute;
-  top: 50%;
-  right: 22px;
-  width: 34px;
-  height: 34px;
-  margin-top: -17px;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
-  pointer-events: none;
-  animation: single-finger 1.7s ease both;
+/* Pop-Art: dicke schwarze Rahmen und Comic-Schatten wie auf der Karte */
+.tap-phone[data-theme="tim"] .single-app__bar {
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
-@keyframes single-finger {
-  0% {
-    opacity: 0;
-    transform: translate(40px, 60px);
-  }
-  55% {
-    opacity: 1;
-    transform: none;
-  }
-  75% {
-    opacity: 1;
-    transform: scale(0.78);
-  }
-  100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
+.tap-phone[data-theme="tim"] .single-app__badge {
+  border: 2px solid #141414;
+  background: #141414;
+  color: #ffe600;
+  box-shadow: none;
 }
 
-.single-app__toast {
-  position: absolute;
-  z-index: 3;
-  left: 12px;
-  right: 12px;
-  bottom: 14px;
-  margin: 0;
-  padding: 12px 14px;
-  border: 1px solid var(--neon-mint);
-  border-radius: 14px;
-  background: rgba(3, 19, 14, 0.94);
-  box-shadow: 0 0 24px rgba(61, 255, 194, 0.3);
-  color: var(--ivory);
+.tap-phone[data-theme="tim"] .single-app__photos,
+.tap-phone[data-theme="tim"] .single-app__ask,
+.tap-phone[data-theme="tim"] .single-app__answers button,
+.tap-phone[data-theme="tim"] .single-app__about li,
+.tap-phone[data-theme="tim"] .tap-app__toast,
+.tap-phone[data-theme="tim"] .tap-lock__note {
+  border: 2.5px solid #141414;
+  box-shadow: 4px 4px 0 #141414;
+}
+
+.tap-phone[data-theme="tim"] .single-app__about h4 {
+  color: #141414;
+  font-weight: 800;
+}
+
+.tap-phone[data-theme="tim"] .single-app__ask strong,
+.tap-phone[data-theme="tim"] .single-app__name strong {
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.tap-phone[data-theme="tim"] .single-app__ask strong {
+  color: #ff2f8f;
+  font-size: 22px;
+  -webkit-text-stroke: 0.6px #141414;
+}
+
+.tap-phone[data-theme="tim"] .single-app__answers button {
+  font-weight: 800;
+}
+
+.tap-phone[data-theme="tim"] .single-app__answers button.is-picked {
+  border-color: #141414;
+  box-shadow: 4px 4px 0 #141414;
+}
+
+/* Mondphasen: feine Schrift mit Abstand */
+.tap-phone[data-theme="sophie"] .single-app__ask strong,
+.tap-phone[data-theme="sophie"] .single-app__name strong {
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+/* ---------- Spiele-App (Inhalt) ---------- */
+.game-app__bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 42px 16px 10px;
   font-size: 13px;
-  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: var(--app-text);
+}
+
+.game-app__bar b {
+  color: var(--app-accent);
+}
+
+.game-app__badge {
+  padding: 2px 9px;
+  border: 1px solid var(--app-accent);
+  border-radius: 999px;
+  color: var(--app-accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.game-app__body {
+  position: relative;
+  flex: 1;
+  padding: 4px 14px 90px;
+}
+
+.game-app__screen {
+  position: absolute;
+  inset: 4px 14px 90px;
+  display: flex;
+  flex-direction: column;
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.4s, transform 0.4s;
+  transform: translateX(30px);
+  transition: opacity 0.45s, transform 0.45s cubic-bezier(0.3, 0.7, 0.2, 1);
   pointer-events: none;
 }
 
-.single-app__toast.is-shown {
+.game-app__screen.is-active {
   opacity: 1;
   transform: none;
+  pointer-events: auto;
+}
+
+.game-app__screen.is-past {
+  transform: translateX(-30px);
+}
+
+.game-app__title {
+  margin: 4px 0 12px;
+  font-family: var(--app-font);
+  font-size: 25px;
+  line-height: 1.1;
+  color: var(--app-text);
+}
+
+.game-app__hint {
+  margin: -6px 0 12px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--app-muted);
+}
+
+/* Spieleliste */
+.game-app__tiles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.game-app__tiles li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+  border: 1px solid var(--app-line);
+  border-radius: 14px;
+  background: var(--app-surface);
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s, background-color 0.3s;
+}
+
+.game-app__tiles .game-app__icon {
+  font-size: 18px;
+  line-height: 1.2;
+  color: var(--app-accent);
+}
+
+.game-app__tiles strong {
+  font-size: 12.5px;
+  line-height: 1.2;
+  color: var(--app-text);
+}
+
+.game-app__tiles small {
+  font-size: 11px;
+  color: var(--app-muted);
+}
+
+.game-app__tiles li.is-hover {
+  border-color: var(--app-accent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--app-accent) 45%, transparent);
+  transform: scale(1.03);
+}
+
+.game-app__tiles li.is-picked {
+  background: var(--app-accent);
+  border-color: transparent;
+}
+
+.game-app__tiles li.is-picked strong,
+.game-app__tiles li.is-picked small,
+.game-app__tiles li.is-picked .game-app__icon {
+  color: var(--app-accent-text);
+}
+
+/* Raum */
+.game-app__code {
+  align-self: flex-start;
+  margin-bottom: 14px;
+  padding: 8px 14px;
+  border: 1px dashed var(--app-accent);
+  border-radius: 12px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: var(--app-accent);
+}
+
+.game-app__players {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.game-app__players li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--app-line);
+  border-radius: 14px;
+  background: var(--app-surface);
+  color: var(--app-muted);
+  font-size: 13px;
+  transition: opacity 0.4s, transform 0.4s;
+}
+
+.game-app__players li.is-waiting {
+  opacity: 0.45;
+  border-style: dashed;
+}
+
+.game-app__players li.is-in {
+  color: var(--app-text);
+  animation: game-join 0.45s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+@keyframes game-join {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+.game-app__avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--app-accent2);
+  color: var(--app-bg);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.game-app__players li:first-child .game-app__avatar {
+  background: var(--app-accent);
+  color: var(--app-accent-text);
+}
+
+.game-app__players li em {
+  margin-left: auto;
+  font-style: normal;
+  font-size: 11px;
+  color: var(--app-accent);
+}
+
+.game-app__start {
+  position: relative;
+  margin-top: 14px;
+  padding: 11px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--app-accent);
+  color: var(--app-accent-text);
+  font: inherit;
+  font-weight: 800;
+  opacity: 0.4;
+  transition: opacity 0.3s, box-shadow 0.3s;
+}
+
+.game-app__start.is-ready {
+  opacity: 1;
+  box-shadow: 0 0 22px color-mix(in srgb, var(--app-accent) 55%, transparent);
+}
+
+/* Spielfeld */
+.game-app__vs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--app-muted);
+}
+
+.game-app__vs b {
+  color: var(--app-text);
+}
+
+.game-app__vs .is-turn {
+  color: var(--app-accent);
+}
+
+.game-app__board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  aspect-ratio: 1;
+  padding: 6px;
+  border: 1px solid var(--app-line);
+  border-radius: 16px;
+  background: var(--app-surface);
+}
+
+.game-app__board span {
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--app-text) 6%, transparent);
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.game-app__board .is-x {
+  color: var(--app-accent);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--app-accent) 60%, transparent);
+  animation: game-mark 0.35s cubic-bezier(0.3, 0.7, 0.2, 1.4);
+}
+
+.game-app__board .is-o {
+  color: var(--app-accent2);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--app-accent2) 60%, transparent);
+  animation: game-mark 0.35s cubic-bezier(0.3, 0.7, 0.2, 1.4);
+}
+
+/* O als kräftiger Ring statt Schriftzeichen */
+.game-app__board .is-o::before {
+  content: "";
+  width: 46%;
+  aspect-ratio: 1;
+  border: 5px solid currentColor;
+  border-radius: 50%;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--app-accent2) 50%, transparent);
+}
+
+.game-app__board .is-win {
+  background: color-mix(in srgb, var(--app-accent) 22%, transparent);
+}
+
+@keyframes game-mark {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+
+.game-app__watch {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--app-muted);
+  text-align: center;
+}
+
+/* Arcade: Pixel-Gefühl, Großbuchstaben */
+.tap-phone[data-theme="arcade"] .game-app__title,
+.tap-phone[data-theme="arcade"] .game-app__start {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tap-phone[data-theme="arcade"] .game-app__tiles li,
+.tap-phone[data-theme="arcade"] .game-app__players li,
+.tap-phone[data-theme="arcade"] .game-app__board,
+.tap-phone[data-theme="arcade"] .game-app__board span,
+.tap-phone[data-theme="arcade"] .game-app__start,
+.tap-phone[data-theme="arcade"] .tap-app__toast {
+  border-radius: 4px;
+}
+
+/* Familie: runde, weiche Formen */
+.tap-phone[data-theme="familie"] .game-app__tiles li,
+.tap-phone[data-theme="familie"] .game-app__players li,
+.tap-phone[data-theme="familie"] .game-app__board,
+.tap-phone[data-theme="familie"] .tap-app__toast {
+  border-radius: 20px;
+  box-shadow: 0 4px 0 rgba(43, 33, 64, 0.08);
+}
+
+.tap-phone[data-theme="familie"] .game-app__board span {
+  border-radius: 50%;
+}
+
+/* Stammtisch: Spielfeld wie eine Kreidetafel */
+.tap-phone[data-theme="kneipe"] .game-app__board {
+  border: 6px solid #6b4426;
+  background: #1f2a24;
+}
+
+.tap-phone[data-theme="kneipe"] .game-app__board span {
+  background: rgba(255, 255, 255, 0.04);
+  font-family: var(--font-ink);
 }
 
 @media (max-width: 1080px) {
-  .single-demo {
+  .tap-demo {
     grid-template-columns: minmax(0, 1fr);
     --phone-r: calc(50% - var(--phone-w) / 2 + 60px);
     --card-w: 200px;
@@ -3159,7 +3633,7 @@ html:has(.lightbox[open]) {
 }
 
 @media (max-width: 600px) {
-  .single-demo {
+  .tap-demo {
     --phone-w: 228px;
     --phone-r: 0px;
     --card-w: 120px;
@@ -3167,12 +3641,32 @@ html:has(.lightbox[open]) {
     padding: 16px;
   }
 
-  .single-demo__steps button {
+  .tap-demo__steps button {
     padding: 10px 12px;
   }
 
-  .single-demo__steps small {
+  .tap-demo__steps small {
     font-size: 13px;
+  }
+
+  .tap-demo__cards {
+    gap: 6px;
+  }
+
+  .tap-demo__cards span {
+    display: none;
+  }
+
+  .game-app__title {
+    font-size: 21px;
+  }
+
+  .game-app__tiles li {
+    padding: 8px;
+  }
+
+  .game-app__tiles strong {
+    font-size: 11.5px;
   }
 
   .single__info {
@@ -3208,52 +3702,27 @@ html:has(.lightbox[open]) {
   }
 }
 
-.games__stage {
-  --v: var(--gold);
-  display: grid;
-  place-items: center;
-  margin: 0 auto 28px;
-  max-width: 820px;
-}
-
-.games__stage img,
-.games__stage-css {
-  width: 100%;
-  height: auto;
-  border-radius: 3.6% / 6%;
-  box-shadow:
-    0 40px 80px rgba(0, 0, 0, 0.6),
-    0 0 0 1px color-mix(in srgb, var(--v) 55%, transparent),
-    0 0 60px color-mix(in srgb, var(--v) 28%, transparent);
-  animation: stage-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.games__stage-css {
+/* Erklär-Animation der Spielekarte */
+.games__demo {
   position: relative;
-  box-shadow: none;
+  margin-bottom: 28px;
 }
 
-.games__stage-css > span:last-child {
+.games__demo-badge {
   position: absolute;
-  right: 14px;
-  top: 14px;
-  padding: 2px 10px;
+  z-index: 4;
+  top: -12px;
+  right: 24px;
+  padding: 4px 12px;
+  border: 1px solid var(--neon-pink);
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
+  background: var(--black);
+  color: var(--neon-pink);
   font-size: 12px;
   font-weight: 700;
-}
-
-.games__stage-css .game-variant__card {
-  display: grid;
-}
-
-@keyframes stage-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.97);
-  }
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 14px rgba(255, 47, 180, 0.35);
 }
 
 .game-variant__img {
@@ -4304,9 +4773,7 @@ html:has(.lightbox[open]) {
   }
 
   body::before,
-  .games__soon,
-  .games__stage img,
-  .games__stage-css {
+  .games__soon {
     animation: none;
   }
 
@@ -4319,7 +4786,7 @@ html:has(.lightbox[open]) {
     transition: none;
   }
 
-  .single-demo *,
+  .tap-demo *,
   .deck__card,
   .phone__screen,
   .phone__screen > * {
