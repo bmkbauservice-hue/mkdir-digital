@@ -1,11 +1,19 @@
 // Alle Texte, Preise und Kontaktdaten der Seite an einem Ort.
 // Wer etwas ändern will, ändert es hier – die Komponenten lesen nur aus dieser Datei.
 
+// Angaben für Datenschutz (und später Impressum).
+// TODO: ladungsfähige Anschrift eintragen – ohne Anschrift sind Impressum und Datenschutz unvollständig.
+export const legal = {
+  name: "Mario Kujoth",
+  street: "",
+  city: "",
+  privacyDate: "Oktober 2026",
+};
+
 export const contact = {
   email: "IT-mkdir@proton.me",
-  // TODO: vollständige Geschäftsnummer eintragen (bisher nur der Anfang bekannt).
-  phone: "0151 2167 …",
-  phoneHref: "", // z. B. "+49151216xxxxx" – leer lassen, solange die Nummer unvollständig ist
+  phone: "0151 21679480",
+  phoneHref: "+4915121679480",
   domain: "mkdir-design.de",
   region: "Brandenburg",
 };
