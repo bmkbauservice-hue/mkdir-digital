@@ -1,0 +1,53 @@
+name: PR prüfen
+
+# Prüft jeden Pull Request, BEVOR er gemergt wird – mit denselben Schritten wie das Deployment.
+# Grüner Haken im PR = Mergen ist sicher, die Live-Seite wird danach aktualisiert.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      # Jeder Lint-Fund wird als Anmerkung direkt im Pull Request angezeigt
+      # (auch mehrzeilige Meldungen der React-Hooks-Regeln, die sonst untergehen).
+      - name: Lint prüfen
+        run: |
+          npx eslint . -f json -o eslint-report.json || true
+          node -e '
+            const report = require("./eslint-report.json");
+            let errors = 0;
+            for (const file of report) {
+              const path = file.filePath.replace(process.cwd() + "/", "");
+              for (const m of file.messages) {
+                const level = m.severity === 2 ? "error" : "warning";
+                if (m.severity === 2) errors++;
+                const text = `${m.message} (${m.ruleId ?? "parser"})`.replace(/\r?\n+/g, " ").replace(/%/g, "%25");
+                console.log(`::${level} file=${path},line=${m.line ?? 1},col=${m.column ?? 1}::${text}`);
+              }
+            }
+            if (errors) {
+              console.log(`${errors} Lint-Fehler gefunden`);
+              process.exit(1);
+            }
+            console.log("Lint ohne Fehler");
+          '
+
+      - name: TypeScript und Vite bauen
+        run: npm run build

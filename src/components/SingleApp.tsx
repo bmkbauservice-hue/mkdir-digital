@@ -32,7 +32,11 @@ export function SingleApp() {
     [profile],
   );
 
-  const demo = useDemoTimeline(phases, profile.id, () => {
+  // Am Ende einer Runde: eigene Antwort vergessen und ggf. zur nächsten Karte.
+  // (Zurücksetzen passiert in Ereignissen wie diesem, nicht in einem Effekt.)
+  const rootRef = useRef<HTMLDivElement>(null);
+  const demo = useDemoTimeline(phases, profile.id, rootRef, () => {
+    setUserPick(null);
     if (cycle) setIndex((i) => (i + 1) % singleProfiles.length);
   });
   const { phase, tick } = demo;
@@ -46,11 +50,6 @@ export function SingleApp() {
   const photo = phase === "profil" ? tick : phase === "tap" ? 0 : n - 1;
   // Antwort: die selbst gewählte – sonst wählt die Automatik im zweiten Teilschritt die erste.
   const picked = userPick ?? (phase === "frage" && tick >= 1 ? singleAnswers[0] : null);
-
-  // Neue Runde oder neue Karte: eigene Antwort vergessen.
-  useEffect(() => {
-    if (phase === "tap") setUserPick(null);
-  }, [phase, profile.id]);
 
   // Im Handy zum passenden Teil scrollen (nur innerhalb des Handys, nicht die Seite).
   useEffect(() => {
@@ -99,16 +98,20 @@ export function SingleApp() {
   const current = steps.findIndex((s) => s.id === phase);
 
   return (
-    <div className="tap-demo" ref={demo.rootRef} data-tap={phase === "tap" || undefined} data-playing={demo.playing || undefined}>
+    <div className="tap-demo" ref={rootRef} data-tap={phase === "tap" || undefined} data-playing={demo.playing || undefined}>
       <DemoSteps
         steps={steps}
         current={current}
-        onPick={(id) => demo.goTo(id)}
+        onPick={(id) => {
+          if (id === "tap" || id === "profil") setUserPick(null);
+          demo.goTo(id);
+        }}
         autoplay={demo.autoplay}
         reduced={demo.reduced}
         onPause={demo.pause}
         onRestart={() => {
           setCycle(true);
+          setUserPick(null);
           demo.restart();
         }}
       >

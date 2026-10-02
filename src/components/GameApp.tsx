@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { gameCardVariants, games } from "../content";
 import { DemoSteps, TapStage, useDemoTimeline, type DemoPhase, type DemoStep } from "./TapDemo";
 
@@ -55,7 +55,8 @@ const phases: DemoPhase[] = [
 ];
 
 export function GameApp({ variant, onLoopEnd }: { variant: Variant; onLoopEnd: () => void }) {
-  const demo = useDemoTimeline(phases, variant.id, onLoopEnd);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const demo = useDemoTimeline(phases, variant.id, rootRef, onLoopEnd);
   const { phase, phaseIndex, tick } = demo;
 
   // Was ist gerade zu sehen? Alles wird aus Phase + Teilschritt berechnet.
@@ -81,7 +82,7 @@ export function GameApp({ variant, onLoopEnd }: { variant: Variant; onLoopEnd: (
   const current = steps.findIndex((s) => s.id === phase);
 
   return (
-    <div className="tap-demo" ref={demo.rootRef} data-tap={phase === "tap" || undefined} data-playing={demo.playing || undefined}>
+    <div className="tap-demo" ref={rootRef} data-tap={phase === "tap" || undefined} data-playing={demo.playing || undefined}>
       <DemoSteps
         steps={steps}
         current={current}
