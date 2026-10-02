@@ -655,7 +655,7 @@ export const gameCardVariants: { id: string; name: string; text: string; symbol:
       text: "#f6e7b8",
       muted: "rgba(246,231,184,0.68)",
       accent: "#e0b754",
-      accent2: "#c8102e",
+      accent2: "#fff4d6",
       accentText: "#1a1206",
       line: "rgba(224,183,84,0.5)",
       font: "ink",
@@ -703,7 +703,7 @@ export const gameCardVariants: { id: string; name: string; text: string; symbol:
     text: "Bunt, rund und kinderleicht",
     symbol: "★",
     theme: {
-      bg: "radial-gradient(circle at 15% 12%, #ffd23f 0 34px, transparent 35px), radial-gradient(circle at 92% 30%, #2bb3ff 0 26px, transparent 27px), radial-gradient(circle at 8% 88%, #ff6b4a 0 30px, transparent 31px), #fff6e5",
+      bg: "radial-gradient(circle at 100% 0%, rgba(255,210,63,0.45) 0 70px, transparent 71px), radial-gradient(circle at 0% 55%, rgba(43,179,255,0.18) 0 44px, transparent 45px), radial-gradient(circle at 100% 100%, rgba(255,107,74,0.2) 0 90px, transparent 91px), #fff6e5",
       surface: "#ffffff",
       text: "#2b2140",
       muted: "rgba(43,33,64,0.65)",

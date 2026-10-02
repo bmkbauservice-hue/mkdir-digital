@@ -7,25 +7,16 @@ import {
   mailto,
   type GameCategory,
 } from "../content";
+import { CssCard, GameApp } from "./GameApp";
 
 type Mode = "paket" | "selbst";
-
-// Gezeichnete Platzhalter-Karte für Varianten ohne Bild.
-function CssCard({ symbol }: { symbol: string }) {
-  return (
-    <span className="game-variant__card" aria-hidden="true">
-      <span className="game-variant__symbol">{symbol}</span>
-      <span className="game-variant__brand">MKDIR</span>
-      <span className="game-variant__label">SPIELEKARTE</span>
-    </span>
-  );
-}
 
 // Spielekarte – IN VORBEREITUNG.
 // Zeigt die vier Kartenvarianten und einen Paket-Konfigurator.
 // Ergebnis ist (noch) keine Bestellung, sondern ein Eintrag auf der Warteliste per E-Mail.
 export function GameCard() {
   const [variant, setVariant] = useState(gameCardVariants[0].id);
+  const [cycle, setCycle] = useState(true); // Animation wechselt nach jeder Runde die Variante, bis man selbst wählt
   const [mode, setMode] = useState<Mode>("paket");
   const [size, setSize] = useState(5);
   const [picked, setPicked] = useState<string[]>([]);
@@ -78,21 +69,16 @@ export function GameCard() {
           </p>
         </div>
 
-        <div className={`games__stage game-variant--${current.id}`}>
-          {current.image ? (
-            <img
-              key={current.id}
-              src={`${import.meta.env.BASE_URL}spiele/${current.image}`}
-              alt={`MKDIR Spielekarte im Design ${current.name} mit Spieleliste`}
-              width={1200}
-              height={706}
-            />
-          ) : (
-            <div key={current.id} className="games__stage-css">
-              <CssCard symbol={current.symbol} />
-              <span>Bild folgt</span>
-            </div>
-          )}
+        <div className="games__demo">
+          <span className="games__demo-badge">So wird's aussehen</span>
+          <GameApp
+            variant={current}
+            onLoopEnd={() => {
+              if (!cycle) return;
+              const i = gameCardVariants.findIndex((v) => v.id === variant);
+              setVariant(gameCardVariants[(i + 1) % gameCardVariants.length].id);
+            }}
+          />
         </div>
 
         <div className="games__variants" role="radiogroup" aria-label="Kartenvariante wählen">
@@ -103,7 +89,10 @@ export function GameCard() {
               role="radio"
               aria-checked={variant === v.id}
               className={`game-variant game-variant--${v.id}`}
-              onClick={() => setVariant(v.id)}
+              onClick={() => {
+                setCycle(false);
+                setVariant(v.id);
+              }}
             >
               {v.image ? (
                 <img
