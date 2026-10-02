@@ -142,7 +142,7 @@ function Designs() {
         </div>
         <div className="gallery gallery--main">
           {first.map((d, i) => (
-            <DesignTile key={d.file} d={d} feature={i === 0} onOpen={() => setOpen(i)} />
+            <DesignTile key={d.file} d={d} onOpen={() => setOpen(i)} />
           ))}
         </div>
         {showAll && (
