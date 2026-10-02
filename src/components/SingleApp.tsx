@@ -1,116 +1,78 @@
-import { useEffect, useRef, useState, type PointerEvent } from "react";
-import { singleAnswers, type SingleProfile } from "../content";
+import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
+import { singleAnswers, singleProfiles } from "../content";
 import { ProfilePhoto } from "./ProfilePhoto";
+import { DemoSteps, TapStage, useDemoTimeline, type DemoPhase, type DemoStep } from "./TapDemo";
 
-// Animierte Vorführung der Single-App: Karte antippen → Profil mit Fotos → Über mich → Antworten.
-// Läuft von allein in Schleife, solange der Bereich sichtbar ist. Sobald man selbst etwas antippt,
-// stoppt die Automatik und man kann frei ausprobieren. Alles nur Demo – es wird nichts gesendet.
+// Animierte Vorführung der Single-App. Jede der fünf Karten hat ihre eigene App im selben Look.
+// Ablauf: Karte antippen → Fotos → Über mich → Antworten. Danach automatisch die nächste Karte.
+// Wer selbst etwas antippt, übernimmt – die Automatik stoppt. Alles nur Demo, es wird nichts gesendet.
 
-type Phase = "tap" | "profil" | "about" | "frage";
-
-const steps: { id: Phase; title: string; text: string }[] = [
+const steps: DemoStep[] = [
   { id: "tap", title: "Karte antippen", text: "Handy an die Karte halten – ohne App, ohne Anmeldung." },
   { id: "profil", title: "Fotos ansehen", text: "Durch die Bilder wischen wie bei einer Story." },
   { id: "about", title: "Kennenlernen", text: "Ein paar Zeilen und was die Person ausmacht." },
   { id: "frage", title: "Antworten", text: "Ein Klick – anonym, bis man die eigene Nummer selbst teilt." },
 ];
 
-// Dauer der einzelnen Schritte in Millisekunden
-const TIMING = { tap: 2800, photo: 1600, about: 2800, pick: 1700, after: 3400 };
+export function SingleApp() {
+  const [index, setIndex] = useState(0);
+  const [cycle, setCycle] = useState(true); // nach jeder Runde zur nächsten Karte?
+  const [userPick, setUserPick] = useState<string | null>(null);
+  const profile = singleProfiles[index];
+  const n = profile.photos.length;
 
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const on = () => setReduced(mq.matches);
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
-  return reduced;
-}
+  // Zeitleiste: Dauer der Teilschritte in ms. useMemo, damit sie nicht bei jedem Rendern neu entsteht.
+  const phases = useMemo<DemoPhase[]>(
+    () => [
+      { id: "tap", ticks: [2800] },
+      { id: "profil", ticks: profile.photos.map(() => 1600) },
+      { id: "about", ticks: [2800] },
+      { id: "frage", ticks: [1700, 3400] }, // erst der Finger, dann die Antwort
+    ],
+    [profile],
+  );
 
-export function SingleApp({ profile }: { profile: SingleProfile }) {
-  const reduced = usePrefersReducedMotion();
-  const [phase, setPhase] = useState<Phase>(reduced ? "profil" : "tap");
-  const [photo, setPhoto] = useState(0);
-  const [picked, setPicked] = useState<string | null>(null);
-  const [autoplay, setAutoplay] = useState(!reduced);
-  const [inView, setInView] = useState(false);
+  const demo = useDemoTimeline(phases, profile.id, () => {
+    if (cycle) setIndex((i) => (i + 1) % singleProfiles.length);
+  });
+  const { phase, tick } = demo;
 
-  const rootRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
   const askRef = useRef<HTMLDivElement>(null);
   const swipeStart = useRef<number | null>(null);
 
-  const n = profile.photos.length;
-  const playing = autoplay && inView && !reduced;
+  // Welches Foto? In der Foto-Phase zählt der Teilschritt, danach bleibt das letzte stehen.
+  const photo = phase === "profil" ? tick : phase === "tap" ? 0 : n - 1;
+  // Antwort: die selbst gewählte – sonst wählt die Automatik im zweiten Teilschritt die erste.
+  const picked = userPick ?? (phase === "frage" && tick >= 1 ? singleAnswers[0] : null);
 
-  // Neues Profil (Tab gewechselt) → Vorführung von vorn.
+  // Neue Runde oder neue Karte: eigene Antwort vergessen.
   useEffect(() => {
-    setPhase(reduced ? "profil" : "tap");
-    setPhoto(0);
-    setPicked(null);
-  }, [profile, reduced]);
+    if (phase === "tap") setUserPick(null);
+  }, [phase, profile.id]);
 
-  // Nur abspielen, wenn der Bereich wirklich im Bild ist (spart Akku, nichts läuft heimlich weiter).
-  useEffect(() => {
-    const el = rootRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.35 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  // Der Ablauf: immer nur den nächsten Schritt planen. Ändert sich etwas, wird neu geplant.
-  useEffect(() => {
-    if (!playing) return;
-    let t: number;
-    if (phase === "tap") t = window.setTimeout(() => setPhase("profil"), TIMING.tap);
-    else if (phase === "profil")
-      t = window.setTimeout(() => (photo < n - 1 ? setPhoto(photo + 1) : setPhase("about")), TIMING.photo);
-    else if (phase === "about") t = window.setTimeout(() => setPhase("frage"), TIMING.about);
-    else if (!picked) t = window.setTimeout(() => setPicked(singleAnswers[0]), TIMING.pick);
-    else
-      t = window.setTimeout(() => {
-        setPhase("tap");
-        setPhoto(0);
-        setPicked(null);
-      }, TIMING.after);
-    return () => window.clearTimeout(t);
-  }, [playing, phase, photo, picked, n]);
-
-  // Im Handy zum passenden Teil des Profils scrollen (nur innerhalb des Handys, nicht die Seite).
+  // Im Handy zum passenden Teil scrollen (nur innerhalb des Handys, nicht die Seite).
   useEffect(() => {
     const box = scrollRef.current;
     if (!box) return;
     const target = phase === "about" ? aboutRef.current : phase === "frage" ? askRef.current : null;
-    box.scrollTo({ top: target ? target.offsetTop - 12 : 0, behavior: reduced ? "auto" : "smooth" });
-  }, [phase, reduced]);
+    box.scrollTo({ top: target ? target.offsetTop - 12 : 0, behavior: demo.reduced ? "auto" : "smooth" });
+  }, [phase, demo.reduced, profile.id]);
 
   // Nach einer Antwort ganz nach unten, damit die Bestätigung den gewählten Button nicht verdeckt.
   useEffect(() => {
     const box = scrollRef.current;
-    if (box && picked) box.scrollTo({ top: box.scrollHeight, behavior: reduced ? "auto" : "smooth" });
-  }, [picked, reduced]);
+    if (box && picked) box.scrollTo({ top: box.scrollHeight, behavior: demo.reduced ? "auto" : "smooth" });
+  }, [picked, demo.reduced]);
 
-  // Selbst ausprobieren: Automatik aus.
-  const takeOver = () => setAutoplay(false);
-
-  const goPhase = (p: Phase) => {
-    takeOver();
-    setPhase(p);
-    if (p === "tap") {
-      setPhoto(0);
-      setPicked(null);
-    }
+  const choose = (i: number) => {
+    setCycle(false); // eigene Wahl: bei dieser Karte bleiben
+    setUserPick(null);
+    setIndex(i);
   };
 
-  const goPhoto = (step: number) => {
-    takeOver();
-    if (phase !== "profil") setPhase("profil");
-    setPhoto((i) => Math.min(n - 1, Math.max(0, i + step)));
-  };
+  const goPhoto = (step: number) => demo.goTo("profil", Math.min(n - 1, Math.max(0, photo + step)));
 
   const down = (e: PointerEvent<HTMLDivElement>) => {
     swipeStart.current = e.clientX;
@@ -123,9 +85,8 @@ export function SingleApp({ profile }: { profile: SingleProfile }) {
   };
 
   const pick = (a: string) => {
-    takeOver();
-    setPhase("frage");
-    setPicked(a);
+    demo.goTo("frage", 1);
+    setUserPick(a);
   };
 
   const toast =
@@ -135,152 +96,130 @@ export function SingleApp({ profile }: { profile: SingleProfile }) {
         ? `${profile.name} erfährt: Vielleicht. Kein Druck.`
         : `Gesendet! ${profile.name} sieht deine Antwort – deine Nummer nur, wenn du willst.`;
 
-  const restart = () => {
-    setPhase("tap");
-    setPhoto(0);
-    setPicked(null);
-    setAutoplay(true);
-  };
-
   const current = steps.findIndex((s) => s.id === phase);
 
   return (
-    <div className="single-demo" ref={rootRef} data-phase={phase} data-playing={playing || undefined}>
-      <div className="single-demo__copy">
-        <ol className="single-demo__steps">
-          {steps.map((s, i) => (
-            <li key={s.id}>
+    <div className="tap-demo" ref={demo.rootRef} data-tap={phase === "tap" || undefined} data-playing={demo.playing || undefined}>
+      <DemoSteps
+        steps={steps}
+        current={current}
+        onPick={(id) => demo.goTo(id)}
+        autoplay={demo.autoplay}
+        reduced={demo.reduced}
+        onPause={demo.pause}
+        onRestart={() => {
+          setCycle(true);
+          demo.restart();
+        }}
+      >
+        <div className="tap-demo__picker">
+          <span className="tap-demo__picker-label">Karte wählen – jede hat ihre eigene App:</span>
+          <div className="tap-demo__cards" role="radiogroup" aria-label="Single-Karte für die Vorschau">
+            {singleProfiles.map((p, i) => (
               <button
+                key={p.id}
                 type="button"
-                className={i === current ? "is-current" : i < current ? "is-done" : undefined}
-                aria-current={i === current ? "step" : undefined}
-                onClick={() => goPhase(s.id)}
+                role="radio"
+                aria-checked={i === index}
+                aria-label={`${p.cardName} (${p.look === "him" ? "für ihn" : "für sie"}) – Profil ${p.name}`}
+                onClick={() => choose(i)}
               >
-                <span className="single-demo__num">{i + 1}</span>
-                <span>
-                  <strong>{s.title}</strong>
-                  <small>{s.text}</small>
-                </span>
+                <img src={`${import.meta.env.BASE_URL}single/${p.card}`} alt="" width={1200} height={706} loading="lazy" />
+                <span>{p.cardName}</span>
               </button>
-            </li>
-          ))}
-        </ol>
-        <button type="button" className="single-demo__play" onClick={autoplay ? takeOver : restart} disabled={reduced}>
-          {autoplay ? "❚❚ Animation anhalten" : "▶ Animation abspielen"}
-        </button>
-      </div>
+            ))}
+          </div>
+        </div>
+      </DemoSteps>
 
-      <div className="single-demo__stage">
-        <img
-          className="single-demo__card"
-          src={`${import.meta.env.BASE_URL}single/${profile.card}`}
-          alt=""
-          width={1200}
-          height={706}
-          draggable={false}
-        />
-        <span className="single-demo__waves" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </span>
-
-        <div className="single-phone" role="group" aria-label={`Vorschau der Single-App: Profil von ${profile.name}`}>
-          <div className="single-phone__screen">
-            {/* Sperrbildschirm mit Mitteilung – sichtbar im Schritt "Karte antippen" */}
-            <div className="single-lock" inert={phase !== "tap"}>
-              <span className="single-lock__time">21:47</span>
-              <span className="single-lock__date">Freitag</span>
-              <button type="button" className="single-lock__note" onClick={() => goPhase("profil")}>
-                <span className="single-lock__icon">M</span>
-                <span>
-                  <strong>MKDIR Single</strong>
-                  <small>Jemand möchte dich kennenlernen. Tippe zum Ansehen.</small>
+      <TapStage
+        card={
+          <img src={`${import.meta.env.BASE_URL}single/${profile.card}`} alt="" width={1200} height={706} draggable={false} />
+        }
+        cardKey={profile.id}
+        theme={profile.theme}
+        themeId={profile.id}
+        label={`Vorschau der Single-App im Design ${profile.cardName}: Profil von ${profile.name}`}
+        note={{ app: "MKDIR Single", text: "Jemand möchte dich kennenlernen. Tippe zum Ansehen." }}
+        onNote={() => demo.goTo("profil")}
+        locked={phase === "tap"}
+      >
+        <div className="single-app__bar">
+          <span>
+            MKDIR <b>Single</b>
+          </span>
+          <span className="single-app__badge">Unikat ✓</span>
+        </div>
+        <div className="single-app__scroll" ref={scrollRef}>
+          <div className="single-app__photos" onPointerDown={down} onPointerUp={up}>
+            {profile.photos.map((p, i) => (
+              <div key={`${profile.id}-${i}`} className={`single-app__photo${i === photo ? " is-active" : ""}`}>
+                <ProfilePhoto photo={p} look={profile.look} palette={profile.id} />
+              </div>
+            ))}
+            <div className="single-app__progress" aria-hidden="true">
+              {profile.photos.map((_, i) => (
+                <span key={i} className={i < photo ? "is-done" : undefined}>
+                  {i === photo && (
+                    <i
+                      key={`${profile.id}-${photo}-${demo.playing && phase === "profil"}`}
+                      className={demo.playing && phase === "profil" ? "is-running" : "is-full"}
+                    />
+                  )}
                 </span>
-              </button>
+              ))}
             </div>
+            <button type="button" className="single-app__zone single-app__zone--prev" onClick={() => goPhoto(-1)}>
+              <span className="sr-only">Vorheriges Foto</span>
+            </button>
+            <button type="button" className="single-app__zone single-app__zone--next" onClick={() => goPhoto(1)}>
+              <span className="sr-only">Nächstes Foto</span>
+            </button>
+            <div className="single-app__name">
+              <strong>
+                {profile.name}, {profile.age}
+              </strong>
+              <span>
+                {profile.place} · {profile.photos[photo].caption}
+              </span>
+            </div>
+          </div>
 
-            {/* Die App */}
-            <div className="single-app" inert={phase === "tap"}>
-              <div className="single-app__bar">
-                <span>
-                  MKDIR <b>Single</b>
-                </span>
-                <span className="single-app__badge">Unikat ✓</span>
-              </div>
-              <div className="single-app__scroll" ref={scrollRef}>
-                <div className="single-app__photos" onPointerDown={down} onPointerUp={up}>
-                  {profile.photos.map((p, i) => (
-                    <div key={`${profile.name}-${i}`} className={`single-app__photo${i === photo ? " is-active" : ""}`}>
-                      <ProfilePhoto photo={p} look={profile.look} />
-                    </div>
-                  ))}
-                  <div className="single-app__progress" aria-hidden="true">
-                    {profile.photos.map((_, i) => (
-                      <span key={i} className={i < photo ? "is-done" : undefined}>
-                        {i === photo && (
-                          <i
-                            key={`${photo}-${playing && phase === "profil"}`}
-                            className={playing && phase === "profil" ? "is-running" : "is-full"}
-                          />
-                        )}
-                      </span>
-                    ))}
-                  </div>
-                  <button type="button" className="single-app__zone single-app__zone--prev" onClick={() => goPhoto(-1)}>
-                    <span className="sr-only">Vorheriges Foto</span>
-                  </button>
-                  <button type="button" className="single-app__zone single-app__zone--next" onClick={() => goPhoto(1)}>
-                    <span className="sr-only">Nächstes Foto</span>
-                  </button>
-                  <div className="single-app__name">
-                    <strong>
-                      {profile.name}, {profile.age}
-                    </strong>
-                    <span>
-                      {profile.place} · {profile.photos[photo].caption}
-                    </span>
-                  </div>
-                </div>
+          <div className="single-app__about" ref={aboutRef}>
+            <h4>Über mich</h4>
+            <p>{profile.bio}</p>
+            <ul>
+              {profile.tags.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </div>
 
-                <div className="single-app__about" ref={aboutRef}>
-                  <h4>Über mich</h4>
-                  <p>{profile.bio}</p>
-                  <ul>
-                    {profile.tags.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="single-app__ask" ref={askRef}>
-                  <strong>{profile.question}</strong>
-                  <div className="single-app__answers">
-                    {singleAnswers.map((a, i) => (
-                      <button
-                        key={a}
-                        type="button"
-                        className={picked === a ? "is-picked" : undefined}
-                        aria-pressed={picked === a}
-                        onClick={() => pick(a)}
-                      >
-                        {a}
-                        {i === 0 && playing && phase === "frage" && !picked && (
-                          <span className="single-finger" aria-hidden="true" />
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <p className={`single-app__toast${picked ? " is-shown" : ""}`} role="status">
-                {picked ? toast : ""}
-              </p>
+          <div className="single-app__ask" ref={askRef}>
+            <strong>{profile.question}</strong>
+            <div className="single-app__answers">
+              {singleAnswers.map((a, i) => (
+                <button
+                  key={a}
+                  type="button"
+                  className={picked === a ? "is-picked" : undefined}
+                  aria-pressed={picked === a}
+                  onClick={() => pick(a)}
+                >
+                  {a}
+                  {i === 0 && demo.playing && phase === "frage" && !picked && (
+                    <span className="tap-finger" aria-hidden="true" />
+                  )}
+                </button>
+              ))}
             </div>
           </div>
         </div>
-      </div>
+
+        <p className={`tap-app__toast${picked ? " is-shown" : ""}`} role="status">
+          {picked ? toast : ""}
+        </p>
+      </TapStage>
     </div>
   );
 }

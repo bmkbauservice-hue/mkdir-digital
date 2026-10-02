@@ -17,7 +17,17 @@ function Silhouette({ look }: { look: "him" | "her" }) {
 // Ein Foto im Profil der Single-App.
 // Gibt es ein echtes Bild (photo.image), wird es angezeigt – sonst ein gezeichnetes Motiv als Platzhalter.
 // Alle Motive sind 300 × 400 (Hochformat 3 : 4) und skalieren mit dem Rahmen.
-export function ProfilePhoto({ photo, look }: { photo: Photo; look: "him" | "her" }) {
+// Himmelsfarben fürs Porträt, passend zur Karte (Schlüssel = Profil-id). Sonst Abendrot.
+const portraitSky: Record<string, [string, string, string]> = {
+  jonas: ["#1a1206", "#7a5420", "#e9c878"],
+  malik: ["#0b1730", "#3a4a7a", "#e2be72"],
+  tim: ["#ff2f8f", "#ff7a3d", "#ffe600"],
+  lena: ["#0e0e0e", "#5a0f1c", "#c4142f"],
+  sophie: ["#0b1629", "#3a4e70", "#c9d1dc"],
+};
+
+export function ProfilePhoto({ photo, look, palette }: { photo: Photo; look: "him" | "her"; palette?: string }) {
+  const sky = portraitSky[palette ?? ""] ?? ["#2a1240", "#a8435a", "#f0a35c"];
   // useId liefert Zeichen wie « », die in SVG-Verweisen (url(#…)) stören – daher bereinigen.
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
   const id = (name: string) => `${name}-${uid}`;
@@ -40,9 +50,9 @@ export function ProfilePhoto({ photo, look }: { photo: Photo; look: "him" | "her
         <>
           <defs>
             <linearGradient id={id("sky")} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#2a1240" />
-              <stop offset="0.55" stopColor="#a8435a" />
-              <stop offset="1" stopColor="#f0a35c" />
+              <stop offset="0" stopColor={sky[0]} />
+              <stop offset="0.55" stopColor={sky[1]} />
+              <stop offset="1" stopColor={sky[2]} />
             </linearGradient>
             <linearGradient id={id("body")} x1="0" y1="0" x2="1" y2="0">
               <stop offset="0" stopColor="#0d0812" />

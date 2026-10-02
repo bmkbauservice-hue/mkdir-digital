@@ -412,25 +412,45 @@ export type ProfileScene = "portrait" | "meer" | "berge" | "kaffee" | "konzert" 
 
 export type ProfilePhoto = { scene: ProfileScene; caption: string; image?: string };
 
+// Look der App in den Erklär-Animationen – passend zur Karte, wie beim Hero-Deck.
+// bg darf ein ganzer CSS-Hintergrund sein (Verläufe, Muster).
+export type DemoTheme = {
+  bg: string;
+  surface: string; // Flächen und Buttons in der App
+  text: string;
+  muted: string;
+  accent: string; // Hauptfarbe (Rahmen, Hervorhebung)
+  accent2: string; // zweite Farbe
+  accentText: string; // Schrift auf der Hauptfarbe
+  line: string; // dünne Rahmen
+  font: "ink" | "display";
+};
+
 export type SingleProfile = {
+  id: string;
   name: string;
   age: number;
   place: string;
-  look: "him" | "her"; // nur für das gezeichnete Porträt
-  card: string; // Datei aus singleCards, die in der Animation angetippt wird
+  look: "him" | "her"; // für das gezeichnete Porträt und die Beschriftung
+  card: string; // Kartenbild aus public/single – so sieht auch die App aus
+  cardName: string;
   question: string;
   bio: string;
   tags: string[];
   photos: ProfilePhoto[];
+  theme: DemoTheme;
 };
 
-export const singleProfiles: Record<"him" | "her", SingleProfile> = {
-  him: {
+// Fünf Demo-Profile (ausgedacht): drei Männer, zwei Frauen. Die Animation wechselt nach jeder Runde weiter.
+export const singleProfiles: SingleProfile[] = [
+  {
+    id: "jonas",
     name: "Jonas",
     age: 34,
     place: "Potsdam",
     look: "him",
     card: "schwarz-gold.webp",
+    cardName: "Schwarz-Gold",
     question: "Hast du Lust?",
     bio: "Koche besser, als ich tanze. Suche jemanden für Sonntagsfrühstück und spontane Ostsee-Trips.",
     tags: ["Kochen", "Ostsee", "Konzerte", "Hunde"],
@@ -440,13 +460,84 @@ export const singleProfiles: Record<"him" | "her", SingleProfile> = {
       { scene: "kaffee", caption: "Mein Sonntag" },
       { scene: "konzert", caption: "Lieber vorne als hinten" },
     ],
+    theme: {
+      bg: "repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 3px), linear-gradient(160deg, #1a1a1c, #0a0a0b 60%, #141414)",
+      surface: "rgba(255,255,255,0.04)",
+      text: "#f3e6c4",
+      muted: "rgba(243,230,196,0.62)",
+      accent: "#d4a85a",
+      accent2: "#f1d48f",
+      accentText: "#1a1206",
+      line: "rgba(212,168,90,0.45)",
+      font: "ink",
+    },
   },
-  her: {
+  {
+    id: "malik",
+    name: "Malik",
+    age: 31,
+    place: "Leipzig",
+    look: "him",
+    card: "sternbild.webp",
+    cardName: "Sternbild",
+    question: "Lust, mit mir Sterne zu zählen?",
+    bio: "Hobby-Astronom mit Thermoskanne. Ich zeig dir den Großen Wagen, du mir deinen Lieblingsort.",
+    tags: ["Sterne", "Camping", "Fahrrad", "Kochen"],
+    photos: [
+      { scene: "portrait", caption: "Das bin ich" },
+      { scene: "berge", caption: "Sonnenaufgang im Harz" },
+      { scene: "stadt", caption: "Mein Viertel bei Nacht" },
+      { scene: "kaffee", caption: "Erst Kaffee, dann reden" },
+    ],
+    theme: {
+      bg: "radial-gradient(1.2px 1.2px at 20% 18%, #fff8, transparent), radial-gradient(1px 1px at 72% 9%, #fff9, transparent), radial-gradient(1.4px 1.4px at 86% 34%, #f3dc9a, transparent), radial-gradient(1px 1px at 38% 52%, #fff7, transparent), radial-gradient(1.2px 1.2px at 12% 78%, #fff6, transparent), radial-gradient(1px 1px at 64% 88%, #f3dc9a, transparent), linear-gradient(170deg, #13254a, #0b1730 65%, #0a1328)",
+      surface: "rgba(255,255,255,0.05)",
+      text: "#f1e4c3",
+      muted: "rgba(241,228,195,0.62)",
+      accent: "#e2be72",
+      accent2: "#f6e2a8",
+      accentText: "#14203a",
+      line: "rgba(226,190,114,0.42)",
+      font: "ink",
+    },
+  },
+  {
+    id: "tim",
+    name: "Tim",
+    age: 38,
+    place: "Cottbus",
+    look: "him",
+    card: "pop-art.webp",
+    cardName: "Pop-Art",
+    question: "Lust auf ein Abenteuer?",
+    bio: "Lache laut, tanze schlecht, komme pünktlich. Comics, Flohmärkte und Currywurst um Mitternacht.",
+    tags: ["Comics", "Flohmarkt", "Festivals", "Kino"],
+    photos: [
+      { scene: "portrait", caption: "Das bin ich" },
+      { scene: "konzert", caption: "Festival-Saison!" },
+      { scene: "stadt", caption: "Nachtschicht im Kiez" },
+      { scene: "meer", caption: "Ostsee mit Pommes" },
+    ],
+    theme: {
+      bg: "radial-gradient(circle, rgba(255,47,143,0.35) 1.2px, transparent 1.6px) 0 0 / 9px 9px, #ffe600",
+      surface: "#ffffff",
+      text: "#141414",
+      muted: "rgba(20,20,20,0.7)",
+      accent: "#ff2f8f",
+      accent2: "#141414",
+      accentText: "#ffffff",
+      line: "#141414",
+      font: "display",
+    },
+  },
+  {
+    id: "lena",
     name: "Lena",
     age: 31,
     place: "Berlin",
     look: "her",
     card: "sie-lippenstift.webp",
+    cardName: "Lippenstift",
     question: "Diesmal frag ich: Hast du Lust?",
     bio: "Bergmensch mit Großstadtadresse. Ich bring den Kaffee mit, du die Geschichten.",
     tags: ["Wandern", "Fotografie", "Brunch", "Jazz"],
@@ -456,8 +547,48 @@ export const singleProfiles: Record<"him" | "her", SingleProfile> = {
       { scene: "stadt", caption: "Mein Kiez bei Nacht" },
       { scene: "kaffee", caption: "Flat White, sonst nichts" },
     ],
+    theme: {
+      bg: "radial-gradient(80% 40% at 50% 0%, rgba(179,18,46,0.22), transparent 70%), linear-gradient(170deg, #1b1b1b, #0e0e0e)",
+      surface: "rgba(255,255,255,0.05)",
+      text: "#f5f2ef",
+      muted: "rgba(245,242,239,0.6)",
+      accent: "#c4142f",
+      accent2: "#ff5a6e",
+      accentText: "#ffffff",
+      line: "rgba(196,20,47,0.55)",
+      font: "ink",
+    },
   },
-};
+  {
+    id: "sophie",
+    name: "Sophie",
+    age: 28,
+    place: "Dresden",
+    look: "her",
+    card: "sie-mondphasen.webp",
+    cardName: "Mondphasen",
+    question: "Diesmal frag ich: Spaziergang bei Vollmond?",
+    bio: "Nachtmensch und Buchhändlerin. Erzähl mir etwas, das in keinem Buch steht.",
+    tags: ["Bücher", "Elbufer", "Yoga", "Fotografie"],
+    photos: [
+      { scene: "portrait", caption: "Das bin ich" },
+      { scene: "meer", caption: "Abends an der Elbe" },
+      { scene: "berge", caption: "Sächsische Schweiz" },
+      { scene: "kaffee", caption: "Lesepause" },
+    ],
+    theme: {
+      bg: "radial-gradient(90% 45% at 50% 0%, rgba(201,209,220,0.14), transparent 70%), linear-gradient(170deg, #182a48, #0e1c34 65%, #0b1629)",
+      surface: "rgba(255,255,255,0.05)",
+      text: "#e9edf3",
+      muted: "rgba(233,237,243,0.62)",
+      accent: "#c9d1dc",
+      accent2: "#ffffff",
+      accentText: "#0e1c34",
+      line: "rgba(201,209,220,0.4)",
+      font: "ink",
+    },
+  },
+];
 
 export const gpsNote =
   "GPS-Kinderarmband mit Ortung ist in Vorbereitung – erst wenn Datenschutz und Zulassung sauber geklärt sind.";
@@ -510,12 +641,79 @@ export const gamePackSizes = [
 ];
 
 // Vier Kartenvarianten. Mit "image" (public/spiele/) wird das ChatGPT-Bild gezeigt,
-// ohne Bild die gezeichnete CSS-Karte als Platzhalter.
-export const gameCardVariants: { id: string; name: string; text: string; symbol: string; image?: string }[] = [
-  { id: "spieltisch", name: "Spieltisch", text: "Grüner Filz, Goldprägung – wie im Casino", symbol: "♠", image: "spieltisch.webp" },
-  { id: "arcade", name: "Neon-Arcade", text: "Pixel, Neon und Highscore-Gefühl", symbol: "▶", image: "arcade.webp" },
-  { id: "kneipe", name: "Stammtisch", text: "Dunkles Holz und Bierdeckel-Charme", symbol: "♣", image: "stammtisch.webp" },
-  { id: "familie", name: "Familie", text: "Bunt, rund und kinderleicht", symbol: "★" },
+// ohne Bild die gezeichnete CSS-Karte als Platzhalter. "theme" = Look der App in der Erklär-Animation.
+export const gameCardVariants: { id: string; name: string; text: string; symbol: string; image?: string; theme: DemoTheme }[] = [
+  {
+    id: "spieltisch",
+    name: "Spieltisch",
+    text: "Grüner Filz, Goldprägung – wie im Casino",
+    symbol: "♠",
+    image: "spieltisch.webp",
+    theme: {
+      bg: "radial-gradient(120% 70% at 50% 30%, #1d6b40, #0f4a2c 55%, #0a3520)",
+      surface: "rgba(0,0,0,0.24)",
+      text: "#f6e7b8",
+      muted: "rgba(246,231,184,0.68)",
+      accent: "#e0b754",
+      accent2: "#c8102e",
+      accentText: "#1a1206",
+      line: "rgba(224,183,84,0.5)",
+      font: "ink",
+    },
+  },
+  {
+    id: "arcade",
+    name: "Neon-Arcade",
+    text: "Pixel, Neon und Highscore-Gefühl",
+    symbol: "▶",
+    image: "arcade.webp",
+    theme: {
+      bg: "linear-gradient(rgba(46,242,255,0.07) 1px, transparent 1px) 0 0 / 100% 18px, linear-gradient(90deg, rgba(255,47,180,0.07) 1px, transparent 1px) 0 0 / 18px 100%, linear-gradient(170deg, #1b0d44, #0d0626)",
+      surface: "rgba(46,242,255,0.06)",
+      text: "#ffffff",
+      muted: "rgba(255,255,255,0.65)",
+      accent: "#2ef2ff",
+      accent2: "#ff2fb4",
+      accentText: "#0d0626",
+      line: "rgba(46,242,255,0.55)",
+      font: "display",
+    },
+  },
+  {
+    id: "kneipe",
+    name: "Stammtisch",
+    text: "Dunkles Holz und Bierdeckel-Charme",
+    symbol: "♣",
+    image: "stammtisch.webp",
+    theme: {
+      bg: "repeating-linear-gradient(90deg, rgba(0,0,0,0.16) 0 2px, transparent 2px 23px), linear-gradient(170deg, #5a3820, #3a2414 60%, #2a190d)",
+      surface: "#1f2a24",
+      text: "#f3e2bf",
+      muted: "rgba(243,226,191,0.68)",
+      accent: "#e8b04a",
+      accent2: "#f7f1e3",
+      accentText: "#2a190d",
+      line: "rgba(232,176,74,0.5)",
+      font: "ink",
+    },
+  },
+  {
+    id: "familie",
+    name: "Familie",
+    text: "Bunt, rund und kinderleicht",
+    symbol: "★",
+    theme: {
+      bg: "radial-gradient(circle at 15% 12%, #ffd23f 0 34px, transparent 35px), radial-gradient(circle at 92% 30%, #2bb3ff 0 26px, transparent 27px), radial-gradient(circle at 8% 88%, #ff6b4a 0 30px, transparent 31px), #fff6e5",
+      surface: "#ffffff",
+      text: "#2b2140",
+      muted: "rgba(43,33,64,0.65)",
+      accent: "#ff6b4a",
+      accent2: "#2bb3ff",
+      accentText: "#ffffff",
+      line: "rgba(43,33,64,0.18)",
+      font: "display",
+    },
+  },
 ];
 
 export const accessories = [
