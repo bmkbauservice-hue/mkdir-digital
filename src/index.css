@@ -5327,3 +5327,95 @@ html:has(.lightbox[open]) {
     animation: none;
   }
 }
+
+/* ---------- Großansicht: Licht + Neon-Rand ----------
+   Das Bild sitzt in .lightbox__photo (data-shine → useShine.ts). --glow kommt reihum aus DesignLightbox.tsx. */
+.lightbox__photo {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  line-height: 0;
+  border-radius: 14px;
+  animation: lb-zoom 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.lightbox__stage .lightbox__photo img {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--glow) 70%, transparent),
+    0 0 34px color-mix(in srgb, var(--glow) 38%, transparent),
+    0 40px 90px rgba(0, 0, 0, 0.7);
+  animation: lb-neon 3.2s ease-in-out infinite;
+}
+
+@keyframes lb-neon {
+  50% {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--glow) 95%, transparent),
+      0 0 60px color-mix(in srgb, var(--glow) 55%, transparent),
+      0 40px 90px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* ---------- Hero-Deck: Funken beim Antippen ----------
+   Jeder Funke fliegt in seinem Winkel (--a) eine Strecke (--d) aus dem Berührungspunkt heraus. */
+.deck__sparks {
+  position: absolute;
+  z-index: 4;
+  left: 104%;
+  top: 30%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.deck__sparks i {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent, #2ef2ff));
+  box-shadow: 0 0 8px var(--accent, #2ef2ff);
+  transform-origin: 0 50%;
+  opacity: 0;
+}
+
+.deck__sparks i:nth-child(3n + 2) {
+  background: linear-gradient(90deg, transparent, var(--accent2, #ff2fb4));
+  box-shadow: 0 0 8px var(--accent2, #ff2fb4);
+}
+
+.deck__sparks i:nth-child(3n) {
+  background: linear-gradient(90deg, transparent, var(--gold-hi));
+  box-shadow: 0 0 8px var(--gold);
+}
+
+.deck.is-tapping .deck__sparks i {
+  animation: deck-spark 0.75s cubic-bezier(0.15, 0.7, 0.3, 1) var(--t) both;
+}
+
+@keyframes deck-spark {
+  from {
+    opacity: 1;
+    transform: rotate(var(--a)) translateX(6px) scaleX(0.4);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: rotate(var(--a)) translateX(var(--d)) scaleX(1.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox__stage .lightbox__photo img,
+  .lightbox__photo {
+    animation: none;
+  }
+
+  .deck.is-tapping .deck__sparks i {
+    animation: none;
+  }
+}

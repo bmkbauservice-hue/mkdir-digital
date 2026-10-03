@@ -1,4 +1,4 @@
-import { useEffect, useRef, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
+import { useEffect, useRef, type CSSProperties, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
 import { mailto } from "../content";
 
 // Alles, was die Großansicht von einem Bild wissen muss – passt für Karten und Armbänder.
@@ -18,6 +18,8 @@ type Props = {
   onClose: () => void;
   onGo: (index: number) => void;
 };
+
+const glowColors = ["var(--neon-mint)", "var(--neon-cyan)", "var(--neon-pink)", "var(--gold)"];
 
 // Großansicht eines Entwurfs. Nutzt das native <dialog>:
 // Esc schließt, der Fokus bleibt im Fenster, der Rest der Seite ist gesperrt.
@@ -71,15 +73,22 @@ export function DesignLightbox({ items, folder, kind, index, onClose, onGo }: Pr
             <button type="button" className="lightbox__nav lightbox__nav--prev" onClick={() => go(-1)} aria-label="Vorheriger Entwurf">
               ←
             </button>
-            {/* key: neues Bild = neue Einblend-Animation */}
-            <img
+            {/* key: neues Bild = neue Einblend-Animation. data-shine: Licht folgt der Maus (useShine.ts),
+                --glow: Neon-Rand, reihum Mint, Cyan, Pink, Gold – wie bei den Kacheln */}
+            <span
               key={d.file}
-              src={`${import.meta.env.BASE_URL}${folder}/${d.file}`}
-              alt={`${kind} ${d.name}`}
-              width={d.width}
-              height={d.height}
-              draggable={false}
-            />
+              className="lightbox__photo"
+              data-shine
+              style={{ "--glow": glowColors[index! % glowColors.length] } as CSSProperties}
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}${folder}/${d.file}`}
+                alt={`${kind} ${d.name}`}
+                width={d.width}
+                height={d.height}
+                draggable={false}
+              />
+            </span>
             <button type="button" className="lightbox__nav lightbox__nav--next" onClick={() => go(1)} aria-label="Nächster Entwurf">
               →
             </button>
