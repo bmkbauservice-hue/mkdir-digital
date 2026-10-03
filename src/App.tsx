@@ -8,6 +8,7 @@ import { Wristbands } from "./components/Wristbands";
 import { SingleCards } from "./components/SingleCards";
 import { GameCard } from "./components/GameCard";
 import { Privacy } from "./components/Privacy";
+import { Imprint } from "./components/Imprint";
 import { useShine } from "./useShine";
 import {
   accessories,
@@ -399,20 +400,20 @@ function Footer() {
       <div className="wrap site-footer__inner">
         <Logo />
         <nav aria-label="Rechtliches">
-          <a href="#rechtliches">Impressum</a>
+          <a href="#impressum">Impressum</a>
           <a href="#datenschutz">Datenschutz</a>
           <a href="#rechtliches">AGB</a>
           <a href="#rechtliches">Widerruf</a>
         </nav>
       </div>
       <p className="wrap site-footer__note" id="rechtliches">
-        © 2026 MKDIR-Design. Impressum, AGB und Widerrufsbelehrung werden vor dem Start ergänzt.
+        © 2026 MKDIR-Design. AGB und Widerrufsbelehrung werden vor dem Start ergänzt.
       </p>
     </footer>
   );
 }
 
-// Mini-Router über den Hash: #datenschutz zeigt die Datenschutzseite, alles andere die Startseite.
+// Mini-Router über den Hash: #datenschutz und #impressum zeigen eigene Seiten, alles andere die Startseite.
 // So funktioniert es auch auf GitHub Pages ohne Server-Konfiguration.
 function useHash() {
   const [hash, setHash] = useState(() => window.location.hash);
@@ -424,16 +425,23 @@ function useHash() {
   return hash;
 }
 
+// Eigene Seiten fürs Rechtliche: Hash → Titel im Browser-Tab.
+const legalPages: Record<string, { title: string }> = {
+  "#datenschutz": { title: "Datenschutz" },
+  "#impressum": { title: "Impressum" },
+};
+
 export default function App() {
   const hash = useHash();
   useShine();
-  const page = hash === "#datenschutz" ? "datenschutz" : "start";
+  const page = legalPages[hash] ? hash : "start";
 
-  // Beim Seitenwechsel an die richtige Stelle springen: Datenschutz nach oben, sonst zum Abschnitt.
+  // Beim Seitenwechsel an die richtige Stelle springen: Rechtliches nach oben, sonst zum Abschnitt.
   useEffect(() => {
-    if (page === "datenschutz") {
+    const legalPage = legalPages[page];
+    if (legalPage) {
       window.scrollTo({ top: 0, behavior: "instant" });
-      document.title = "Datenschutz | MKDIR-Design";
+      document.title = `${legalPage.title} | MKDIR-Design`;
       return;
     }
     document.title = "MKDIR-Design | NFC-Visitenkarten";
@@ -445,12 +453,14 @@ export default function App() {
 
   return (
     <>
-      <a className="skip-link" href={page === "start" ? "#karten" : "#datenschutz-inhalt"}>
+      <a className="skip-link" href={page === "start" ? "#karten" : `${page}-inhalt`}>
         Zum Inhalt springen
       </a>
       <SiteHeader />
-      {page === "datenschutz" ? (
+      {page === "#datenschutz" ? (
         <Privacy />
+      ) : page === "#impressum" ? (
+        <Imprint />
       ) : (
         <main>
           <Hero />

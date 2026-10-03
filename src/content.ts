@@ -5,8 +5,10 @@
 // TODO: ladungsfähige Anschrift eintragen – ohne Anschrift sind Impressum und Datenschutz unvollständig.
 export const legal = {
   name: "Mario Kujoth",
-  street: "",
-  city: "",
+  business: "MKDIR Design – NFC-Karten & Webdesign",
+  street: "", // TODO: ladungsfähige Anschrift (kein Postfach), z. B. "Musterstraße 1"
+  city: "", // z. B. "12345 Musterstadt"
+  vatId: "", // USt-IdNr., sobald vom Finanzamt vergeben – dann erscheint sie im Impressum
   privacyDate: "Oktober 2026",
 };
 
