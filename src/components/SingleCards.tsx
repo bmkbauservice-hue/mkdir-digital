@@ -59,7 +59,7 @@ export function SingleCards() {
         <ul className="single__grid">
           {items.map((d, i) => (
             <li key={d.file}>
-              <button type="button" onClick={() => setZoom(i)} aria-label={`${d.name} groß ansehen`}>
+              <button type="button" data-shine onClick={() => setZoom(i)} aria-label={`${d.name} groß ansehen`}>
                 <img
                   src={`${import.meta.env.BASE_URL}single/${d.file}`}
                   alt={`Single-Karte ${d.name}`}
