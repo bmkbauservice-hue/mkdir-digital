@@ -5038,3 +5038,201 @@ html:has(.lightbox[open]) {
     animation: none;
   }
 }
+
+/* ---------- Armbänder: Erklär-Animation im Neon-Look ----------
+   Gleiches Gerüst wie Single- und Spielekarte (tap-*). --neon / --neon2 kommen pro Armband aus content.ts. */
+.bands__demo {
+  position: relative;
+  margin-block: 36px 40px;
+}
+
+.bands__demo-badge {
+  position: absolute;
+  z-index: 4;
+  top: -12px;
+  right: 24px;
+  padding: 4px 12px;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 999px;
+  background: var(--black);
+  color: var(--neon-cyan);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 14px rgba(46, 242, 255, 0.35);
+}
+
+.band-demo {
+  background:
+    radial-gradient(60% 70% at 80% 50%, color-mix(in srgb, var(--neon) 16%, transparent), transparent 70%),
+    radial-gradient(45% 60% at 25% 30%, color-mix(in srgb, var(--neon2) 9%, transparent), transparent 70%),
+    var(--glass);
+  border-color: color-mix(in srgb, var(--neon) 35%, transparent);
+  box-shadow: 0 0 40px color-mix(in srgb, var(--neon) 12%, transparent);
+  transition: border-color 0.6s, box-shadow 0.6s;
+}
+
+/* Das Armband auf der Bühne leuchtet in seiner Neon-Farbe */
+.band-demo .tap-stage__card .band {
+  display: block;
+  max-width: none;
+  transform: rotate(-6deg);
+  filter:
+    drop-shadow(0 0 10px color-mix(in srgb, var(--neon) 75%, transparent))
+    drop-shadow(0 0 26px color-mix(in srgb, var(--neon) 40%, transparent))
+    drop-shadow(0 24px 30px rgba(0, 0, 0, 0.55));
+}
+
+.band-demo .band__shine {
+  stroke: color-mix(in srgb, var(--neon) 70%, white);
+  stroke-width: 2.5;
+}
+
+.band-demo .tap-stage__waves i {
+  border-color: var(--neon);
+  box-shadow: 0 0 14px var(--neon);
+}
+
+/* Die App */
+.band-app__bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 42px 16px 6px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--app-text);
+}
+
+.band-app__bar b {
+  color: var(--app-accent);
+  text-shadow: 0 0 10px var(--app-accent);
+}
+
+.band-app__badge {
+  padding: 2px 9px;
+  border: 1px solid var(--app-accent2);
+  border-radius: 999px;
+  color: var(--app-accent2);
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--app-accent2) 45%, transparent);
+}
+
+.band-app__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 10px 16px 92px;
+  color: var(--app-text);
+}
+
+.band-app__head {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+  padding-top: 6px;
+}
+
+.band-app__icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  border: 2px solid var(--app-accent);
+  color: var(--app-accent);
+  font-size: 28px;
+  line-height: 1;
+  text-shadow: 0 0 12px var(--app-accent);
+  box-shadow:
+    0 0 18px color-mix(in srgb, var(--app-accent) 60%, transparent),
+    inset 0 0 18px color-mix(in srgb, var(--app-accent) 35%, transparent);
+  animation: band-icon-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes band-icon-pulse {
+  50% {
+    box-shadow:
+      0 0 30px color-mix(in srgb, var(--app-accent) 85%, transparent),
+      inset 0 0 22px color-mix(in srgb, var(--app-accent) 50%, transparent);
+  }
+}
+
+.band-app__head h4 {
+  margin: 0;
+  font-family: var(--app-font);
+  font-stretch: 112%;
+  font-size: 20px;
+  line-height: 1.15;
+  text-shadow: 0 0 14px color-mix(in srgb, var(--app-accent) 70%, transparent);
+}
+
+.band-app__head p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--app-muted);
+}
+
+.band-app__lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 7px;
+}
+
+.band-app__lines li {
+  padding: 10px 12px;
+  border: 1px solid var(--app-line);
+  border-left: 3px solid var(--app-accent2);
+  border-radius: 10px;
+  background: var(--app-surface);
+  font-size: 13px;
+  opacity: 0;
+  transform: translateX(16px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.band-app__lines li.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.band-app__action {
+  position: relative;
+  margin-top: auto;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--app-accent);
+  color: var(--app-accent-text);
+  font: 700 14px/1 var(--font-body);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--app-accent) 55%, transparent);
+  transition:
+    transform 0.25s,
+    background-color 0.3s;
+}
+
+.band-app__action.is-done {
+  transform: scale(0.97);
+  background: var(--app-accent2);
+  box-shadow: 0 0 26px color-mix(in srgb, var(--app-accent2) 60%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .band-app__icon {
+    animation: none;
+  }
+
+  .band-app__lines li {
+    transition: none;
+  }
+}

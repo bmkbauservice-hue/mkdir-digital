@@ -309,6 +309,8 @@ export type Wristband = {
   label: string; // Aufdruck auf dem Armband
   tap: { title: string; lines: string[] };
   note?: string;
+  // Erklär-Animation: So sieht die App aus, wenn das Armband ans Handy gehalten wird (Neon-Look).
+  app: { icon: string; status: string; action: string; toast: string; theme: DemoTheme };
 };
 
 export const wristbands: Wristband[] = [
@@ -321,6 +323,23 @@ export const wristbands: Wristband[] = [
     ink: "#1a0612",
     label: "FESTIVAL · VIP · EINLASS",
     tap: { title: "Ticket gültig", lines: ["Einlass: Haupteingang", "VIP-Bereich freigeschaltet", "Guthaben am Stand: 24,50 €"] },
+    app: {
+      icon: "✓",
+      status: "Summer Beats · Tag 2",
+      action: "Am Stand bezahlen",
+      toast: "Bezahlt: 2 × Limo, 7,00 € – Guthaben 17,50 €",
+      theme: {
+        bg: "radial-gradient(90% 50% at 50% 0%, rgba(255,47,180,0.35), transparent 70%), linear-gradient(rgba(46,242,255,0.06) 1px, transparent 1px) 0 0 / 100% 22px, linear-gradient(170deg, #1a0430, #08020f)",
+        surface: "rgba(255,47,180,0.08)",
+        text: "#fff0fa",
+        muted: "rgba(255,240,250,0.62)",
+        accent: "#ff2fb4",
+        accent2: "#2ef2ff",
+        accentText: "#1a0612",
+        line: "rgba(255,47,180,0.4)",
+        font: "display",
+      },
+    },
   },
   {
     id: "fitness",
@@ -331,6 +350,23 @@ export const wristbands: Wristband[] = [
     ink: "#d6b062",
     label: "MITGLIED · SPIND 042",
     tap: { title: "Mitgliedschaft aktiv", lines: ["Spind 042 öffnen", "Nächster Kurs: Spinning 18 Uhr", "Check-in gespeichert"] },
+    app: {
+      icon: "★",
+      status: "Mitglied seit 2024",
+      action: "Spind 042 öffnen",
+      toast: "Spind 042 ist offen – viel Spaß beim Training!",
+      theme: {
+        bg: "radial-gradient(90% 50% at 50% 0%, rgba(61,255,194,0.28), transparent 70%), repeating-linear-gradient(135deg, rgba(198,255,61,0.04) 0 2px, transparent 2px 14px), linear-gradient(170deg, #04140f, #010805)",
+        surface: "rgba(61,255,194,0.07)",
+        text: "#eafff8",
+        muted: "rgba(234,255,248,0.6)",
+        accent: "#3dffc2",
+        accent2: "#c6ff3d",
+        accentText: "#02140d",
+        line: "rgba(61,255,194,0.38)",
+        font: "display",
+      },
+    },
   },
   {
     id: "notfall",
@@ -341,6 +377,23 @@ export const wristbands: Wristband[] = [
     ink: "#ffffff",
     label: "NOTFALL · BITTE ANTIPPEN",
     tap: { title: "Notfallkontakt", lines: ["Sabine (Tochter) anrufen", "Standort per SMS senden", "Hinweis: bitte Notruf 112 wählen"] },
+    app: {
+      icon: "✚",
+      status: "Bitte helfen Sie mir",
+      action: "Sabine anrufen",
+      toast: "Anruf an Sabine wird gestartet …",
+      theme: {
+        bg: "radial-gradient(90% 50% at 50% 0%, rgba(255,51,85,0.38), transparent 70%), linear-gradient(170deg, #1f0307, #0a0103)",
+        surface: "rgba(255,51,85,0.08)",
+        text: "#fff1f3",
+        muted: "rgba(255,241,243,0.62)",
+        accent: "#ff3355",
+        accent2: "#ffd23d",
+        accentText: "#ffffff",
+        line: "rgba(255,51,85,0.42)",
+        font: "display",
+      },
+    },
     note: "Gesundheitsdaten speichere ich nicht. Sie legen nur fest, wer angerufen wird.",
   },
   {
@@ -352,6 +405,23 @@ export const wristbands: Wristband[] = [
     ink: "#04202c",
     label: "HALLO, ICH BIN LEO",
     tap: { title: "Hallo, ich bin Leo!", lines: ["Bitte ruf meine Mama an", "Anrufen: Mama", "Danke fürs Helfen!"] },
+    app: {
+      icon: "☺",
+      status: "Ich habe mich verlaufen",
+      action: "Mama anrufen",
+      toast: "Mama wird angerufen – danke fürs Helfen!",
+      theme: {
+        bg: "radial-gradient(90% 50% at 50% 0%, rgba(46,196,255,0.34), transparent 70%), radial-gradient(circle at 15% 85%, rgba(255,226,61,0.14) 0 40px, transparent 41px), linear-gradient(170deg, #031a2b, #010a12)",
+        surface: "rgba(46,196,255,0.08)",
+        text: "#eefaff",
+        muted: "rgba(238,250,255,0.62)",
+        accent: "#2ec4ff",
+        accent2: "#ffe23d",
+        accentText: "#04202c",
+        line: "rgba(46,196,255,0.4)",
+        font: "display",
+      },
+    },
   },
 ];
 
