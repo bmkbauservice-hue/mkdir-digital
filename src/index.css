@@ -923,7 +923,8 @@ h1 span {
   color: var(--card-fg);
   background:
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px),
-    linear-gradient(150deg, #1d1d20, #0b0b0c 60%, #16161a);
+    radial-gradient(120% 90% at 0% 0%, rgba(61, 255, 194, 0.07), transparent 55%),
+    linear-gradient(150deg, #0e3a2c, #05170f 60%, #0b2b21);
   box-shadow:
     0 30px 60px rgba(0, 0, 0, 0.6),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -1004,7 +1005,7 @@ h1 span {
 }
 
 .nfc-card--pvc {
-  background: linear-gradient(150deg, #232327, #141416);
+  background: linear-gradient(150deg, #123d2f, #082219);
 }
 
 .nfc-card--pvc .nfc-card__hex {
