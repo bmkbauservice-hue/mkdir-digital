@@ -1,4 +1,5 @@
 import { contact, legal } from "../content";
+import { href } from "../router";
 
 // Datenschutzerklärung – beschreibt genau das, was diese Seite technisch tut:
 // Hosting bei GitHub Pages, Kontakt per E-Mail/Telefon/WhatsApp. Schriften sind selbst gehostet (kein Google Fonts).
@@ -10,7 +11,7 @@ export function Privacy() {
   return (
     <main className="legal" id="datenschutz-inhalt">
       <div className="wrap legal__inner">
-        <a className="legal__back" href="#start">
+        <a className="legal__back" href={href("start")}>
           ← Zurück zur Startseite
         </a>
         <p className="kicker">Rechtliches</p>

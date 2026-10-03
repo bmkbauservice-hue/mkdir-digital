@@ -11,6 +11,7 @@ import { Privacy } from "./components/Privacy";
 import { Imprint } from "./components/Imprint";
 import { useShine } from "./useShine";
 import { imgSet } from "./img";
+import { href, pages, useLinkInterception, useRoute, type PageId } from "./router";
 import {
   accessories,
   benefits,
@@ -26,6 +27,7 @@ import {
   securityNote,
   steps,
   webServices,
+  worlds,
 } from "./content";
 
 function Hero() {
@@ -43,7 +45,7 @@ function Hero() {
             online – gedruckt wird nie wieder.
           </p>
           <div className="hero__actions">
-            <a className="btn btn--gold" href="#karten">
+            <a className="btn btn--gold" href={href("karten")}>
               Kartenlinien ansehen
             </a>
             <a className="btn btn--ghost" href={mailto("Beratung NFC-Karte")}>
@@ -402,8 +404,8 @@ function Footer() {
       <div className="wrap site-footer__inner">
         <Logo />
         <nav aria-label="Rechtliches">
-          <a href="#impressum">Impressum</a>
-          <a href="#datenschutz">Datenschutz</a>
+          <a href={href("impressum")}>Impressum</a>
+          <a href={href("datenschutz")}>Datenschutz</a>
           <a href="#rechtliches">AGB</a>
           <a href="#rechtliches">Widerruf</a>
         </nav>
@@ -415,67 +417,121 @@ function Footer() {
   );
 }
 
-// Mini-Router über den Hash: #datenschutz und #impressum zeigen eigene Seiten, alles andere die Startseite.
-// So funktioniert es auch auf GitHub Pages ohne Server-Konfiguration.
-function useHash() {
-  const [hash, setHash] = useState(() => window.location.hash);
-  useEffect(() => {
-    const onChange = () => setHash(window.location.hash);
-    window.addEventListener("hashchange", onChange);
-    return () => window.removeEventListener("hashchange", onChange);
-  }, []);
-  return hash;
+// Startseite: Kacheln zu den Unterseiten – jede Produktwelt hat ihre eigene Seite.
+function Worlds() {
+  return (
+    <section className="section" id="welten">
+      <div className="wrap">
+        <div className="section-head">
+          <p className="kicker">Alles zum Antippen</p>
+          <h2>Was darf es sein?</h2>
+        </div>
+        <ul className="worlds">
+          {worlds.map((w) => (
+            <li key={w.title}>
+              <a className="world" href={href(w.page, w.section)}>
+                <span className="world__media" data-shine>
+                  {w.image ? (
+                    <img
+                      {...imgSet(w.image.folder, w.image.file)}
+                      sizes="(max-width: 700px) 92vw, 380px"
+                      alt=""
+                      width={1200}
+                      height={706}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <span className="world__symbol" aria-hidden="true">
+                      {w.symbol}
+                    </span>
+                  )}
+                  {w.badge && <span className="world__badge">{w.badge}</span>}
+                </span>
+                <strong>{w.title}</strong>
+                <span>{w.text}</span>
+                <span className="world__more" aria-hidden="true">
+                  Ansehen →
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
 }
 
-// Eigene Seiten fürs Rechtliche: Hash → Titel im Browser-Tab.
-const legalPages: Record<string, { title: string }> = {
-  "#datenschutz": { title: "Datenschutz" },
-  "#impressum": { title: "Impressum" },
-};
+// Was auf welcher Seite steht. Kontakt kommt überall ans Ende.
+function PageContent({ page }: { page: PageId }) {
+  switch (page) {
+    case "karten":
+      return (
+        <>
+          <CardLines />
+          <Designs />
+          <SingleCards />
+          <GameCard />
+        </>
+      );
+    case "armbaender":
+      return <Wristbands />;
+    case "zubehoer":
+      return <Accessories />;
+    case "unternehmen":
+      return (
+        <>
+          <Business />
+          <CardSystems />
+        </>
+      );
+    case "webdesign":
+      return <WebDesign />;
+    default:
+      return (
+        <>
+          <Hero />
+          <Worlds />
+          <Steps />
+        </>
+      );
+  }
+}
 
 export default function App() {
-  const hash = useHash();
+  const { page, hash } = useRoute();
   useShine();
-  const page = legalPages[hash] ? hash : "start";
+  useLinkInterception();
 
-  // Beim Seitenwechsel an die richtige Stelle springen: Rechtliches nach oben, sonst zum Abschnitt.
+  // Titel im Browser-Tab je Seite.
   useEffect(() => {
-    const legalPage = legalPages[page];
-    if (legalPage) {
-      window.scrollTo({ top: 0, behavior: "instant" });
-      document.title = `${legalPage.title} | MKDIR-Design`;
-      return;
-    }
-    document.title = "MKDIR-Design | NFC-Visitenkarten";
-    // Alte Links (#kennenlernen) führen zum umbenannten Abschnitt.
-    const id = hash === "#kennenlernen" ? "single-karten" : hash.slice(1);
-    const target = id ? document.getElementById(id) : null;
-    if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: "instant" }));
+    document.title = page === "start" ? "MKDIR-Design | NFC-Visitenkarten" : `${pages[page].title} | MKDIR-Design`;
+  }, [page]);
+
+  // Neue Seite → nach oben, oder direkt zum Abschnitt, wenn der Link einen Anker hat (z. B. /karten/#designs).
+  useEffect(() => {
+    const target = hash ? document.getElementById(hash) : null;
+    requestAnimationFrame(() => {
+      if (target) target.scrollIntoView({ behavior: "instant" });
+      else if (!hash) window.scrollTo({ top: 0, behavior: "instant" });
+    });
   }, [page, hash]);
+
+  const legal = page === "datenschutz" || page === "impressum";
 
   return (
     <>
-      <a className="skip-link" href={page === "start" ? "#karten" : `${page}-inhalt`}>
+      <a className="skip-link" href={legal ? `#${page}-inhalt` : "#inhalt"}>
         Zum Inhalt springen
       </a>
-      <SiteHeader />
-      {page === "#datenschutz" ? (
+      <SiteHeader page={page} />
+      {page === "datenschutz" ? (
         <Privacy />
-      ) : page === "#impressum" ? (
+      ) : page === "impressum" ? (
         <Imprint />
       ) : (
-        <main>
-          <Hero />
-          <CardLines />
-          <Designs />
-          <Steps />
-          <Business />
-          <CardSystems />
-          <Wristbands />
-          <SingleCards />
-          <GameCard />
-          <Accessories />
-          <WebDesign />
+        <main id="inhalt">
+          <PageContent page={page} />
           <Contact />
         </main>
       )}

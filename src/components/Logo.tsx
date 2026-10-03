@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { href } from "../router";
 
 // Das MKDIR-Monogramm: ein kantiges M aus zwei Schenkeln und einem Mittelzug.
 export function LogoMark({ size = 36 }: { size?: number }) {
@@ -23,7 +24,7 @@ export function LogoMark({ size = 36 }: { size?: number }) {
 // Wort-Bild-Marke: das goldene MKDIR-Logo (public/logo-mkdir.webp), daneben klein "Design".
 export function Logo() {
   return (
-    <a className="logo" href="#start" aria-label="MKDIR-Design, zur Startseite">
+    <a className="logo" href={href("start")} aria-label="MKDIR-Design, zur Startseite">
       <img
         className="logo-img"
         src={`${import.meta.env.BASE_URL}logo-mkdir.webp`}
