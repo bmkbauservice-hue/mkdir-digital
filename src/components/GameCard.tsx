@@ -94,19 +94,21 @@ export function GameCard() {
                 setVariant(v.id);
               }}
             >
-              {v.image ? (
-                <img
-                  className="game-variant__img"
-                  src={`${import.meta.env.BASE_URL}spiele/${v.image}`}
-                  alt=""
-                  width={1200}
-                  height={706}
-                  loading="lazy"
-                  decoding="async"
-                />
-              ) : (
-                <CssCard symbol={v.symbol} />
-              )}
+              <span className="game-variant__media" data-shine>
+                {v.image ? (
+                  <img
+                    className="game-variant__img"
+                    src={`${import.meta.env.BASE_URL}spiele/${v.image}`}
+                    alt=""
+                    width={1200}
+                    height={706}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <CssCard symbol={v.symbol} />
+                )}
+              </span>
               <strong>{v.name}</strong>
               <span>{v.text}</span>
             </button>

@@ -128,7 +128,7 @@ export function Wristbands() {
         <ul className="bands__gallery">
           {bandDesigns.map((d, i) => (
             <li key={d.file}>
-              <button type="button" onClick={() => setZoom(i)} aria-label={`Armband ${d.name} groß ansehen`}>
+              <button type="button" data-shine onClick={() => setZoom(i)} aria-label={`Armband ${d.name} groß ansehen`}>
                 <img
                   src={`${import.meta.env.BASE_URL}bands/${d.file}`}
                   alt={`Armband ${d.name}`}

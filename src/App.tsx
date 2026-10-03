@@ -8,6 +8,7 @@ import { Wristbands } from "./components/Wristbands";
 import { SingleCards } from "./components/SingleCards";
 import { GameCard } from "./components/GameCard";
 import { Privacy } from "./components/Privacy";
+import { useShine } from "./useShine";
 import {
   accessories,
   benefits,
@@ -105,7 +106,7 @@ type Design = (typeof designs)[number];
 function DesignTile({ d, feature = false, onOpen }: { d: Design; feature?: boolean; onOpen: () => void }) {
   return (
     <figure className={feature ? "gallery__item gallery__item--feature" : "gallery__item"}>
-      <button type="button" className="gallery__frame" onClick={onOpen} aria-label={`${d.name} groß ansehen`}>
+      <button type="button" className="gallery__frame" data-shine onClick={onOpen} aria-label={`${d.name} groß ansehen`}>
         <img
           src={`${import.meta.env.BASE_URL}designs/${d.file}`}
           alt={`Kartenentwurf ${d.name} mit Platzhalter-Kontaktdaten`}
@@ -425,6 +426,7 @@ function useHash() {
 
 export default function App() {
   const hash = useHash();
+  useShine();
   const page = hash === "#datenschutz" ? "datenschutz" : "start";
 
   // Beim Seitenwechsel an die richtige Stelle springen: Datenschutz nach oben, sonst zum Abschnitt.
