@@ -2,6 +2,7 @@ import { useState } from "react";
 import { mailto, singleCards, singleRules } from "../content";
 import { DesignLightbox } from "./DesignLightbox";
 import { SingleApp } from "./SingleApp";
+import { imgSet } from "../img";
 
 type Tab = "him" | "her";
 
@@ -61,7 +62,8 @@ export function SingleCards() {
             <li key={d.file}>
               <button type="button" data-shine onClick={() => setZoom(i)} aria-label={`${d.name} groß ansehen`}>
                 <img
-                  src={`${import.meta.env.BASE_URL}single/${d.file}`}
+                  {...imgSet("single", d.file)}
+                  sizes="(max-width: 700px) 46vw, 300px"
                   alt={`Single-Karte ${d.name}`}
                   width={d.width}
                   height={d.height}

@@ -2,6 +2,7 @@ import { useId, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { bandDesigns, gpsNote, mailto, wristbands, type Wristband } from "../content";
 import { BandApp } from "./BandApp";
 import { DesignLightbox } from "./DesignLightbox";
+import { imgSet } from "../img";
 
 // Das Armband als SVG: ein Ring in leichter Perspektive.
 // Hintere Hälfte dunkler, vordere Hälfte mit Aufdruck und NFC-Chip.
@@ -130,7 +131,8 @@ export function Wristbands() {
             <li key={d.file}>
               <button type="button" data-shine onClick={() => setZoom(i)} aria-label={`Armband ${d.name} groß ansehen`}>
                 <img
-                  src={`${import.meta.env.BASE_URL}bands/${d.file}`}
+                  {...imgSet("bands", d.file)}
+                  sizes="(max-width: 700px) 92vw, 400px"
                   alt={`Armband ${d.name}`}
                   width={d.width}
                   height={d.height}

@@ -1,6 +1,7 @@
 import { useMemo, useRef } from "react";
 import { gameCardVariants, games } from "../content";
 import { DemoSteps, TapStage, useDemoTimeline, type DemoPhase, type DemoStep } from "./TapDemo";
+import { imgSet } from "../img";
 
 type Variant = (typeof gameCardVariants)[number];
 
@@ -105,7 +106,7 @@ export function GameApp({ variant, onLoopEnd }: { variant: Variant; onLoopEnd: (
       <TapStage
         card={
           variant.image ? (
-            <img src={`${import.meta.env.BASE_URL}spiele/${variant.image}`} alt="" width={1200} height={740} draggable={false} />
+            <img {...imgSet("spiele", variant.image)} sizes="260px" alt="" width={1200} height={740} draggable={false} />
           ) : (
             <span className={`tap-stage__css game-variant--${variant.id}`}>
               <CssCard symbol={variant.symbol} />

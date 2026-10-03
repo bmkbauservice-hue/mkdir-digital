@@ -8,6 +8,7 @@ import {
   type GameCategory,
 } from "../content";
 import { CssCard, GameApp } from "./GameApp";
+import { imgSet } from "../img";
 
 type Mode = "paket" | "selbst";
 
@@ -98,7 +99,8 @@ export function GameCard() {
                 {v.image ? (
                   <img
                     className="game-variant__img"
-                    src={`${import.meta.env.BASE_URL}spiele/${v.image}`}
+                    {...imgSet("spiele", v.image)}
+                    sizes="(max-width: 700px) 46vw, 280px"
                     alt=""
                     width={1200}
                     height={706}

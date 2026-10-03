@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { heroDeck } from "../content";
 import { PhoneVisual } from "./PhoneVisual";
+import { imgSet } from "../img";
 
 const AUTOPLAY_MS = 5000;
 const TAP_MS = 900;
@@ -121,7 +122,8 @@ export function HeroDeck() {
                 onClick={() => off !== 0 && goTo(i)}
               >
                 <img
-                  src={`${import.meta.env.BASE_URL}designs/${c.card}`}
+                  {...imgSet("designs", c.card)}
+                  sizes="(max-width: 860px) 80vw, 520px"
                   alt=""
                   width={1200}
                   height={700}
