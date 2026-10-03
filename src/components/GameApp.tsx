@@ -37,6 +37,15 @@ const tileIds: [string, string][] = [
 ];
 const tiles = tileIds.map(([id, icon]) => ({ ...games.find((g) => g.id === id)!, icon }));
 
+// Hintergrund-Deko der App je Kartenvariante: die vier Ecken wie auf der Karte.
+// Spieltisch: Kartenfarben auf goldenen Fächern, Arcade: Neon-Pixel, Stammtisch: Spielsymbole auf Holz.
+const decorCorners: Record<string, [string, string, string, string]> = {
+  spieltisch: ["♠", "♥", "♦", "♣"],
+  arcade: ["▲", "◆", "●", "■"],
+  kneipe: ["♣", "⚂", "♦", "⚄"],
+};
+const redSuits = new Set(["♥", "♦"]);
+
 const players = [
   { name: "Du", note: "hast den Raum eröffnet" },
   { name: "Sven", note: "hat die Karte angetippt" },
@@ -111,6 +120,17 @@ export function GameApp({ variant, onLoopEnd }: { variant: Variant; onLoopEnd: (
         onNote={() => demo.goTo("wahl", 2)}
         locked={phase === "tap"}
       >
+        {decorCorners[variant.id] && (
+          <span className="game-app__decor" aria-hidden="true">
+            {decorCorners[variant.id].map((c, i) => (
+              <i key={i} className={redSuits.has(c) ? "is-red" : undefined}>
+                {c}
+              </i>
+            ))}
+            <b className="game-app__shimmer" />
+          </span>
+        )}
+
         <div className="game-app__bar">
           <span>
             MKDIR <b>Spiele</b>
