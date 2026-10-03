@@ -10,6 +10,7 @@ import { GameCard } from "./components/GameCard";
 import { Privacy } from "./components/Privacy";
 import { Imprint } from "./components/Imprint";
 import { useShine } from "./useShine";
+import { imgSet } from "./img";
 import {
   accessories,
   benefits,
@@ -109,7 +110,8 @@ function DesignTile({ d, feature = false, onOpen }: { d: Design; feature?: boole
     <figure className={feature ? "gallery__item gallery__item--feature" : "gallery__item"}>
       <button type="button" className="gallery__frame" data-shine onClick={onOpen} aria-label={`${d.name} groß ansehen`}>
         <img
-          src={`${import.meta.env.BASE_URL}designs/${d.file}`}
+          {...imgSet("designs", d.file)}
+          sizes="(max-width: 700px) 92vw, (max-width: 1080px) 45vw, 400px"
           alt={`Kartenentwurf ${d.name} mit Platzhalter-Kontaktdaten`}
           width={d.width}
           height={d.height}

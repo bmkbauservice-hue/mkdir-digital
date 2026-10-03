@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 import { singleAnswers, singleProfiles } from "../content";
 import { ProfilePhoto } from "./ProfilePhoto";
 import { DemoSteps, TapStage, useDemoTimeline, type DemoPhase, type DemoStep } from "./TapDemo";
+import { imgSet } from "../img";
 
 // Animierte Vorführung der Single-App. Jede der fünf Karten hat ihre eigene App im selben Look.
 // Ablauf: Karte antippen → Fotos → Über mich → Antworten. Danach automatisch die nächste Karte.
@@ -127,7 +128,7 @@ export function SingleApp() {
                 aria-label={`${p.cardName} (${p.look === "him" ? "für ihn" : "für sie"}) – Profil ${p.name}`}
                 onClick={() => choose(i)}
               >
-                <img src={`${import.meta.env.BASE_URL}single/${p.card}`} alt="" width={1200} height={706} loading="lazy" />
+                <img {...imgSet("single", p.card)} sizes="120px" alt="" width={1200} height={706} loading="lazy" />
                 <span>{p.cardName}</span>
               </button>
             ))}
@@ -137,7 +138,7 @@ export function SingleApp() {
 
       <TapStage
         card={
-          <img src={`${import.meta.env.BASE_URL}single/${profile.card}`} alt="" width={1200} height={706} draggable={false} />
+          <img {...imgSet("single", profile.card)} sizes="260px" alt="" width={1200} height={706} draggable={false} />
         }
         cardKey={profile.id}
         theme={profile.theme}
