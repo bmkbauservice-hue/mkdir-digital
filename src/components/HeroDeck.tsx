@@ -5,6 +5,23 @@ import { PhoneVisual } from "./PhoneVisual";
 const AUTOPLAY_MS = 5000;
 const TAP_MS = 900;
 
+// Funken beim Antippen: Winkel (Grad), Flugweite (px), Verzögerung (s). Fest vorgegeben statt zufällig,
+// damit jede Runde gleich aussieht und React beim Rendern nichts würfeln muss.
+const sparks = [
+  { a: -80, d: 70, t: 0.38 },
+  { a: -52, d: 96, t: 0.4 },
+  { a: -28, d: 84, t: 0.36 },
+  { a: -6, d: 110, t: 0.42 },
+  { a: 18, d: 90, t: 0.37 },
+  { a: 40, d: 104, t: 0.41 },
+  { a: 64, d: 78, t: 0.39 },
+  { a: 88, d: 66, t: 0.43 },
+  { a: 120, d: 58, t: 0.4 },
+  { a: 160, d: 52, t: 0.38 },
+  { a: -130, d: 56, t: 0.42 },
+  { a: -105, d: 74, t: 0.37 },
+];
+
 // Wie weit eine Karte im Fächer vom aktiven Platz entfernt ist (0 = vorne, 1 = dahinter, ...).
 function offsetOf(i: number, active: number, n: number) {
   return (i - active + n) % n;
@@ -117,6 +134,11 @@ export function HeroDeck() {
           <span className="deck__pulse" aria-hidden="true">
             <i />
             <i />
+          </span>
+          <span className="deck__sparks" aria-hidden="true">
+            {sparks.map((sp, i) => (
+              <i key={i} style={{ "--a": `${sp.a}deg`, "--d": `${sp.d}px`, "--t": `${sp.t}s` } as CSSProperties} />
+            ))}
           </span>
         </div>
         <PhoneVisual card={current} />
