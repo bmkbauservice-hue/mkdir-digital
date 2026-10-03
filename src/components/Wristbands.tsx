@@ -1,5 +1,6 @@
 import { useId, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { bandDesigns, gpsNote, mailto, wristbands, type Wristband } from "../content";
+import { BandApp } from "./BandApp";
 import { DesignLightbox } from "./DesignLightbox";
 
 // Das Armband als SVG: ein Ring in leichter Perspektive.
@@ -32,6 +33,7 @@ function BandVisual({ band }: { band: Wristband }) {
 export function Wristbands() {
   const [active, setActive] = useState(0);
   const [zoom, setZoom] = useState<number | null>(null);
+  const [cycle, setCycle] = useState(true); // Animation wechselt nach jeder Runde das Armband, bis man selbst wählt
   const band = wristbands[active];
   const tabsId = `bands-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
 
@@ -40,6 +42,7 @@ export function Wristbands() {
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
     const next = (active + (e.key === "ArrowRight" ? 1 : -1) + wristbands.length) % wristbands.length;
     setActive(next);
+    setCycle(false);
     document.getElementById(`${tabsId}-tab-${next}`)?.focus();
   };
 
@@ -70,7 +73,10 @@ export function Wristbands() {
                 tabIndex={i === active ? 0 : -1}
                 className="bands__tab"
                 style={{ "--dot": b.band } as CSSProperties}
-                onClick={() => setActive(i)}
+                onClick={() => {
+                  setCycle(false);
+                  setActive(i);
+                }}
               >
                 <strong>{b.name}</strong>
                 <span>{b.for}</span>
@@ -105,6 +111,17 @@ export function Wristbands() {
               </a>
             </div>
           </div>
+        </div>
+
+        <div className="bands__demo">
+          <span className="bands__demo-badge">So funktioniert's</span>
+          <BandApp
+            band={band}
+            card={<BandVisual band={band} />}
+            onLoopEnd={() => {
+              if (cycle) setActive((a) => (a + 1) % wristbands.length);
+            }}
+          />
         </div>
 
         <h3 className="bands__gallery-title">Beispiele zum Anschauen</h3>
