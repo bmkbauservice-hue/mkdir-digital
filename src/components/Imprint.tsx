@@ -1,4 +1,5 @@
 import { contact, legal } from "../content";
+import { href } from "../router";
 
 // Impressum nach § 5 DDG (Digitale-Dienste-Gesetz, seit Mai 2024 statt TMG).
 // Pflicht: Name, ladungsfähige Anschrift (kein Postfach), schnelle Kontaktmöglichkeit (E-Mail + Telefon),
@@ -9,7 +10,7 @@ export function Imprint() {
   return (
     <main className="legal" id="impressum-inhalt">
       <div className="wrap legal__inner">
-        <a className="legal__back" href="#start">
+        <a className="legal__back" href={href("start")}>
           ← Zurück zur Startseite
         </a>
         <p className="kicker">Rechtliches</p>

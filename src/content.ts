@@ -1,3 +1,5 @@
+import type { PageId } from "./router";
+
 // Alle Texte, Preise und Kontaktdaten der Seite an einem Ort.
 // Wer etwas ändern will, ändert es hier – die Komponenten lesen nur aus dieser Datei.
 
@@ -786,6 +788,26 @@ export const gameCardVariants: { id: string; name: string; text: string; symbol:
       font: "display",
     },
   },
+];
+
+// Startseite: eine Kachel pro Produktwelt, jede führt auf ihre Unterseite (siehe router.ts).
+// image = Bild aus public/<folder>/ (es wird automatisch die kleine -600-Fassung geladen), sonst symbol.
+export const worlds: {
+  page: Exclude<PageId, "start" | "impressum" | "datenschutz">;
+  section?: string;
+  title: string;
+  text: string;
+  image?: { folder: string; file: string };
+  symbol?: string;
+  badge?: string;
+}[] = [
+  { page: "karten", title: "NFC-Visitenkarten", text: "Vier Kartenlinien von PVC bis Gold, 30 Designs zum Anschauen.", image: { folder: "designs", file: "tusche-burg.webp" } },
+  { page: "karten", section: "single-karten", title: "Single-Karten", text: "Ich bin ein Unikat. Kennenlernen per Antippen.", image: { folder: "single", file: "fingerabdruck.webp" } },
+  { page: "karten", section: "spielekarte", title: "Spielekarte", text: "Gesellschaftsspiele zum Antippen – fürs ganze Team.", image: { folder: "spiele", file: "spieltisch.webp" }, badge: "Bald" },
+  { page: "armbaender", title: "NFC-Armbänder", text: "Festival, Verein, Notfall und Kinder – wasserfest und ohne Akku.", image: { folder: "bands", file: "festival.webp" } },
+  { page: "zubehoer", title: "Zubehör", text: "Tischaufsteller, Schlüsselanhänger, Sticker und Haustier-Marken.", symbol: "◎" },
+  { page: "unternehmen", title: "Für Unternehmen", text: "Teamkarten, Google-Bewertungen, Treue- und Gutscheinkarten.", image: { folder: "designs", file: "edelstahl-m.webp" } },
+  { page: "webdesign", title: "Webdesign", text: "Websites, Logos und Automatisierung aus einer Hand.", symbol: "</>" },
 ];
 
 export const accessories = [

@@ -1,37 +1,42 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { mailto } from "../content";
+import { href, type PageId } from "../router";
 import { Logo } from "./Logo";
 
-type NavLink = { href: string; label: string; hint?: string };
+// Ein Menüpunkt führt auf eine Seite, optional direkt zu einem Abschnitt darauf.
+// Ohne page: Abschnitt auf der aktuellen Seite (Kontakt steht auf jeder Seite unten).
+type NavLink = { page?: PageId; section?: string; label: string; hint?: string };
 type NavGroup = { label: string; items: NavLink[] };
 type NavEntry = NavLink | NavGroup;
 
-// Hauptmenü: zwei Gruppen mit Dropdown, drei direkte Links.
+// Hauptmenü: zwei Gruppen mit Dropdown, vier direkte Links. Jede Produktwelt hat ihre eigene Seite.
 const nav: NavEntry[] = [
   {
     label: "Karten",
     items: [
-      { href: "#karten", label: "NFC-Karten", hint: "Vier Kartenlinien von PVC bis Gold" },
-      { href: "#designs", label: "Designbeispiele", hint: "30 Entwürfe zum Anschauen" },
-      { href: "#single-karten", label: "Single-Karten", hint: "Ich bin ein Unikat." },
-      { href: "#spielekarte", label: "Spielekarte", hint: "Bald: Spiele zum Antippen" },
+      { page: "karten", label: "NFC-Karten", hint: "Vier Kartenlinien von PVC bis Gold" },
+      { page: "karten", section: "designs", label: "Designbeispiele", hint: "30 Entwürfe zum Anschauen" },
+      { page: "karten", section: "single-karten", label: "Single-Karten", hint: "Ich bin ein Unikat." },
+      { page: "karten", section: "spielekarte", label: "Spielekarte", hint: "Bald: Spiele zum Antippen" },
     ],
   },
-  { href: "#armbaender", label: "Armbänder" },
+  { page: "armbaender", label: "Armbänder" },
+  { page: "zubehoer", label: "Zubehör" },
   {
     label: "Für Unternehmen",
     items: [
-      { href: "#unternehmen", label: "Firmenlösungen", hint: "Teamkarten und Google-Bewertungen" },
-      { href: "#kartensysteme", label: "Kartensysteme", hint: "Treuekarte, Gutschein, Gewinnspiel" },
-      { href: "#zubehoer", label: "Zubehör", hint: "Anhänger, Sticker, Aufsteller" },
+      { page: "unternehmen", label: "Firmenlösungen", hint: "Teamkarten und Google-Bewertungen" },
+      { page: "unternehmen", section: "kartensysteme", label: "Kartensysteme", hint: "Treuekarte, Gutschein, Gewinnspiel" },
     ],
   },
-  { href: "#webdesign", label: "Webdesign" },
-  { href: "#kontakt", label: "Kontakt" },
+  { page: "webdesign", label: "Webdesign" },
+  { section: "kontakt", label: "Kontakt" },
 ];
 
 const isGroup = (e: NavEntry): e is NavGroup => "items" in e;
-const allIds = nav.flatMap((e) => (isGroup(e) ? e.items : [e])).map((l) => l.href.slice(1));
+const allLinks = nav.flatMap((e) => (isGroup(e) ? e.items : [e]));
+// Die Abschnitts-ID eines Menüpunkts: der Anker, sonst heißt der erste Abschnitt der Seite wie die Seite.
+const sectionId = (l: NavLink) => l.section ?? l.page ?? "";
 
 // Merkt sich, welcher Abschnitt gerade im Bild ist (für die goldene Markierung).
 function useActiveSection(ids: string[]) {
@@ -57,11 +62,16 @@ function useActiveSection(ids: string[]) {
   return active;
 }
 
-export function SiteHeader() {
+export function SiteHeader({ page }: { page: PageId }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  const active = useActiveSection(allIds);
+  // Beobachtet werden nur die Abschnitte, die auf der aktuellen Seite liegen.
+  const ids = useMemo(() => allLinks.filter((l) => !l.page || l.page === page).map(sectionId), [page]);
+  const active = useActiveSection(ids);
+  const legal = page === "impressum" || page === "datenschutz";
+  const linkHref = (l: NavLink) => href(l.page ?? (legal ? "start" : page), l.section);
+  const isCurrent = (l: NavLink) => (l.page ? l.page === page : active === l.section);
   const navRef = useRef<HTMLElement>(null);
   // Hover öffnet nur auf dem Desktop. Ein Klick direkt danach soll das Menü nicht gleich wieder schließen.
   const hoverOpened = useRef(false);
@@ -138,7 +148,7 @@ export function SiteHeader() {
                 >
                   <button
                     type="button"
-                    className={`nav-pill${entry.items.some((i) => i.href.slice(1) === active) ? " is-active" : ""}`}
+                    className={`nav-pill${entry.items.some(isCurrent) ? " is-active" : ""}`}
                     aria-expanded={openGroup === entry.label}
                     onClick={() => {
                       if (hoverOpened.current) {
@@ -156,10 +166,10 @@ export function SiteHeader() {
                   <div className="nav-dropdown">
                     <ul>
                       {entry.items.map((item) => (
-                        <li key={item.href}>
+                        <li key={item.label}>
                           <a
-                            href={item.href}
-                            className={item.href.slice(1) === active ? "is-active" : undefined}
+                            href={linkHref(item)}
+                            className={item.page === page && sectionId(item) === active ? "is-active" : undefined}
                             onClick={close}
                           >
                             <strong>{item.label}</strong>
@@ -171,10 +181,11 @@ export function SiteHeader() {
                   </div>
                 </li>
               ) : (
-                <li key={entry.href}>
+                <li key={entry.label}>
                   <a
-                    href={entry.href}
-                    className={`nav-pill${entry.href.slice(1) === active ? " is-active" : ""}`}
+                    href={linkHref(entry)}
+                    className={`nav-pill${isCurrent(entry) ? " is-active" : ""}`}
+                    aria-current={entry.page === page ? "page" : undefined}
                     onClick={close}
                   >
                     {entry.label}
