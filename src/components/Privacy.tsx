@@ -1,7 +1,7 @@
 import { contact, legal } from "../content";
 
 // Datenschutzerklärung – beschreibt genau das, was diese Seite technisch tut:
-// Hosting bei GitHub Pages, Schriften von Google Fonts, Kontakt per E-Mail/Telefon/WhatsApp.
+// Hosting bei GitHub Pages, Kontakt per E-Mail/Telefon/WhatsApp. Schriften sind selbst gehostet (kein Google Fonts).
 // Keine Cookies, kein Tracking, keine Formulare.
 // Wichtig: Wenn sich die Technik ändert (Shop, Formular, Analyse-Tool, Server für Spiele),
 // muss dieser Text angepasst werden.
@@ -46,6 +46,7 @@ export function Privacy() {
           <ul>
             <li>Diese Website setzt keine Cookies und nutzt keine Analyse- oder Werbe-Tools.</li>
             <li>Es gibt keine Kontaktformulare und kein Kundenkonto.</li>
+            <li>Schriftarten werden direkt von dieser Seite geladen – es besteht keine Verbindung zu Google Fonts.</li>
             <li>Daten fallen nur an, wenn Sie die Seite aufrufen (Server-Protokolle) und wenn Sie mich selbst kontaktieren.</li>
           </ul>
         </section>
@@ -71,25 +72,7 @@ export function Privacy() {
         </section>
 
         <section>
-          <h2>4. Schriftarten von Google Fonts</h2>
-          <p>
-            Für eine einheitliche Darstellung nutzt diese Seite Schriftarten von Google Fonts, einem Dienst der Google
-            Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Beim Aufruf der Seite lädt Ihr Browser die
-            Schriften von Servern von Google. Dabei wird Ihre IP-Adresse an Google übermittelt; eine Übermittlung in die
-            USA kann nicht ausgeschlossen werden.
-          </p>
-          <p>
-            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer einheitlichen,
-            ansprechenden Darstellung). Weitere Informationen:{" "}
-            <a href="https://policies.google.com/privacy?hl=de" rel="noopener noreferrer" target="_blank">
-              Datenschutzerklärung von Google
-            </a>
-            .
-          </p>
-        </section>
-
-        <section>
-          <h2>5. Kontakt per E-Mail, Telefon oder WhatsApp</h2>
+          <h2>4. Kontakt per E-Mail, Telefon oder WhatsApp</h2>
           <p>
             Wenn Sie mich per E-Mail, Telefon oder WhatsApp kontaktieren – zum Beispiel über die Schaltflächen „Anfragen“
             oder „Auf die Warteliste“ –, verarbeite ich die Angaben, die Sie mir dabei mitteilen (etwa Name,
@@ -107,7 +90,7 @@ export function Privacy() {
         </section>
 
         <section>
-          <h2>6. Ihre Rechte</h2>
+          <h2>5. Ihre Rechte</h2>
           <p>Sie haben jederzeit das Recht auf</p>
           <ul>
             <li>Auskunft über Ihre gespeicherten Daten (Art. 15 DSGVO),</li>
@@ -124,7 +107,7 @@ export function Privacy() {
         </section>
 
         <section>
-          <h2>7. Externe Links</h2>
+          <h2>6. Externe Links</h2>
           <p>
             Diese Seite enthält Links zu Angeboten anderer Anbieter. Für deren Inhalte und Datenverarbeitung sind die
             jeweiligen Anbieter verantwortlich.
