@@ -4221,6 +4221,104 @@ html:has(.lightbox[open]) {
   font-size: 14px;
 }
 
+.acc__more {
+  margin-top: auto;
+  padding-top: 6px;
+  color: var(--neon-mint);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.acc__more:hover {
+  text-decoration: underline;
+}
+
+/* Schlüsselanhänger-Galerie (Hochformat 3 : 4) */
+.keys {
+  margin-top: 48px;
+  scroll-margin-top: 110px;
+}
+
+.keys__head {
+  margin-bottom: 20px;
+}
+
+.keys__head h3 {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+.keys__head p {
+  max-width: 60ch;
+  color: var(--stone);
+}
+
+.keys__grid {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 22px 16px;
+}
+
+.keys__grid li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.keys__grid button {
+  display: block;
+  padding: 0;
+  margin-bottom: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: #1d1d1f;
+  cursor: zoom-in;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.keys__grid button:hover,
+.keys__grid button:focus-visible {
+  border-color: var(--gold);
+  box-shadow: 0 0 24px rgba(243, 220, 154, 0.25);
+  transform: translateY(-3px);
+}
+
+.keys__grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.keys__grid strong {
+  color: var(--gold-hi);
+}
+
+.keys__grid span {
+  color: var(--stone);
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .keys__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keys__grid button,
+  .keys__grid button:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
 /* ---------- Webdesign ---------- */
 .pricelist {
   display: flex;

@@ -21,6 +21,7 @@ import {
   contact,
   designs,
   designsVisible,
+  keychains,
   loyalty,
   mailto,
   priceNote,
@@ -322,6 +323,7 @@ function CardSystems() {
 }
 
 function Accessories() {
+  const [zoom, setZoom] = useState<number | null>(null);
   return (
     <section className="section section--band" id="zubehoer">
       <div className="wrap">
@@ -334,9 +336,53 @@ function Accessories() {
             <li key={a.name}>
               <strong>{a.name}</strong>
               <span>{a.use}</span>
+              {a.section && (
+                <a className="acc__more" href={`#${a.section}`}>
+                  Modelle ansehen ↓
+                </a>
+              )}
             </li>
           ))}
         </ul>
+
+        <div className="keys" id="schluesselanhaenger">
+          <div className="keys__head">
+            <h3>Schlüsselanhänger</h3>
+            <p>Rund oder eckig, in fünf Materialien. Mit NFC-Chip und Ihrem Logo – antippen öffnet Ihre digitale Visitenkarte.</p>
+          </div>
+          <ul className="keys__grid">
+            {keychains.map((k, i) => (
+              <li key={k.file}>
+                <button type="button" data-shine onClick={() => setZoom(i)} aria-label={`Schlüsselanhänger ${k.name} groß ansehen`}>
+                  <img
+                    {...imgSet("anhaenger", k.file, [300, 600])}
+                    sizes="(max-width: 600px) 46vw, 220px"
+                    alt={`NFC-Schlüsselanhänger ${k.name}`}
+                    width={k.width}
+                    height={k.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
+                <strong>{k.name}</strong>
+                <span>{k.technique}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="fineprint">Die Bilder sind KI-Visualisierungen. Fotos echter Muster folgen.</p>
+          <a className="btn btn--gold btn--small" href={mailto("Anfrage NFC-Schlüsselanhänger")}>
+            Schlüsselanhänger anfragen
+          </a>
+        </div>
+
+        <DesignLightbox
+          items={keychains}
+          folder="anhaenger"
+          kind="Schlüsselanhänger"
+          index={zoom}
+          onClose={() => setZoom(null)}
+          onGo={setZoom}
+        />
       </div>
     </section>
   );
