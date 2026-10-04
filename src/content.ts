@@ -813,8 +813,8 @@ export const worlds: {
 export const accessories: { name: string; use: string; section?: string }[] = [
   { name: "Schlüsselanhänger", use: "Kontakt immer am Schlüsselbund", section: "schluesselanhaenger" },
   { name: "Tags und Sticker", use: "Für Handyhülle, Laptop oder Schaufenster", section: "tags-sticker" },
-  { name: "Tischaufsteller", use: "Speisekarte, WLAN oder Instagram per Antippen" },
-  { name: "Haustier-Marke", use: "Finder tippen an und erreichen Sie sofort" },
+  { name: "Tischaufsteller", use: "Speisekarte, WLAN oder Instagram per Antippen", section: "tischaufsteller" },
+  { name: "Haustier-Marke", use: "Finder tippen an und erreichen Sie sofort", section: "haustier-marken" },
 ];
 
 // Schlüsselanhänger mit NFC-Chip – einzeln aus einem ChatGPT-Bild geschnitten (public/anhaenger/, 600 × 800 + "-600"-Fassung 300 × 400).
@@ -850,6 +850,37 @@ export const stickers = [
   { file: "metal.webp", name: "Metall · Sticker", technique: "Gebürstete Metall-Optik", width: 800, height: 600 },
   { file: "hologram.webp", name: "Hologramm · Sticker", technique: "Regenbogen-Holofolie", width: 800, height: 600 },
   { file: "qr.webp", name: "QR-Edition · Sticker", technique: "Mit QR-Code für Handys ohne NFC", width: 800, height: 600 },
+];
+
+// Tischaufsteller – aus einem ChatGPT-Bild geschnitten (public/aufsteller/, 500 × 600 + "-600"-Fassung 250 × 300).
+export const tableStands = [
+  { file: "acryl-klar.webp", name: "Acryl klar", technique: "Speisekarte per Antippen", width: 500, height: 600 },
+  { file: "acryl-schwarz.webp", name: "Acryl schwarz", technique: "WLAN per Antippen", width: 500, height: 600 },
+  { file: "metall.webp", name: "Metall gebürstet", technique: "Instagram per Antippen", width: 500, height: 600 },
+  { file: "rund-premium.webp", name: "Rund Premium", technique: "Scan & Tap, Goldrand", width: 500, height: 600 },
+  { file: "holz-eiche.webp", name: "Holz Eiche", technique: "Speisekarte per Antippen", width: 500, height: 600 },
+  { file: "matt-schwarz.webp", name: "Matt schwarz", technique: "WLAN per Antippen", width: 500, height: 600 },
+];
+
+// Einsatzbeispiele zu den Tischaufstellern (600 × 400 + "-600"-Fassung 300 × 200)
+export const tableStandScenes = [
+  { file: "einsatz-restaurant.webp", name: "Restaurant", technique: "Digitale Speisekarte per Antippen", width: 600, height: 400 },
+  { file: "einsatz-cafe.webp", name: "Café", technique: "Instagram öffnen und folgen", width: 600, height: 400 },
+  { file: "einsatz-hotel.webp", name: "Hotel, Bar, Shop", technique: "WLAN-Zugang für Ihre Gäste", width: 600, height: 400 },
+];
+
+// Haustier-Marken – aus einem ChatGPT-Bild geschnitten (public/haustier/, 472 × 472 + "-600"-Fassung 236 × 236).
+export const petTags = [
+  { file: "luna.webp", name: "Rund · Schwarz/Gold", technique: "Gravur „Luna“ mit Krone", width: 472, height: 472 },
+  { file: "buddy.webp", name: "Rund · Silber", technique: "Gravur „Buddy“ mit Pfote", width: 472, height: 472 },
+  { file: "rocky.webp", name: "Rund · Marmor", technique: "Gravur „Rocky“ mit Bergen", width: 472, height: 472 },
+  { file: "bella.webp", name: "Rund · Holz", technique: "Gravur „Bella“ mit Baum", width: 472, height: 472 },
+  { file: "max.webp", name: "Knochen · Schwarz", technique: "Gravur „Max“ mit Pfote", width: 472, height: 472 },
+  { file: "milo.webp", name: "Knochen · Silber", technique: "Gravur „Milo“ mit Pfote", width: 472, height: 472 },
+  { file: "nala.webp", name: "Herz · Roségold", technique: "Gravur „Nala“ mit Herz", width: 472, height: 472 },
+  { file: "coco.webp", name: "Schild · Schwarz", technique: "Gravur „Coco“ mit Bergen", width: 472, height: 472 },
+  { file: "bruno.webp", name: "Pfote · Gold", technique: "Gravur „Bruno“", width: 472, height: 472 },
+  { file: "leo.webp", name: "Rechteck · Mattschwarz", technique: "Gravur „Leo“ mit Tannen", width: 472, height: 472 },
 ];
 
 export const webServices = [

@@ -24,10 +24,13 @@ import {
   keychains,
   loyalty,
   mailto,
+  petTags,
   priceNote,
   securityNote,
   steps,
   stickers,
+  tableStandScenes,
+  tableStands,
   webServices,
   worlds,
 } from "./content";
@@ -334,24 +337,33 @@ function ProductGallery({
   kind,
   widths,
   ratio,
+  cols = 5,
+  colsTablet = 2,
+  colsMobile = 2,
+  cta = true,
 }: {
-  id: string;
+  id?: string;
   title: string;
-  text: string;
+  text?: string;
   items: LightboxItem[];
   folder: string;
   kind: string;
   widths: [number, number];
   ratio: string;
+  cols?: number; // Spalten am Desktop
+  colsTablet?: number; // Spalten bis 900 px Breite
+  colsMobile?: number; // Spalten am Handy
+  cta?: boolean; // Hinweis + Anfrage-Button darunter
 }) {
   const [zoom, setZoom] = useState<number | null>(null);
+  const gridStyle = { "--ratio": ratio, "--cols": cols, "--cols-t": colsTablet, "--cols-m": colsMobile } as CSSProperties;
   return (
     <div className="keys" id={id}>
       <div className="keys__head">
         <h3>{title}</h3>
-        <p>{text}</p>
+        {text && <p>{text}</p>}
       </div>
-      <ul className="keys__grid" style={{ "--ratio": ratio } as CSSProperties}>
+      <ul className="keys__grid" style={gridStyle}>
         {items.map((k, i) => (
           <li key={k.file}>
             <button type="button" data-shine onClick={() => setZoom(i)} aria-label={`${kind} ${k.name} groß ansehen`}>
@@ -370,10 +382,14 @@ function ProductGallery({
           </li>
         ))}
       </ul>
-      <p className="fineprint">Die Bilder sind KI-Visualisierungen. Fotos echter Muster folgen.</p>
-      <a className="btn btn--gold btn--small" href={mailto(`Anfrage ${title}`)}>
-        {title} anfragen
-      </a>
+      {cta && (
+        <>
+          <p className="fineprint">Die Bilder sind KI-Visualisierungen. Fotos echter Muster folgen.</p>
+          <a className="btn btn--gold btn--small" href={mailto(`Anfrage ${title}`)}>
+            {title} anfragen
+          </a>
+        </>
+      )}
       <DesignLightbox items={items} folder={folder} kind={kind} index={zoom} onClose={() => setZoom(null)} onGo={setZoom} />
     </div>
   );
@@ -421,6 +437,43 @@ function Accessories() {
           kind="NFC-Tag und Sticker"
           widths={[400, 800]}
           ratio="4 / 3"
+          colsTablet={3}
+        />
+
+        <ProductGallery
+          id="tischaufsteller"
+          title="Tischaufsteller"
+          text="Speisekarte, WLAN oder Instagram per Antippen – aus Acryl, Metall, Holz oder mattschwarz, passend zu Ihrem Lokal."
+          items={tableStands}
+          folder="aufsteller"
+          kind="NFC-Tischaufsteller"
+          widths={[250, 500]}
+          ratio="5 / 6"
+          cols={6}
+          colsTablet={3}
+          cta={false}
+        />
+        <ProductGallery
+          title="So wird's genutzt"
+          items={tableStandScenes}
+          folder="aufsteller"
+          kind="Einsatzbeispiel Tischaufsteller"
+          widths={[300, 600]}
+          ratio="3 / 2"
+          cols={3}
+          colsTablet={3}
+          colsMobile={1}
+        />
+
+        <ProductGallery
+          id="haustier-marken"
+          title="Haustier-Marken"
+          text="Wer Ihr Tier findet, tippt die Marke an und sieht sofort, wie er Sie erreicht. Welche Angaben erscheinen, bestimmen Sie selbst."
+          items={petTags}
+          folder="haustier"
+          kind="NFC-Haustier-Marke"
+          widths={[236, 472]}
+          ratio="1 / 1"
         />
       </div>
     </section>
