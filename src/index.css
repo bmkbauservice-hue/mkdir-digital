@@ -4276,7 +4276,7 @@ html:has(.lightbox[open]) {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   overflow: hidden;
-  background: #1d1d1f;
+  background: #1a1a1c;
   cursor: zoom-in;
   transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
 }
@@ -4292,7 +4292,7 @@ html:has(.lightbox[open]) {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: var(--ratio, 3 / 4);
   object-fit: cover;
 }
 
