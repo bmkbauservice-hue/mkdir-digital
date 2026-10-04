@@ -3,7 +3,7 @@ import { Logo } from "./components/Logo";
 import { SiteHeader } from "./components/SiteHeader";
 import { CardVisual } from "./components/CardVisual";
 import { HeroDeck } from "./components/HeroDeck";
-import { DesignLightbox } from "./components/DesignLightbox";
+import { DesignLightbox, type LightboxItem } from "./components/DesignLightbox";
 import { Wristbands } from "./components/Wristbands";
 import { SingleCards } from "./components/SingleCards";
 import { GameCard } from "./components/GameCard";
@@ -24,9 +24,13 @@ import {
   keychains,
   loyalty,
   mailto,
+  petTags,
   priceNote,
   securityNote,
   steps,
+  stickers,
+  tableStandScenes,
+  tableStands,
   webServices,
   worlds,
 } from "./content";
@@ -322,8 +326,76 @@ function CardSystems() {
   );
 }
 
-function Accessories() {
+// Produkt-Galerie mit Großansicht (Schlüsselanhänger, Tags und Sticker …).
+// widths = Breite der kleinen Fassung und des Originals (für srcSet), ratio = Seitenverhältnis der Kacheln.
+function ProductGallery({
+  id,
+  title,
+  text,
+  items,
+  folder,
+  kind,
+  widths,
+  ratio,
+  cols = 5,
+  colsTablet = 2,
+  colsMobile = 2,
+  cta = true,
+}: {
+  id?: string;
+  title: string;
+  text?: string;
+  items: LightboxItem[];
+  folder: string;
+  kind: string;
+  widths: [number, number];
+  ratio: string;
+  cols?: number; // Spalten am Desktop
+  colsTablet?: number; // Spalten bis 900 px Breite
+  colsMobile?: number; // Spalten am Handy
+  cta?: boolean; // Hinweis + Anfrage-Button darunter
+}) {
   const [zoom, setZoom] = useState<number | null>(null);
+  const gridStyle = { "--ratio": ratio, "--cols": cols, "--cols-t": colsTablet, "--cols-m": colsMobile } as CSSProperties;
+  return (
+    <div className="keys" id={id}>
+      <div className="keys__head">
+        <h3>{title}</h3>
+        {text && <p>{text}</p>}
+      </div>
+      <ul className="keys__grid" style={gridStyle}>
+        {items.map((k, i) => (
+          <li key={k.file}>
+            <button type="button" data-shine onClick={() => setZoom(i)} aria-label={`${kind} ${k.name} groß ansehen`}>
+              <img
+                {...imgSet(folder, k.file, widths)}
+                sizes="(max-width: 900px) 46vw, 220px"
+                alt={`${kind} ${k.name}`}
+                width={k.width}
+                height={k.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+            <strong>{k.name}</strong>
+            <span>{k.technique}</span>
+          </li>
+        ))}
+      </ul>
+      {cta && (
+        <>
+          <p className="fineprint">Die Bilder sind KI-Visualisierungen. Fotos echter Muster folgen.</p>
+          <a className="btn btn--gold btn--small" href={mailto(`Anfrage ${title}`)}>
+            {title} anfragen
+          </a>
+        </>
+      )}
+      <DesignLightbox items={items} folder={folder} kind={kind} index={zoom} onClose={() => setZoom(null)} onGo={setZoom} />
+    </div>
+  );
+}
+
+function Accessories() {
   return (
     <section className="section section--band" id="zubehoer">
       <div className="wrap">
@@ -345,43 +417,63 @@ function Accessories() {
           ))}
         </ul>
 
-        <div className="keys" id="schluesselanhaenger">
-          <div className="keys__head">
-            <h3>Schlüsselanhänger</h3>
-            <p>Rund oder eckig, in fünf Materialien. Mit NFC-Chip und Ihrem Logo – antippen öffnet Ihre digitale Visitenkarte.</p>
-          </div>
-          <ul className="keys__grid">
-            {keychains.map((k, i) => (
-              <li key={k.file}>
-                <button type="button" data-shine onClick={() => setZoom(i)} aria-label={`Schlüsselanhänger ${k.name} groß ansehen`}>
-                  <img
-                    {...imgSet("anhaenger", k.file, [300, 600])}
-                    sizes="(max-width: 600px) 46vw, 220px"
-                    alt={`NFC-Schlüsselanhänger ${k.name}`}
-                    width={k.width}
-                    height={k.height}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </button>
-                <strong>{k.name}</strong>
-                <span>{k.technique}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="fineprint">Die Bilder sind KI-Visualisierungen. Fotos echter Muster folgen.</p>
-          <a className="btn btn--gold btn--small" href={mailto("Anfrage NFC-Schlüsselanhänger")}>
-            Schlüsselanhänger anfragen
-          </a>
-        </div>
-
-        <DesignLightbox
+        <ProductGallery
+          id="schluesselanhaenger"
+          title="Schlüsselanhänger"
+          text="Rund oder eckig, in fünf Materialien. Mit NFC-Chip und Ihrem Logo – antippen öffnet Ihre digitale Visitenkarte."
           items={keychains}
           folder="anhaenger"
-          kind="Schlüsselanhänger"
-          index={zoom}
-          onClose={() => setZoom(null)}
-          onGo={setZoom}
+          kind="NFC-Schlüsselanhänger"
+          widths={[300, 600]}
+          ratio="3 / 4"
+        />
+
+        <ProductGallery
+          id="tags-sticker"
+          title="Tags und Sticker"
+          text="NFC-Tags zum Anhängen und Sticker für Handyhülle, Laptop oder Schaufenster – klassisch, edel oder im Street-Look."
+          items={stickers}
+          folder="sticker"
+          kind="NFC-Tag und Sticker"
+          widths={[400, 800]}
+          ratio="4 / 3"
+          colsTablet={3}
+        />
+
+        <ProductGallery
+          id="tischaufsteller"
+          title="Tischaufsteller"
+          text="Speisekarte, WLAN oder Instagram per Antippen – aus Acryl, Metall, Holz oder mattschwarz, passend zu Ihrem Lokal."
+          items={tableStands}
+          folder="aufsteller"
+          kind="NFC-Tischaufsteller"
+          widths={[250, 500]}
+          ratio="5 / 6"
+          cols={6}
+          colsTablet={3}
+          cta={false}
+        />
+        <ProductGallery
+          title="So wird's genutzt"
+          items={tableStandScenes}
+          folder="aufsteller"
+          kind="Einsatzbeispiel Tischaufsteller"
+          widths={[300, 600]}
+          ratio="3 / 2"
+          cols={3}
+          colsTablet={3}
+          colsMobile={1}
+        />
+
+        <ProductGallery
+          id="haustier-marken"
+          title="Haustier-Marken"
+          text="Wer Ihr Tier findet, tippt die Marke an und sieht sofort, wie er Sie erreicht. Welche Angaben erscheinen, bestimmen Sie selbst."
+          items={petTags}
+          folder="haustier"
+          kind="NFC-Haustier-Marke"
+          widths={[236, 472]}
+          ratio="1 / 1"
         />
       </div>
     </section>
