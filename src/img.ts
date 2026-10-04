@@ -5,10 +5,12 @@
 // Neue Bilder: Original + "-600"-Fassung in den Ordner legen (siehe stand.md: "Neue Bilder einbauen").
 const base = import.meta.env.BASE_URL;
 
-export function imgSet(folder: string, file: string) {
+// widths = [Breite der kleinen Fassung, Breite des Originals]. Standard 600/1200;
+// die Schlüsselanhänger sind kleiner (300/600), heißen aber genauso ("-600" = kleine Fassung).
+export function imgSet(folder: string, file: string, widths: [number, number] = [600, 1200]) {
   const small = file.replace(/\.webp$/, "-600.webp");
   return {
     src: `${base}${folder}/${file}`,
-    srcSet: `${base}${folder}/${small} 600w, ${base}${folder}/${file} 1200w`,
+    srcSet: `${base}${folder}/${small} ${widths[0]}w, ${base}${folder}/${file} ${widths[1]}w`,
   };
 }

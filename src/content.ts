@@ -810,11 +810,26 @@ export const worlds: {
   { page: "webdesign", title: "Webdesign", text: "Websites, Logos und Automatisierung aus einer Hand.", symbol: "</>" },
 ];
 
-export const accessories = [
-  { name: "Schlüsselanhänger", use: "Kontakt immer am Schlüsselbund" },
+export const accessories: { name: string; use: string; section?: string }[] = [
+  { name: "Schlüsselanhänger", use: "Kontakt immer am Schlüsselbund", section: "schluesselanhaenger" },
   { name: "Tags und Sticker", use: "Für Handyhülle, Laptop oder Schaufenster" },
   { name: "Tischaufsteller", use: "Speisekarte, WLAN oder Instagram per Antippen" },
   { name: "Haustier-Marke", use: "Finder tippen an und erreichen Sie sofort" },
+];
+
+// Schlüsselanhänger mit NFC-Chip – einzeln aus einem ChatGPT-Bild geschnitten (public/anhaenger/, 600 × 800 + "-600"-Fassung 300 × 400).
+// TODO: Auf dem Bild steht "DESING" statt "DESIGN" – durch korrigierte Bilder ersetzen.
+export const keychains = [
+  { file: "rund-schwarz.webp", name: "Rund · Schwarz", technique: "Mattschwarz, weißer Druck", width: 600, height: 800 },
+  { file: "rund-weiss.webp", name: "Rund · Weiß", technique: "Weiß, schwarzer Druck", width: 600, height: 800 },
+  { file: "rund-edelstahl.webp", name: "Rund · Edelstahl", technique: "Gebürsteter Edelstahl, Gravur", width: 600, height: 800 },
+  { file: "rund-acryl.webp", name: "Rund · Acryl", technique: "Klares Acryl, weißer Druck", width: 600, height: 800 },
+  { file: "rund-marmor.webp", name: "Rund · Marmor", technique: "Schwarze Marmor-Optik, weißer Druck", width: 600, height: 800 },
+  { file: "eckig-schwarz.webp", name: "Eckig · Schwarz", technique: "Mattschwarz, weißer Druck", width: 600, height: 800 },
+  { file: "eckig-weiss.webp", name: "Eckig · Weiß", technique: "Weiß, schwarzer Druck", width: 600, height: 800 },
+  { file: "eckig-bambus.webp", name: "Eckig · Bambus", technique: "Bambusholz, Lasergravur", width: 600, height: 800 },
+  { file: "eckig-acryl.webp", name: "Eckig · Acryl", technique: "Klares Acryl, weißer Druck", width: 600, height: 800 },
+  { file: "eckig-carbon.webp", name: "Eckig · Carbon", technique: "Carbon-Optik, weißer Druck", width: 600, height: 800 },
 ];
 
 export const webServices = [
