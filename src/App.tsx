@@ -3,7 +3,7 @@ import { Logo } from "./components/Logo";
 import { SiteHeader } from "./components/SiteHeader";
 import { CardVisual } from "./components/CardVisual";
 import { HeroDeck } from "./components/HeroDeck";
-import { DesignLightbox } from "./components/DesignLightbox";
+import { DesignLightbox, type LightboxItem } from "./components/DesignLightbox";
 import { Wristbands } from "./components/Wristbands";
 import { SingleCards } from "./components/SingleCards";
 import { GameCard } from "./components/GameCard";
@@ -27,6 +27,7 @@ import {
   priceNote,
   securityNote,
   steps,
+  stickers,
   webServices,
   worlds,
 } from "./content";
@@ -322,8 +323,63 @@ function CardSystems() {
   );
 }
 
-function Accessories() {
+// Produkt-Galerie mit Großansicht (Schlüsselanhänger, Tags und Sticker …).
+// widths = Breite der kleinen Fassung und des Originals (für srcSet), ratio = Seitenverhältnis der Kacheln.
+function ProductGallery({
+  id,
+  title,
+  text,
+  items,
+  folder,
+  kind,
+  widths,
+  ratio,
+}: {
+  id: string;
+  title: string;
+  text: string;
+  items: LightboxItem[];
+  folder: string;
+  kind: string;
+  widths: [number, number];
+  ratio: string;
+}) {
   const [zoom, setZoom] = useState<number | null>(null);
+  return (
+    <div className="keys" id={id}>
+      <div className="keys__head">
+        <h3>{title}</h3>
+        <p>{text}</p>
+      </div>
+      <ul className="keys__grid" style={{ "--ratio": ratio } as CSSProperties}>
+        {items.map((k, i) => (
+          <li key={k.file}>
+            <button type="button" data-shine onClick={() => setZoom(i)} aria-label={`${kind} ${k.name} groß ansehen`}>
+              <img
+                {...imgSet(folder, k.file, widths)}
+                sizes="(max-width: 900px) 46vw, 220px"
+                alt={`${kind} ${k.name}`}
+                width={k.width}
+                height={k.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+            <strong>{k.name}</strong>
+            <span>{k.technique}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="fineprint">Die Bilder sind KI-Visualisierungen. Fotos echter Muster folgen.</p>
+      <a className="btn btn--gold btn--small" href={mailto(`Anfrage ${title}`)}>
+        {title} anfragen
+      </a>
+      <DesignLightbox items={items} folder={folder} kind={kind} index={zoom} onClose={() => setZoom(null)} onGo={setZoom} />
+    </div>
+  );
+}
+
+function Accessories() {
   return (
     <section className="section section--band" id="zubehoer">
       <div className="wrap">
@@ -345,43 +401,26 @@ function Accessories() {
           ))}
         </ul>
 
-        <div className="keys" id="schluesselanhaenger">
-          <div className="keys__head">
-            <h3>Schlüsselanhänger</h3>
-            <p>Rund oder eckig, in fünf Materialien. Mit NFC-Chip und Ihrem Logo – antippen öffnet Ihre digitale Visitenkarte.</p>
-          </div>
-          <ul className="keys__grid">
-            {keychains.map((k, i) => (
-              <li key={k.file}>
-                <button type="button" data-shine onClick={() => setZoom(i)} aria-label={`Schlüsselanhänger ${k.name} groß ansehen`}>
-                  <img
-                    {...imgSet("anhaenger", k.file, [300, 600])}
-                    sizes="(max-width: 600px) 46vw, 220px"
-                    alt={`NFC-Schlüsselanhänger ${k.name}`}
-                    width={k.width}
-                    height={k.height}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </button>
-                <strong>{k.name}</strong>
-                <span>{k.technique}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="fineprint">Die Bilder sind KI-Visualisierungen. Fotos echter Muster folgen.</p>
-          <a className="btn btn--gold btn--small" href={mailto("Anfrage NFC-Schlüsselanhänger")}>
-            Schlüsselanhänger anfragen
-          </a>
-        </div>
-
-        <DesignLightbox
+        <ProductGallery
+          id="schluesselanhaenger"
+          title="Schlüsselanhänger"
+          text="Rund oder eckig, in fünf Materialien. Mit NFC-Chip und Ihrem Logo – antippen öffnet Ihre digitale Visitenkarte."
           items={keychains}
           folder="anhaenger"
-          kind="Schlüsselanhänger"
-          index={zoom}
-          onClose={() => setZoom(null)}
-          onGo={setZoom}
+          kind="NFC-Schlüsselanhänger"
+          widths={[300, 600]}
+          ratio="3 / 4"
+        />
+
+        <ProductGallery
+          id="tags-sticker"
+          title="Tags und Sticker"
+          text="NFC-Tags zum Anhängen und Sticker für Handyhülle, Laptop oder Schaufenster – klassisch, edel oder im Street-Look."
+          items={stickers}
+          folder="sticker"
+          kind="NFC-Tag und Sticker"
+          widths={[400, 800]}
+          ratio="4 / 3"
         />
       </div>
     </section>

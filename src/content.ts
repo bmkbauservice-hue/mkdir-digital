@@ -812,7 +812,7 @@ export const worlds: {
 
 export const accessories: { name: string; use: string; section?: string }[] = [
   { name: "Schlüsselanhänger", use: "Kontakt immer am Schlüsselbund", section: "schluesselanhaenger" },
-  { name: "Tags und Sticker", use: "Für Handyhülle, Laptop oder Schaufenster" },
+  { name: "Tags und Sticker", use: "Für Handyhülle, Laptop oder Schaufenster", section: "tags-sticker" },
   { name: "Tischaufsteller", use: "Speisekarte, WLAN oder Instagram per Antippen" },
   { name: "Haustier-Marke", use: "Finder tippen an und erreichen Sie sofort" },
 ];
@@ -830,6 +830,26 @@ export const keychains = [
   { file: "eckig-bambus.webp", name: "Eckig · Bambus", technique: "Bambusholz, Lasergravur", width: 600, height: 800 },
   { file: "eckig-acryl.webp", name: "Eckig · Acryl", technique: "Klares Acryl, weißer Druck", width: 600, height: 800 },
   { file: "eckig-carbon.webp", name: "Eckig · Carbon", technique: "Carbon-Optik, weißer Druck", width: 600, height: 800 },
+];
+
+// NFC-Tags und Sticker – einzeln aus einem ChatGPT-Bild geschnitten (public/sticker/, 800 × 600 + "-600"-Fassung 400 × 300).
+// TODO: Auf den 5 Tags steht "DESIGG"/"DESING" statt "DESIGN" – durch korrigierte Bilder ersetzen. Die Sticker sind korrekt.
+export const stickers = [
+  { file: "tag-royal.webp", name: "Royal · NFC-Tag", technique: "Schwarz glänzend, Goldkrone", width: 800, height: 600 },
+  { file: "tag-carbon.webp", name: "Carbon · NFC-Tag", technique: "Carbon-Optik, Silberdruck", width: 800, height: 600 },
+  { file: "tag-premium.webp", name: "Premium · NFC-Tag", technique: "Gebürstetes Metall, schwarzer Druck", width: 800, height: 600 },
+  { file: "tag-marble.webp", name: "Marmor · NFC-Tag", technique: "Schwarzer Marmor mit Goldadern", width: 800, height: 600 },
+  { file: "tag-square.webp", name: "Eckig · NFC-Tag", technique: "Schwarz, Golddruck", width: 800, height: 600 },
+  { file: "classic.webp", name: "Classic · Sticker", technique: "Schwarz glänzend, Goldkrone", width: 800, height: 600 },
+  { file: "graffiti.webp", name: "Graffiti · Sticker", technique: "Konturgeschnitten, Silber-Graffiti", width: 800, height: 600 },
+  { file: "circle.webp", name: "Kreis · Sticker", technique: "Rund, Goldrand im Used-Look", width: 800, height: 600 },
+  { file: "skull.webp", name: "Skull · Sticker", technique: "Konturgeschnitten, Totenkopf mit Krone", width: 800, height: 600 },
+  { file: "street.webp", name: "Street · Sticker", technique: "Konturgeschnitten, Gold-Graffiti", width: 800, height: 600 },
+  { file: "minimal.webp", name: "Minimal · Sticker", technique: "Schwarz, weißer Druck", width: 800, height: 600 },
+  { file: "marble.webp", name: "Marmor · Sticker", technique: "Schwarzer Marmor mit Goldadern", width: 800, height: 600 },
+  { file: "metal.webp", name: "Metall · Sticker", technique: "Gebürstete Metall-Optik", width: 800, height: 600 },
+  { file: "hologram.webp", name: "Hologramm · Sticker", technique: "Regenbogen-Holofolie", width: 800, height: 600 },
+  { file: "qr.webp", name: "QR-Edition · Sticker", technique: "Mit QR-Code für Handys ohne NFC", width: 800, height: 600 },
 ];
 
 export const webServices = [
