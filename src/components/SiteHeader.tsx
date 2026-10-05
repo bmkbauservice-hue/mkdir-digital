@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { mailto } from "../content";
 import { href, type PageId } from "../router";
 import { Logo } from "./Logo";
 
@@ -194,8 +193,13 @@ export function SiteHeader({ page }: { page: PageId }) {
               ),
             )}
           </ul>
-          <a className="nav-cta" href={mailto("Anfrage NFC-Karte")} onClick={close}>
-            <span>Karte anfragen</span>
+          <a
+            className={`nav-cta${page === "gestalten" ? " is-active" : ""}`}
+            href={href("gestalten")}
+            aria-current={page === "gestalten" ? "page" : undefined}
+            onClick={close}
+          >
+            <span>Karte gestalten</span>
           </a>
         </nav>
       </div>

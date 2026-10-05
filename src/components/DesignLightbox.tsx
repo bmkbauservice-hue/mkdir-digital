@@ -17,13 +17,15 @@ type Props = {
   index: number | null; // null = geschlossen
   onClose: () => void;
   onGo: (index: number) => void;
+  // Optional eigener Button statt "Dieses Design anfragen" (z. B. "Mit diesem Motiv gestalten")
+  action?: (item: LightboxItem) => { href: string; label: string };
 };
 
 const glowColors = ["var(--neon-mint)", "var(--neon-cyan)", "var(--neon-pink)", "var(--gold)"];
 
 // Großansicht eines Entwurfs. Nutzt das native <dialog>:
 // Esc schließt, der Fokus bleibt im Fenster, der Rest der Seite ist gesperrt.
-export function DesignLightbox({ items, folder, kind, index, onClose, onGo }: Props) {
+export function DesignLightbox({ items, folder, kind, index, onClose, onGo, action }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const swipeStart = useRef<number | null>(null);
   const n = items.length;
@@ -101,9 +103,15 @@ export function DesignLightbox({ items, folder, kind, index, onClose, onGo }: Pr
             <span className="lightbox__count">
               {index! + 1} / {n}
             </span>
-            <a className="btn btn--gold btn--small" href={mailto(`Anfrage ${kind} „${d.name}“`)}>
-              Dieses Design anfragen
-            </a>
+            {action ? (
+              <a className="btn btn--gold btn--small" href={action(d).href} onClick={onClose}>
+                {action(d).label}
+              </a>
+            ) : (
+              <a className="btn btn--gold btn--small" href={mailto(`Anfrage ${kind} „${d.name}“`)}>
+                Dieses Design anfragen
+              </a>
+            )}
           </div>
         </div>
       )}

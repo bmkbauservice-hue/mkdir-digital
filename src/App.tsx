@@ -7,6 +7,7 @@ import { DesignLightbox, type LightboxItem } from "./components/DesignLightbox";
 import { Wristbands } from "./components/Wristbands";
 import { SingleCards } from "./components/SingleCards";
 import { GameCard } from "./components/GameCard";
+import { CardDesigner } from "./components/CardDesigner";
 import { Privacy } from "./components/Privacy";
 import { Imprint } from "./components/Imprint";
 import { useShine } from "./useShine";
@@ -175,6 +176,9 @@ function Designs() {
           </div>
         )}
         <div className="gallery__more-bar">
+          <a className="btn btn--gold" href={href("gestalten")}>
+            Eigene Karte gestalten
+          </a>
           {rest.length > 0 && (
             <button
               type="button"
@@ -197,7 +201,15 @@ function Designs() {
           leicht abweichen.
         </p>
       </div>
-      <DesignLightbox items={designs} folder="designs" kind="Kartendesign" index={open} onClose={() => setOpen(null)} onGo={setOpen} />
+      <DesignLightbox
+        items={designs}
+        folder="designs"
+        kind="Kartendesign"
+        index={open}
+        onClose={() => setOpen(null)}
+        onGo={setOpen}
+        action={(d) => ({ href: href("gestalten", `motiv-${d.file.replace(/\.webp$/, "")}`), label: "Mit diesem Motiv gestalten" })}
+      />
     </section>
   );
 }
@@ -612,6 +624,8 @@ function PageContent({ page }: { page: PageId }) {
           <GameCard />
         </>
       );
+    case "gestalten":
+      return <CardDesigner />;
     case "armbaender":
       return <Wristbands />;
     case "zubehoer":

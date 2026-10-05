@@ -47,6 +47,11 @@ export function Privacy() {
           <ul>
             <li>Diese Website setzt keine Cookies und nutzt keine Analyse- oder Werbe-Tools.</li>
             <li>Es gibt keine Kontaktformulare und kein Kundenkonto.</li>
+            <li>
+              Im Karten-Designer bleiben Ihre Eingaben und ein hochgeladenes Logo in Ihrem Browser. Es wird nichts an
+              einen Server übertragen; das Vorschaubild entsteht auf Ihrem Gerät. Erst wenn Sie die vorbereitete E-Mail
+              selbst abschicken, erhalte ich Ihre Angaben (siehe Abschnitt Kontakt).
+            </li>
             <li>Schriftarten werden direkt von dieser Seite geladen – es besteht keine Verbindung zu Google Fonts.</li>
             <li>Daten fallen nur an, wenn Sie die Seite aufrufen (Server-Protokolle) und wenn Sie mich selbst kontaktieren.</li>
           </ul>
