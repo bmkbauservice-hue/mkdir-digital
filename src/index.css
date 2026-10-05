@@ -203,6 +203,7 @@ p {
 
 .btn--line {
   border: 1px solid var(--line-strong);
+  background: transparent; /* sonst zeigt ein <button> das Grau des Browsers */
   color: var(--gold-hi);
 }
 
@@ -4326,6 +4327,446 @@ html:has(.lightbox[open]) {
   .keys__grid button:hover {
     transition: none;
     transform: none;
+  }
+}
+
+/* ---------- Karten-Designer (/gestalten/) ---------- */
+.designer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+}
+
+.designer__step {
+  min-width: 0;
+  margin: 0 0 16px;
+  padding: 16px 20px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(4, 22, 17, 0.6);
+}
+
+.designer__step legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px;
+  font-weight: 700;
+  color: var(--ivory);
+}
+
+.designer__step legend > span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--gold-gradient);
+  color: #1a1206;
+  font-size: 14px;
+}
+
+.designer__step legend small {
+  font-weight: 400;
+  color: var(--gold-hi);
+}
+
+.designer__motifs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  max-height: 320px;
+  margin-top: 12px;
+  padding: 4px;
+  overflow-y: auto;
+}
+
+.designer__motifs button {
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  outline: 1px solid var(--line);
+  background: none;
+  aspect-ratio: 1.7;
+  cursor: pointer;
+  transition: outline-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.designer__motifs button:hover {
+  transform: translateY(-2px);
+}
+
+.designer__motifs button[aria-checked="true"] {
+  outline: 2px solid var(--gold-hi);
+  box-shadow: 0 0 16px rgba(243, 220, 154, 0.5);
+}
+
+.designer__motifs img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.designer__lines {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.designer__lines label {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.designer__lines input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.designer__lines label:focus-within {
+  outline: 2px solid var(--gold-hi);
+  outline-offset: 2px;
+}
+
+.designer__lines label.is-on {
+  border-color: var(--gold);
+  background: rgba(214, 176, 98, 0.08);
+}
+
+.designer__lines strong {
+  color: var(--ivory);
+}
+
+.designer__lines small {
+  color: var(--stone);
+  font-size: 13px;
+}
+
+.designer__lines em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--gold-hi);
+}
+
+.designer__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.designer__fields label {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.designer__fields label > span:first-child {
+  font-size: 13px;
+  color: var(--stone);
+}
+
+.designer__fields input:not([type="file"]),
+.designer__fields textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--ivory);
+  font: inherit;
+}
+
+.designer__fields input:focus,
+.designer__fields textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(214, 176, 98, 0.2);
+}
+
+.designer__fields textarea {
+  resize: vertical;
+}
+
+.designer__wide {
+  grid-column: 1 / -1;
+}
+
+.designer__file {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: var(--stone);
+  font-size: 14px;
+}
+
+.designer__remove {
+  padding: 4px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: none;
+  color: var(--gold-hi);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.designer__error {
+  font-style: normal;
+  font-size: 13px;
+  color: #ff8a8a;
+}
+
+.designer__accents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.designer__accents button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--swatch);
+  cursor: pointer;
+}
+
+.designer__accents button[aria-checked="true"] {
+  box-shadow:
+    0 0 0 3px var(--black),
+    0 0 0 5px var(--swatch),
+    0 0 18px var(--swatch);
+}
+
+/* Vorschau: Karte, davor das Handy mit der digitalen Visitenkarte */
+.designer__preview {
+  position: sticky;
+  top: 100px;
+  display: grid;
+  gap: 18px;
+}
+
+.designer__card {
+  margin: 0;
+}
+
+.designer__card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4.5% / 7.6%;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 0 40px color-mix(in srgb, var(--accent) 18%, transparent);
+  transition: box-shadow 0.4s;
+}
+
+.designer__caption {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  text-align: center;
+  color: var(--gold-hi);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.designer__caption small {
+  color: var(--stone);
+  font-weight: 400;
+}
+
+.designer__phone {
+  position: relative;
+  z-index: 2;
+  width: 230px;
+  margin: -40px auto 0;
+  padding: 8px;
+  aspect-ratio: 9 / 17;
+  border-radius: 34px;
+  background: linear-gradient(145deg, #1d1d1f, #050505 60%, #1a1a1c);
+  box-shadow:
+    0 0 0 1.5px color-mix(in srgb, var(--accent) 60%, transparent),
+    0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.designer__screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 27px;
+  background: #0b0b0c;
+  color: #fff;
+  text-align: center;
+}
+
+/* Kopfbild der App = Motiv, weichgezeichnet (sonst wäre der Platzhaltertext lesbar) */
+.designer__cover {
+  position: relative;
+  flex: none;
+  width: 100%;
+  height: 32%;
+  overflow: hidden;
+}
+
+.designer__cover::before,
+.designer__cover::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+}
+
+.designer__cover::before {
+  background: var(--cover) center / cover;
+  filter: blur(7px) brightness(0.85) saturate(1.2);
+}
+
+.designer__cover::after {
+  inset: 0;
+  background: linear-gradient(transparent 45%, #0b0b0c);
+}
+
+.designer__avatar {
+  position: relative; /* liegt über dem Kopfbild (das ist ebenfalls positioniert) */
+  z-index: 1;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  margin-top: -31px;
+  overflow: hidden;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  background: #161616;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.designer__avatar img {
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.designer__name {
+  max-width: 90%;
+  margin-top: 8px;
+  overflow: hidden;
+  font-size: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.designer__role {
+  max-width: 90%;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.designer__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  width: 86%;
+  margin-top: 12px;
+}
+
+.designer__actions span {
+  padding: 6px 4px;
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  border-radius: 10px;
+  color: var(--accent);
+  font-size: 11px;
+}
+
+.designer__save {
+  width: 86%;
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #111;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.designer__send {
+  display: grid;
+  gap: 10px;
+}
+
+.designer__send .btn {
+  justify-content: center;
+  text-align: center;
+}
+
+.designer__send .btn:disabled,
+.designer__send .btn.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.designer__hint {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ivory);
+}
+
+.designer__privacy {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--stone);
+}
+
+@media (max-width: 1000px) {
+  .designer__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .designer__preview {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .designer__motifs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-height: 260px;
+  }
+
+  .designer__lines,
+  .designer__fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .designer__step {
+    padding: 14px 14px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .designer__motifs button,
+  .designer__card img {
+    transition: none;
   }
 }
 

@@ -7,6 +7,7 @@ import react from "@vitejs/plugin-react";
 // jede Seite einzeln – mit eigenem Titel und eigener Beschreibung.
 const pageRoutes = [
   { path: "karten", title: "NFC-Karten & Designs", description: "NFC-Visitenkarten von PVC bis Gold, 30 Designbeispiele, Single-Karten und Spielekarte." },
+  { path: "gestalten", title: "Karte gestalten", description: "Gestalten Sie Ihre NFC-Visitenkarte selbst: Motiv wählen, Daten eintragen, Vorschau speichern und anfragen." },
   { path: "armbaender", title: "NFC-Armbänder", description: "NFC-Armbänder für Festival, Verein, Notfall und Kinder – wasserfest, ohne Akku, in Ihrer Farbe." },
   { path: "zubehoer", title: "NFC-Zubehör", description: "NFC-Tischaufsteller, Schlüsselanhänger, Sticker und Haustier-Marken – einfach antippen." },
   { path: "unternehmen", title: "Für Unternehmen", description: "NFC-Teamkarten, Google-Bewertungen, Treue-, Gutschein- und Gewinnspielkarten für Ihr Unternehmen." },

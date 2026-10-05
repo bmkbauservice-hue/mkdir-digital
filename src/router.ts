@@ -7,11 +7,21 @@ import { useEffect, useState } from "react";
 //   ohne Neuladen (history.pushState). Zurück/Vor funktioniert über "popstate".
 // WICHTIG: Neue Seite = hier eintragen UND in vite.config.ts (pageRoutes).
 
-export type PageId = "start" | "karten" | "armbaender" | "zubehoer" | "unternehmen" | "webdesign" | "impressum" | "datenschutz";
+export type PageId =
+  | "start"
+  | "karten"
+  | "gestalten"
+  | "armbaender"
+  | "zubehoer"
+  | "unternehmen"
+  | "webdesign"
+  | "impressum"
+  | "datenschutz";
 
 export const pages: Record<PageId, { path: string; title: string }> = {
   start: { path: "", title: "NFC-Visitenkarten" },
   karten: { path: "karten/", title: "NFC-Karten & Designs" },
+  gestalten: { path: "gestalten/", title: "Karte gestalten" },
   armbaender: { path: "armbaender/", title: "NFC-Armbänder" },
   zubehoer: { path: "zubehoer/", title: "NFC-Zubehör" },
   unternehmen: { path: "unternehmen/", title: "Für Unternehmen" },
