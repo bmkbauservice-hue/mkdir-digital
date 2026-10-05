@@ -1,7 +1,8 @@
 import { useEffect, useId, useMemo, useRef, useState, type ChangeEvent, type CSSProperties } from "react";
-import { cardLines, contact, designs } from "../content";
+import { cardLines, cardTemplates, contact, designs } from "../content";
 import { imgSet } from "../img";
 import { qrMatrix, qrPath } from "../lib/qr";
+import { drawCard, loadImage, type CardTemplate, type CardText } from "../lib/cardRender";
 
 // Karten-Designer: Motiv wählen, Kartenlinie wählen, eigene Angaben eintragen, Live-Vorschau.
 // Am Ende: Vorschaubild speichern (PNG, im Browser erzeugt) und Anfrage per E-Mail.
@@ -54,8 +55,14 @@ const stem = (file: string) => file.replace(/\.webp$/, "");
 function initialMotif() {
   const m = window.location.hash.match(/^#motiv-(.+)$/);
   const i = m ? designs.findIndex((d) => stem(d.file) === m[1]) : -1;
-  return i >= 0 ? i : 0;
+  if (i >= 0) return i;
+  const live = designs.findIndex((d) => cardTemplates.some((t) => t.id === stem(d.file)));
+  return live >= 0 ? live : 0;
 }
+
+const templateFor = (file: string) => cardTemplates.find((t) => t.id === stem(file));
+// Live-Motive zuerst, dann die übrigen (Reihenfolge innerhalb bleibt)
+const motifOrder = designs.map((_, i) => i).sort((a, b) => Number(!templateFor(designs[a].file)) - Number(!templateFor(designs[b].file)));
 
 function initials(name: string) {
   return (
@@ -66,15 +73,6 @@ function initials(name: string) {
       .map((w) => w[0]!.toUpperCase())
       .join("") || "?"
   );
-}
-
-function loadImage(src: string) {
-  return new Promise<HTMLImageElement>((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = src;
-  });
 }
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
@@ -91,6 +89,30 @@ function QrSvg({ matrix, label }: { matrix: boolean[][]; label: string }) {
       <path d={d} fill="#000" />
     </svg>
   );
+}
+
+// Live-Vorschau der Karte: Vorlage ohne Text + Ihre Angaben, gezeichnet auf eine Canvas.
+// Interne Auflösung fest 1200 × 706 – die Größe am Bildschirm regelt das CSS.
+function LiveCard({ template, text, logoUrl }: { template: CardTemplate; text: CardText; logoUrl: string | null }) {
+  const ref = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const [bg, logo] = await Promise.all([
+        loadImage(`${import.meta.env.BASE_URL}vorlagen/${template.file}`),
+        logoUrl ? loadImage(logoUrl).catch(() => null) : Promise.resolve(null),
+      ]);
+      await document.fonts.ready; // erst zeichnen, wenn die Schriften geladen sind
+      const canvas = ref.current;
+      if (cancelled || !canvas) return;
+      drawCard(canvas.getContext("2d")!, canvas.width, canvas.height, template, bg, text, logo);
+    })().catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [template, text, logoUrl]);
+  const label = [text.name, text.role, text.company, text.phone, text.email, text.web].filter((v) => v.trim()).join(", ");
+  return <canvas ref={ref} width={1200} height={706} role="img" aria-label={`Ihre Karte: ${label || "noch ohne Angaben"}`} />;
 }
 
 export function CardDesigner() {
@@ -117,6 +139,12 @@ export function CardDesigner() {
 
   const d = designs[motif];
   const lineData = cardLines.find((l) => l.id === line)!;
+  const tpl = templateFor(d.file);
+  // Nur die Felder, die auf die Karte kommen – useMemo, damit die Vorschau nicht bei jedem Rendern neu zeichnet
+  const cardText = useMemo<CardText>(
+    () => ({ name: fields.name, role: fields.role, company: fields.company, phone: fields.phone, email: fields.email, web: fields.web }),
+    [fields.name, fields.role, fields.company, fields.phone, fields.email, fields.web],
+  );
   const ready = fields.name.trim().length > 1;
   const qrInfo = qrTypes.find((q) => q.id === qrType)!;
   const qrUrl = qrOn ? qrTarget(qrType, qrInput) : null;
@@ -181,11 +209,25 @@ export function CardDesigner() {
       ctx.fillStyle = "#03130e";
       ctx.fillRect(0, 0, W, H);
 
-      const img = await loadImage(`${import.meta.env.BASE_URL}designs/${d.file}`);
+      // Karte links: bei Live-Motiven mit Ihren Angaben, sonst das Original-Motiv
+      let cardImg: CanvasImageSource;
+      if (tpl) {
+        const card = document.createElement("canvas");
+        card.width = 1200;
+        card.height = 706;
+        const [bg, lg] = await Promise.all([
+          loadImage(`${import.meta.env.BASE_URL}vorlagen/${tpl.file}`),
+          logo ? loadImage(logo.url).catch(() => null) : Promise.resolve(null),
+        ]);
+        drawCard(card.getContext("2d")!, 1200, 706, tpl, bg, cardText, lg);
+        cardImg = card;
+      } else {
+        cardImg = await loadImage(`${import.meta.env.BASE_URL}designs/${d.file}`);
+      }
       ctx.save();
       roundRect(ctx, 70, 110, 1060, 624, 34);
       ctx.clip();
-      ctx.drawImage(img, 70, 110, 1060, 624);
+      ctx.drawImage(cardImg, 70, 110, 1060, 624);
       ctx.restore();
 
       const font = (size: number, weight = 400) => `${weight} ${size}px "Hanken Grotesk", Arial, sans-serif`;
@@ -194,7 +236,7 @@ export function CardDesigner() {
       ctx.fillText("MKDIR DESIGN · KARTENENTWURF", 70, 70);
       ctx.fillStyle = "#a19b8f";
       ctx.font = font(26);
-      ctx.fillText(`Motiv „${d.name}“ – gestaltet mit Ihren Angaben statt der Platzhalter`, 70, 790);
+      ctx.fillText(tpl ? `Motiv „${d.name}“ – Live-Entwurf mit Ihren Angaben` : `Motiv „${d.name}“ – gestaltet mit Ihren Angaben statt der Platzhalter`, 70, 790);
       ctx.fillText(`${lineData.name} · ${lineData.material}`, 70, 832);
 
       // rechte Spalte
@@ -344,22 +386,27 @@ export function CardDesigner() {
                 <span>1</span> Motiv wählen <small>{d.name}</small>
               </legend>
               <div className="designer__motifs" role="radiogroup" aria-label="Motiv">
-                {designs.map((m, i) => (
+                {motifOrder.map((i) => {
+                  const m = designs[i];
+                  return (
                   <button
                     key={m.file}
                     type="button"
                     role="radio"
                     aria-checked={i === motif}
-                    aria-label={m.name}
+                    aria-label={templateFor(m.file) ? `${m.name} – Live-Vorschau` : m.name}
                     title={m.name}
+                    className={templateFor(m.file) ? "is-live" : undefined}
                     onClick={() => {
                       setMotif(i);
                       setSaved(false);
                     }}
                   >
                     <img {...imgSet("designs", m.file)} sizes="120px" alt="" width={m.width} height={m.height} loading="lazy" decoding="async" />
+                    {templateFor(m.file) && <span className="designer__live">Live</span>}
                   </button>
-                ))}
+                  );
+                })}
               </div>
             </fieldset>
 
@@ -515,7 +562,11 @@ export function CardDesigner() {
           {/* Vorschau */}
           <aside className="designer__preview" style={vars} aria-label="Vorschau">
             <figure className="designer__card">
-              <img {...imgSet("designs", d.file)} sizes="(max-width: 1000px) 90vw, 520px" alt={`Motiv ${d.name}`} width={d.width} height={d.height} />
+              {tpl ? (
+                <LiveCard template={tpl} text={cardText} logoUrl={logo?.url ?? null} />
+              ) : (
+                <img {...imgSet("designs", d.file)} sizes="(max-width: 1000px) 90vw, 520px" alt={`Motiv ${d.name}`} width={d.width} height={d.height} />
+              )}
             </figure>
 
             <div className="designer__phone" aria-label="So sieht Ihre digitale Visitenkarte aus">
@@ -539,7 +590,11 @@ export function CardDesigner() {
 
             <p className="designer__caption">
               Motiv „{d.name}“ · {lineData.name}
-              <small>Die Platzhalter auf dem Motiv werden durch Ihre Angaben ersetzt.</small>
+              <small>
+                {tpl
+                  ? "Live-Vorschau: So steht es auf Ihrer Karte. Feinschliff bei Schrift und Abständen mache ich vor dem Druck."
+                  : "Die Platzhalter auf dem Motiv werden durch Ihre Angaben ersetzt. Live-Vorschau gibt es bei den Motiven mit „Live“."}
+              </small>
             </p>
 
             {qrOn && (

@@ -1,0 +1,35 @@
+{
+ "hinweis": "Freie Textfl\u00e4che je Motiv als Anteil der Kartenbreite/-h\u00f6he: x0, y0, x1, y1",
+ "flaechen": {
+  "panther": [
+   0.53,
+   0.18,
+   0.97,
+   0.92
+  ],
+  "tusche-burg": [
+   0.06,
+   0.2,
+   0.62,
+   0.9
+  ],
+  "schwarz-gold": [
+   0.08,
+   0.1,
+   0.97,
+   0.85
+  ],
+  "kraftpapier": [
+   0.02,
+   0.07,
+   0.62,
+   0.98
+  ],
+  "galaxie": [
+   0.09,
+   0.25,
+   0.92,
+   0.65
+  ]
+ }
+}

@@ -1,3 +1,4 @@
+import type { CardTemplate } from "./lib/cardRender";
 import type { PageId } from "./router";
 
 // Alle Texte, Preise und Kontaktdaten der Seite an einem Ort.
@@ -881,6 +882,16 @@ export const petTags = [
   { file: "coco.webp", name: "Schild · Schwarz", technique: "Gravur „Coco“ mit Bergen", width: 472, height: 472 },
   { file: "bruno.webp", name: "Pfote · Gold", technique: "Gravur „Bruno“", width: 472, height: 472 },
   { file: "leo.webp", name: "Rechteck · Mattschwarz", technique: "Gravur „Leo“ mit Tannen", width: 472, height: 472 },
+];
+
+// Live-Editor: Original-Motive ohne Mustertext (public/vorlagen/, retuschiert mit tools/retusche.py).
+// id = Dateiname des Original-Motivs in designs ohne ".webp". Neue Vorlage = Bild + Eintrag hier.
+export const cardTemplates: CardTemplate[] = [
+  { id: "panther", file: "panther.webp", area: [0.55, 0.2, 0.96, 0.9], align: "center", text: "#f3dc9a", accent: "#d6b062", font: "ink", shadow: true },
+  { id: "tusche-burg", file: "tusche-burg.webp", area: [0.07, 0.2, 0.55, 0.9], align: "left", text: "#f4f4f4", accent: "#bdbdbd", font: "ink", shadow: true },
+  { id: "schwarz-gold", file: "schwarz-gold.webp", area: [0.16, 0.18, 0.78, 0.82], align: "center", text: "#f3dc9a", accent: "#c99a45", font: "display", upper: true },
+  { id: "kraftpapier", file: "kraftpapier.webp", area: [0.05, 0.1, 0.56, 0.92], align: "left", text: "#1b1b1b", accent: "#2f9e1f", font: "display", upper: true },
+  { id: "galaxie", file: "galaxie.webp", area: [0.12, 0.22, 0.88, 0.7], align: "center", text: "#f5e6c8", accent: "#e2b86a", font: "display", shadow: true },
 ];
 
 export const webServices = [
