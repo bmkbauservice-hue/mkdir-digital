@@ -4403,6 +4403,25 @@ html:has(.lightbox[open]) {
   box-shadow: 0 0 16px rgba(243, 220, 154, 0.5);
 }
 
+.designer__motifs button {
+  position: relative;
+}
+
+.designer__live {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--neon-mint);
+  color: #03130e;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 0 8px rgba(61, 255, 194, 0.6);
+}
+
 .designer__motifs img {
   display: block;
   width: 100%;
@@ -4565,6 +4584,7 @@ html:has(.lightbox[open]) {
   margin: 0;
 }
 
+.designer__card canvas,
 .designer__card img {
   display: block;
   width: 100%;
