@@ -4900,6 +4900,115 @@ html:has(.lightbox[open]) {
   text-align: center;
 }
 
+/* Prüfung + Freigabe */
+.designer__check {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(4, 22, 17, 0.6);
+}
+
+.designer__check > strong {
+  color: var(--ivory);
+  font-size: 15px;
+}
+
+.designer__check ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.designer__check li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--ivory);
+}
+
+.designer__check li > span {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.designer__check li.is-ok > span {
+  background: rgba(61, 255, 194, 0.18);
+  color: var(--neon-mint);
+}
+
+.designer__check li.is-warn > span {
+  background: rgba(243, 220, 154, 0.2);
+  color: var(--gold-hi);
+}
+
+.designer__check li.is-error {
+  color: #ffb3b3;
+}
+
+.designer__check li.is-error > span {
+  background: rgba(255, 90, 90, 0.2);
+  color: #ff8a8a;
+}
+
+.designer__confirm {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ivory);
+  cursor: pointer;
+}
+
+.designer__confirm input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--gold);
+}
+
+.designer__confirm b {
+  color: var(--gold-hi);
+}
+
+.designer__flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: flow;
+}
+
+.designer__flow li {
+  counter-increment: flow;
+  padding: 4px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--stone);
+  font-size: 12px;
+}
+
+.designer__flow li::before {
+  content: counter(flow) ". ";
+  color: var(--gold-hi);
+  font-weight: 700;
+}
+
 @media (max-width: 1000px) {
   .designer__grid {
     grid-template-columns: minmax(0, 1fr);

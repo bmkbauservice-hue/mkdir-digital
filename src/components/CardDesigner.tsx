@@ -121,7 +121,9 @@ export function CardDesigner() {
   const [line, setLine] = useState(cardLines.find((l) => l.recommended)?.id ?? cardLines[0].id);
   const [accent, setAccent] = useState(accents[0]);
   const [fields, setFields] = useState<Fields>(emptyFields);
-  const [logo, setLogo] = useState<{ url: string; name: string } | null>(null);
+  const [logo, setLogo] = useState<{ url: string; name: string; w: number; h: number; vector: boolean } | null>(null);
+  const [okData, setOkData] = useState(false); // "Angaben geprüft"
+  const [okRights, setOkRights] = useState(false); // "Rechte am Logo"
   const [logoError, setLogoError] = useState("");
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -184,7 +186,12 @@ export function CardDesigner() {
     if (logoUrl.current) URL.revokeObjectURL(logoUrl.current);
     const url = URL.createObjectURL(file);
     logoUrl.current = url;
-    setLogo({ url, name: file.name });
+    const vector = file.type === "image/svg+xml";
+    // Pixelgröße des Logos ermitteln – daraus berechnet die Prüfung, ob es scharf genug für den Druck ist
+    loadImage(url)
+      .then((img) => setLogo({ url, name: file.name, w: img.naturalWidth, h: img.naturalHeight, vector }))
+      .catch(() => setLogoError("Das Bild konnte nicht gelesen werden. Bitte eine andere Datei wählen."));
+    setOkRights(false);
     setSaved(false);
   };
 
@@ -192,8 +199,56 @@ export function CardDesigner() {
     if (logoUrl.current) URL.revokeObjectURL(logoUrl.current);
     logoUrl.current = null;
     setLogo(null);
+    setOkRights(false);
     setSaved(false);
   };
+
+  // Automatische Prüfung vor dem Abschicken. "error" sperrt die Anfrage, "warn" ist nur ein Hinweis.
+  type Check = { id: string; level: "ok" | "warn" | "error"; text: string };
+  const checks: Check[] = [];
+  const f = {
+    name: fields.name.trim(),
+    phone: fields.phone.trim(),
+    email: fields.email.trim(),
+    web: fields.web.trim(),
+  };
+  checks.push(
+    f.name.length > 1
+      ? { id: "name", level: "ok", text: "Name eingetragen" }
+      : { id: "name", level: "error", text: "Bitte Ihren Namen eintragen." },
+  );
+  if (!f.phone && !f.email && !f.web)
+    checks.push({ id: "kontakt", level: "warn", text: "Keine Kontaktdaten – die Karte zeigt dann nur Ihren Namen." });
+  if (f.email)
+    checks.push(
+      /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(f.email)
+        ? { id: "email", level: "ok", text: "E-Mail-Adresse sieht gültig aus" }
+        : { id: "email", level: "error", text: "Die E-Mail-Adresse scheint unvollständig (z. B. name@firma.de)." },
+    );
+  if (f.phone) {
+    const digits = f.phone.replace(/\D/g, "").length;
+    checks.push(
+      digits >= 7 && /^[+\d][\d\s/()-]*$/.test(f.phone)
+        ? { id: "phone", level: "ok", text: "Telefonnummer vollständig" }
+        : { id: "phone", level: "error", text: "Die Telefonnummer scheint unvollständig oder enthält Buchstaben." },
+    );
+  }
+  if (f.web && /\s/.test(f.web)) checks.push({ id: "web", level: "error", text: "Die Website darf keine Leerzeichen enthalten." });
+  if (logo) {
+    // Logo wird auf der Karte bis ca. 25 mm breit gedruckt; für 300 dpi sind das ~300 px.
+    const px = Math.max(logo.w, logo.h);
+    checks.push(
+      logo.vector || px >= 600
+        ? { id: "logo", level: "ok", text: "Logo scharf genug für den Druck" }
+        : px >= 300
+          ? { id: "logo", level: "warn", text: `Logo hat nur ${px} px – für den Druck reicht es knapp. Besser: größere Datei oder SVG.` }
+          : { id: "logo", level: "warn", text: `Logo hat nur ${px} px und wird im Druck unscharf. Bitte eine größere Datei oder SVG nachreichen.` },
+    );
+  }
+  if (f.name.length > 30) checks.push({ id: "lang", level: "warn", text: "Sehr langer Name – die Schrift wird dafür kleiner." });
+  const hasError = checks.some((c) => c.level === "error");
+  // Anfrage erst, wenn keine Fehler und beide Bestätigungen gesetzt sind
+  const canSend = !hasError && okData && (!logo || okRights);
 
   // Vorschaubild als PNG: Motiv links, Angaben rechts. Wird komplett im Browser gezeichnet.
   const savePreview = async () => {
@@ -354,6 +409,8 @@ export function CardDesigner() {
     if (qrUrl) lines.push("", `Extra: QR-Code auf der Rückseite (${qrInfo.name}) → ${qrUrl}`);
     if (f.note) lines.push("", `Wünsche: ${f.note}`);
     lines.push("", "Das Vorschaubild hänge ich an.");
+    lines.push("", "Bestätigt:", "– Ich habe meine Angaben auf Tippfehler geprüft.", "– Vor dem Druck erhalte ich einen Korrekturabzug und gebe ihn frei.");
+    if (logo) lines.push("– Ich habe die Rechte an dem hochgeladenen Logo.");
     const subject = `Kartenentwurf „${d.name}“ – ${f.name}`;
     return `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
   };
@@ -612,21 +669,55 @@ export function CardDesigner() {
               </figure>
             )}
 
+            {/* Prüfung + Freigabe */}
+            <div className="designer__check" aria-live="polite">
+              <strong>Prüfung Ihres Entwurfs</strong>
+              <ul>
+                {checks.map((c) => (
+                  <li key={c.id} className={`is-${c.level}`}>
+                    <span aria-hidden="true">{c.level === "ok" ? "✓" : c.level === "warn" ? "!" : "✕"}</span>
+                    {c.text}
+                  </li>
+                ))}
+              </ul>
+              <label className="designer__confirm">
+                <input type="checkbox" checked={okData} onChange={(e) => setOkData(e.target.checked)} />
+                <span>
+                  Ich habe meine Angaben auf Tippfehler geprüft. Vor dem Druck bekomme ich einen <b>Korrekturabzug</b> und gebe
+                  ihn ausdrücklich frei.
+                </span>
+              </label>
+              {logo && (
+                <label className="designer__confirm">
+                  <input type="checkbox" checked={okRights} onChange={(e) => setOkRights(e.target.checked)} />
+                  <span>Ich habe die Rechte an dem hochgeladenen Logo (eigenes Logo oder Erlaubnis des Inhabers).</span>
+                </label>
+              )}
+              <ol className="designer__flow">
+                <li>Anfrage senden</li>
+                <li>Korrekturabzug von mir</li>
+                <li>Ihre Freigabe</li>
+                <li>Druck &amp; Versand</li>
+              </ol>
+            </div>
+
             <div className="designer__send">
               <button type="button" className="btn btn--line" disabled={!ready || busy} onClick={savePreview}>
                 {busy ? "Bild wird erstellt …" : saved ? "✓ Vorschau gespeichert" : "1. Vorschau speichern"}
               </button>
               <a
-                className={`btn btn--gold${ready ? "" : " is-disabled"}`}
-                href={ready ? mailHref() : undefined}
-                aria-disabled={!ready}
+                className={`btn btn--gold${canSend ? "" : " is-disabled"}`}
+                href={canSend ? mailHref() : undefined}
+                aria-disabled={!canSend}
               >
                 2. Per E-Mail anfragen
               </a>
               <p className="designer__hint">
-                {ready
-                  ? "Hängen Sie das gespeicherte Vorschaubild an die E-Mail an – und Ihr Logo, falls Sie eins gewählt haben."
-                  : "Bitte zuerst Ihren Namen eintragen."}
+                {hasError
+                  ? "Bitte zuerst die rot markierten Punkte korrigieren."
+                  : !okData || (logo && !okRights)
+                    ? "Bitte die Bestätigung oben anhaken."
+                    : "Hängen Sie das gespeicherte Vorschaubild an die E-Mail an – und Ihr Logo, falls Sie eins gewählt haben."}
               </p>
               <p className="designer__privacy">
                 Ihre Angaben und Ihr Logo bleiben auf Ihrem Gerät. Nichts wird hochgeladen – erst die E-Mail, die Sie selbst
