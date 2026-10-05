@@ -1,6 +1,7 @@
-import { useEffect, useId, useRef, useState, type ChangeEvent, type CSSProperties } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ChangeEvent, type CSSProperties } from "react";
 import { cardLines, contact, designs } from "../content";
 import { imgSet } from "../img";
+import { qrMatrix, qrPath } from "../lib/qr";
 
 // Karten-Designer: Motiv wählen, Kartenlinie wählen, eigene Angaben eintragen, Live-Vorschau.
 // Am Ende: Vorschaubild speichern (PNG, im Browser erzeugt) und Anfrage per E-Mail.
@@ -27,6 +28,25 @@ const fieldList: { key: keyof Fields; label: string; type: string; placeholder: 
   { key: "email", label: "E-Mail", type: "email", placeholder: "anna@beispiel.de", max: 80 },
   { key: "web", label: "Website oder Instagram", type: "text", placeholder: "beispiel.de", max: 80 },
 ];
+
+// Extra: zusätzlicher QR-Code auf der Rückseite (funktioniert auch auf Handys ohne NFC)
+type QrType = "web" | "map" | "insta";
+const qrTypes: { id: QrType; name: string; label: string; placeholder: string; caption: string }[] = [
+  { id: "web", name: "Internetseite", label: "Internetadresse", placeholder: "beispiel.de", caption: "Zur Website" },
+  { id: "map", name: "Standort", label: "Adresse oder Google-Maps-Link", placeholder: "Hauptstraße 1, 14467 Potsdam", caption: "So finden Sie uns" },
+  { id: "insta", name: "Instagram", label: "Instagram-Name", placeholder: "@beispiel", caption: "Folgen Sie uns" },
+];
+
+// Aus der Eingabe wird die Adresse, die der QR-Code öffnet.
+function qrTarget(type: QrType, input: string): string | null {
+  const v = input.trim();
+  if (!v) return null;
+  const isUrl = /^https?:\/\//i.test(v);
+  if (type === "web") return isUrl ? v : `https://${v}`;
+  if (type === "map") return isUrl ? v : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v)}`;
+  const handle = v.replace(/^https?:\/\/(www\.)?instagram\.com\//i, "").replace(/^@/, "").split(/[/?#\s]/)[0];
+  return handle ? `https://instagram.com/${handle}` : null;
+}
 
 const stem = (file: string) => file.replace(/\.webp$/, "");
 
@@ -62,6 +82,17 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
   ctx.roundRect(x, y, w, h, r);
 }
 
+// QR-Code als SVG (schwarz auf weiß, gestochen scharf in jeder Größe)
+function QrSvg({ matrix, label }: { matrix: boolean[][]; label: string }) {
+  const { d, size } = qrPath(matrix);
+  return (
+    <svg viewBox={`0 0 ${size} ${size}`} role="img" aria-label={label} shapeRendering="crispEdges">
+      <rect width={size} height={size} fill="#fff" />
+      <path d={d} fill="#000" />
+    </svg>
+  );
+}
+
 export function CardDesigner() {
   const uid = useId();
   const [motif, setMotif] = useState(initialMotif);
@@ -72,6 +103,9 @@ export function CardDesigner() {
   const [logoError, setLogoError] = useState("");
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [qrOn, setQrOn] = useState(false);
+  const [qrType, setQrType] = useState<QrType>("web");
+  const [qrInput, setQrInput] = useState("");
   const logoUrl = useRef<string | null>(null);
 
   // Beim Verlassen der Seite den Speicher für das Logo freigeben.
@@ -84,6 +118,23 @@ export function CardDesigner() {
   const d = designs[motif];
   const lineData = cardLines.find((l) => l.id === line)!;
   const ready = fields.name.trim().length > 1;
+  const qrInfo = qrTypes.find((q) => q.id === qrType)!;
+  const qrUrl = qrOn ? qrTarget(qrType, qrInput) : null;
+  // Lesbare Kurzform für Hinweis und Vorschaubild (statt der langen Maps-Adresse)
+  const qrShown = !qrUrl
+    ? ""
+    : qrType === "map" && !/^https?:\/\//i.test(qrInput.trim())
+      ? `Google Maps: ${qrInput.trim()}`
+      : qrUrl.replace(/^https?:\/\/(www\.)?/i, "");
+  // Das QR-Raster nur neu berechnen, wenn sich die Adresse ändert.
+  const qr = useMemo(() => {
+    if (!qrUrl) return null;
+    try {
+      return qrMatrix(qrUrl);
+    } catch {
+      return null; // zu lang für einen QR-Code
+    }
+  }, [qrUrl]);
 
   const setField = (key: keyof Fields) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFields((f) => ({ ...f, [key]: e.target.value }));
@@ -191,6 +242,27 @@ export function CardDesigner() {
       ctx.font = font(26);
       ctx.fillText(`Akzentfarbe ${accent.name}`, 1272, y + 59);
 
+      // Extra QR-Code
+      if (qr && qrUrl) {
+        const size = 130;
+        const qy = Math.min(y + 100, 900 - size - 20);
+        const cell = size / (qr.length + 4);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(1220, qy, size, size);
+        ctx.fillStyle = "#000000";
+        qr.forEach((row, ry) =>
+          row.forEach((on, rx) => {
+            if (on) ctx.fillRect(1220 + (rx + 2) * cell, qy + (ry + 2) * cell, Math.ceil(cell), Math.ceil(cell));
+          }),
+        );
+        ctx.fillStyle = "#efe9dc";
+        ctx.font = font(28, 700);
+        ctx.fillText(`Extra: QR-Code (${qrInfo.name})`, 1375, qy + 50);
+        ctx.fillStyle = "#a19b8f";
+        ctx.font = font(22);
+        ctx.fillText(qrShown.length > 34 ? `${qrShown.slice(0, 33)}…` : qrShown, 1375, qy + 88);
+      }
+
       ctx.fillStyle = "rgba(214,176,98,0.35)";
       ctx.fillRect(70, 900, W - 140, 2);
       ctx.fillStyle = "#a19b8f";
@@ -237,6 +309,7 @@ export function CardDesigner() {
     if (f.email) lines.push(`E-Mail: ${f.email}`);
     if (f.web) lines.push(`Website/Instagram: ${f.web}`);
     if (logo) lines.push(`Logo: ${logo.name} (im Anhang)`);
+    if (qrUrl) lines.push("", `Extra: QR-Code auf der Rückseite (${qrInfo.name}) → ${qrUrl}`);
     if (f.note) lines.push("", `Wünsche: ${f.note}`);
     lines.push("", "Das Vorschaubild hänge ich an.");
     const subject = `Kartenentwurf „${d.name}“ – ${f.name}`;
@@ -382,6 +455,61 @@ export function CardDesigner() {
                 ))}
               </div>
             </fieldset>
+
+            {/* 5 Extra: QR-Code */}
+            <fieldset className="designer__step">
+              <legend>
+                <span>5</span> Extra: QR-Code auf der Rückseite
+              </legend>
+              <label className="designer__toggle">
+                <input
+                  type="checkbox"
+                  checked={qrOn}
+                  onChange={(e) => {
+                    setQrOn(e.target.checked);
+                    setSaved(false);
+                  }}
+                />
+                <span>QR-Code hinzufügen – öffnet z. B. Ihren Standort oder Ihre Internetseite, auch auf Handys ohne NFC.</span>
+              </label>
+              {qrOn && (
+                <div className="designer__qr-form">
+                  <div className="designer__qr-types" role="radiogroup" aria-label="Was soll der QR-Code öffnen?">
+                    {qrTypes.map((q) => (
+                      <button
+                        key={q.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={q.id === qrType}
+                        onClick={() => {
+                          setQrType(q.id);
+                          setSaved(false);
+                        }}
+                      >
+                        {q.name}
+                      </button>
+                    ))}
+                  </div>
+                  <label className="designer__qr-input">
+                    <span>{qrInfo.label}</span>
+                    <input
+                      id={`${uid}-qr`}
+                      type="text"
+                      value={qrInput}
+                      maxLength={300}
+                      placeholder={qrInfo.placeholder}
+                      onChange={(e) => {
+                        setQrInput(e.target.value);
+                        setSaved(false);
+                      }}
+                    />
+                  </label>
+                  <small className="designer__qr-note">
+                    {qrUrl ? `Öffnet ${qrShown}.` : "Eingabe fehlt noch."} Aufpreis auf Anfrage.
+                  </small>
+                </div>
+              )}
+            </fieldset>
           </div>
 
           {/* Vorschau */}
@@ -413,6 +541,21 @@ export function CardDesigner() {
               Motiv „{d.name}“ · {lineData.name}
               <small>Die Platzhalter auf dem Motiv werden durch Ihre Angaben ersetzt.</small>
             </p>
+
+            {qrOn && (
+              <figure className="designer__back" aria-label="Rückseite mit QR-Code">
+                <div className="designer__back-card">
+                  <div className="designer__qr">
+                    {qr ? <QrSvg matrix={qr} label={`QR-Code: ${qrUrl}`} /> : <span>QR</span>}
+                  </div>
+                  <div className="designer__back-text">
+                    <strong>{qrInfo.caption}</strong>
+                    <span>{fields.company.trim() || fields.name.trim() || "Ihr Name"}</span>
+                  </div>
+                </div>
+                <figcaption>Rückseite · Tipp: Scannen Sie den Code zum Test mit Ihrem Handy.</figcaption>
+              </figure>
+            )}
 
             <div className="designer__send">
               <button type="button" className="btn btn--line" disabled={!ready || busy} onClick={savePreview}>
