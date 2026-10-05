@@ -4737,6 +4737,149 @@ html:has(.lightbox[open]) {
   color: var(--stone);
 }
 
+/* Extra QR-Code */
+.designer__toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 12px;
+  color: var(--ivory);
+  cursor: pointer;
+}
+
+.designer__toggle input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--gold);
+}
+
+.designer__qr-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.designer__qr-types {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.designer__qr-types button {
+  padding: 7px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--stone);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.designer__qr-types button[aria-checked="true"] {
+  border-color: transparent;
+  background: var(--gold-gradient);
+  color: #1a1206;
+}
+
+.designer__qr-input {
+  display: grid;
+  gap: 4px;
+}
+
+.designer__qr-input span {
+  font-size: 13px;
+  color: var(--stone);
+}
+
+.designer__qr-input input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--ivory);
+  font: inherit;
+}
+
+.designer__qr-input input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(214, 176, 98, 0.2);
+}
+
+.designer__qr-note {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  color: var(--stone);
+}
+
+.designer__back {
+  margin: 0;
+}
+
+.designer__back-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  aspect-ratio: 1.7;
+  max-width: 340px;
+  margin: 0 auto;
+  padding: 18px 22px;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 4.5% / 7.6%;
+  background: radial-gradient(90% 90% at 0% 100%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%), #0d0d0f;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
+}
+
+.designer__qr {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+  color: #000;
+  font-weight: 800;
+}
+
+.designer__qr svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.designer__back-text {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.designer__back-text strong {
+  color: var(--accent);
+  font-size: 15px;
+}
+
+.designer__back-text span {
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.designer__back figcaption {
+  margin-top: 10px;
+  color: var(--stone);
+  font-size: 13px;
+  text-align: center;
+}
+
 @media (max-width: 1000px) {
   .designer__grid {
     grid-template-columns: minmax(0, 1fr);
